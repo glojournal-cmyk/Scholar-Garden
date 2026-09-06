@@ -4,6 +4,12 @@ const LABEL={latin:'Latin',french:'French',biology:'Biology',chemistry:'Chemistr
 const ICON={latin:'L',french:'F',biology:'B',chemistry:'C',physics:'P'};
 let current={subject:'latin',track:'foundation',tab:'practice'};
 
+function canonicalRoute(subject=current.subject,track=current.track,tab=current.tab){
+ let slug=subject;
+ if(track==='foundation'&&subject==='biology')slug='biology-foundation';
+ return `#subject/${slug}/${tab}`;
+}
+
 function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function due(subject){
  if(subject==='latin'||subject==='french')return Number(window.MasterY8?.dueCount?.(subject))||0;
@@ -238,8 +244,7 @@ async function renderTab(tab){
    }else{
      await renderFoundationEngine(subject,tab);
    }
-   const canonical=`#subject/${subject}${track==='foundation'&&subject==='biology'?'-foundation':''}/${tab}`;
-   history.replaceState(null,'',canonical);
+   history.replaceState(null,'',canonicalRoute(subject,track,tab));
    return true;
  }catch(err){
    console.error('[SubjectHub] render failed',subject,track,tab,err);
@@ -250,6 +255,42 @@ async function renderTab(tab){
    return false;
  }
 }
+async function openTopicLearn(subject,topicId){
+ if(!LABEL[subject])throw new Error(`Unknown subject: ${subject}`);
+ const track='foundation';
+ const previousHash=location.hash||canonicalRoute(subject,track,'practice');
+
+ // Keep SubjectHub as the source of truth for subject/track/tab state.
+ if(current.subject!==subject||current.track!==track){
+   current={subject,track,tab:'practice'};
+   setHeader(subject,track);
+ }
+
+ // Add a distinct Learn history entry so browser Back can return to Practice.
+ const learnHash=canonicalRoute(subject,track,'learn');
+ if(location.hash!==learnHash)history.pushState({from:previousHash,topicId},'',learnHash);
+
+ const opened=await renderTab('learn');
+ if(!opened)throw new Error(`Could not open Learn for ${subject}`);
+
+ if(subject==='biology'){
+   if(!(await window.BiologyY8?.ensureData?.()))throw new Error('Biology data unavailable');
+   await window.BiologyY8.renderNote(topicId);
+ }else{
+   if(!(await window.MasterY8?.ensure?.(subject)))throw new Error(`${subject} data unavailable`);
+   await window.MasterY8.renderNote(subject,topicId);
+ }
+
+ const pane=document.getElementById('genericLearnPane');
+ pane?.classList.remove('hidden');
+ document.getElementById('genericPracticePane')?.classList.add('hidden');
+ document.querySelectorAll('[data-subject-tab]').forEach(b=>b.classList.toggle('active',b.dataset.subjectTab==='learn'));
+
+ if(pane?.scrollIntoView)pane.scrollIntoView({block:'start',behavior:'auto'});
+ else window.scrollTo?.({top:0,behavior:'auto'});
+ return true;
+}
+
 async function continueToday(subject,track){
  if(track==='current'){return await renderTab('learn')}
  const d=due(subject);await renderTab('practice');
@@ -277,5 +318,5 @@ function parseRoute(hash){
  let tab=['learn','practice','play','progress'].includes(raw[2])?raw[2]:undefined;if(raw[2]==='review')tab='practice';
  return {subject,track,tab};
 }
-window.SubjectHub=Object.freeze({renderStudy,open,parseRoute,renderTab,continueToday,showScienceTopic});
+window.SubjectHub=Object.freeze({renderStudy,open,parseRoute,renderTab,openTopicLearn,continueToday,showScienceTopic});
 })();

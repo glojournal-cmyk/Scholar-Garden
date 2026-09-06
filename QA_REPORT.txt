@@ -1,63 +1,43 @@
 LUX ET LABOR — THE SCHOLAR'S GARDEN
-V0.3.4.2 LEARN + GAME RUNTIME FIX
+V0.3.4.3 TOPIC LEARN FIX
 
-Candidate deterministic/runtime-harness result: 67/67 PASS
+Candidate QA: 76 / 76 PASS
 
-Learn routes with visible content:
-PASS Latin Y8 Foundation -> Learn
-PASS French Y8 Foundation -> Learn
-PASS Biology Y8 Foundation -> Learn
-PASS Biology Y9 -> Learn
-PASS Chemistry Y9 -> Learn
-PASS Physics Y9 -> Learn
+TARGETED TOPIC LEARN
+PASS Latin: all 65 visible Foundation Training Hall topic Learn routes show the requested note
+PASS French: all 30 enabled/visible Foundation Training Hall topic Learn routes show the requested note
+PASS Biology: all 37 Foundation Training Hall topic Learn routes show the requested note
 
-Tab cycles:
-PASS Latin Learn -> Practise -> Play -> Progress -> Learn
-PASS French Learn -> Practise -> Play -> Progress -> Learn
+For every tested topic:
+PASS Practice -> Learn route
+PASS Practice pane hidden
+PASS Learn pane visible
+PASS Learn tab active
+PASS requested note content visible
+PASS note scroll hook reached
 
-Practice:
-PASS Latin Mixed Practice -> quiz rendered
-PASS French Mixed Practice -> quiz rendered
-PASS Biology Mixed Practice -> quiz rendered
-PASS Latin Extra Practice -> quiz rendered
-PASS French Extra Practice -> quiz rendered
-PASS Biology Extra Practice -> quiz rendered
+REPRESENTATIVE NOTE ACTIONS
+PASS Latin Back to all topics
+PASS Latin Practise this topic
+PASS French Back to all topics
+PASS French Practise this topic
+PASS Biology Back to all topics
+PASS Biology Practise this topic
 
-Latin mini-games:
-PASS GameV2 initializes without ReferenceError
-PASS Games hub opens
-PASS Forma Forge selector opens
-PASS Sentence Mosaic selector opens
-PASS Verbum Match selector opens
-PASS Manuscript Mystery selector opens
-PASS Forma Forge Level 1 renders
-PASS Sentence Mosaic Level 1 renders
-PASS Verbum Match Level 1 renders
-PASS Manuscript Mystery Level 1 renders
+REGRESSION
+PASS Latin/French/Biology mixed Practice
+PASS Latin/French/Biology Extra Practice
+PASS Latin/French Foundation tab cycles
+PASS Biology/Chemistry/Physics Y9 Learn
+PASS all four Latin GameV2 Level 1 render checks
 
-Version/cache:
-PASS index uses only 0.3.4.2
-PASS footer = V0.3.4.2 Learn + Game Runtime Fix
-PASS SW registration = 0.3.4.2
-PASS SW cache namespace = 0.3.4.2
-PASS no 0.3.4.1 / 0.3.4.1.1 asset refs remain
-PASS old Scholar Garden caches deleted on activation
-PASS JS/MJS/JSON/CSS never fall back to index.html
+VERSION/CACHE
+PASS release = 0.3.4.3 everywhere
+PASS old Scholar Garden SW caches removed on activation
+PASS learner localStorage untouched
+PASS JS/MJS/JSON/CSS exact-resource cache policy retained
 
-Routing:
-PASS SubjectHub.renderTab is async
-PASS MasterY8 Learn is awaited
-PASS MasterY8 Practise is awaited
-PASS MasterY8 Progress is awaited
-PASS Biology data load is awaited
-PASS failed activity shows Could not open this activity + Retry
-PASS duplicate Side Task onclick removed
-PASS central ActionRouter owns Side Tasks
-PASS central ActionRouter owns GameV2 game cards
-PASS Quick Play waits for Play route
-PASS Quick Play no longer uses an arbitrary setTimeout race
-
-Important:
-PUBLIC BUILD MANUAL QA IS NOT YET COMPLETE.
-The public site must first be upgraded to V0.3.4.2.
-Do not mark this release accepted until the public footer shows V0.3.4.2 and the requested public click tests pass.
+PUBLIC MANUAL QA
+NOT CLAIMED.
+This environment cannot complete a real interactive GitHub Pages/iPad browser session.
+Public acceptance must occur after deployment.

@@ -416,8 +416,9 @@ async function startPractice(subject,mode='mixed',count=15,topicId='all'){
    strengthened:new Set(),retained:new Set()
  };
  states[subject].sessions++;saveState(subject,states[subject]);
- window.SubjectHub?.open?.(subject,'foundation','practice');
- setTimeout(()=>renderQuestion(subject),0);return true;
+ const opened=await window.SubjectHub?.open?.(subject,'foundation','practice');
+ if(opened===false)return false;
+ renderQuestion(subject);return true;
 }
 async function renderLearn(subject){
  const pane=document.getElementById('genericLearnPane');
@@ -439,7 +440,7 @@ async function renderNote(subject,topicId){
  ${(n?.commonMistakes||[]).length?`<h3>Common mistakes</h3><ul>${n.commonMistakes.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:''}
  <div class="quiz-actions"><button class="primary" id="mcpTopicPractice">Practise this topic</button></div></article>`;
  document.getElementById('mcpNotesBack').onclick=()=>renderLearn(subject);
- document.getElementById('mcpTopicPractice').onclick=()=>startPractice(subject,'production',10,topicId);
+ document.getElementById('mcpTopicPractice').onclick=()=>startPractice(subject,'extra',10,topicId);
 }
 async function renderPractice(subject){
  const pane=document.getElementById('genericPracticePane');
@@ -471,9 +472,13 @@ async function renderPractice(subject){
  pane.querySelector('[data-mcp-mode="weak"]').onclick=()=>startPractice(subject,'weak',7);
  pane.querySelector('[data-mcp-mode="mixed"]').onclick=()=>startPractice(subject,'mixed',15);
  pane.querySelector('[data-mcp-current-extra]')?.addEventListener('click',e=>startPractice(subject,'extra',10,e.currentTarget.dataset.mcpCurrentExtra));
- pane.querySelector('[data-mcp-current-learn]')?.addEventListener('click',e=>renderNote(subject,e.currentTarget.dataset.mcpCurrentLearn));
+ pane.querySelector('[data-mcp-current-learn]')?.addEventListener('click',async e=>{
+   await window.SubjectHub.openTopicLearn(subject,e.currentTarget.dataset.mcpCurrentLearn);
+ });
  pane.querySelectorAll('[data-mcp-topic-extra]').forEach(b=>b.onclick=()=>startPractice(subject,'extra',10,b.dataset.mcpTopicExtra));
- pane.querySelectorAll('[data-mcp-topic-learn]').forEach(b=>b.onclick=()=>renderNote(subject,b.dataset.mcpTopicLearn));
+ pane.querySelectorAll('[data-mcp-topic-learn]').forEach(b=>b.onclick=async()=>{
+   await window.SubjectHub.openTopicLearn(subject,b.dataset.mcpTopicLearn);
+ });
 }
 async function renderProgress(subject){
  const pane=document.getElementById('genericProgressPane');
@@ -486,7 +491,7 @@ async function renderProgress(subject){
 }
 
 window.MasterY8=Object.freeze({
- ensure,topics,renderLearn,renderPractice,renderProgress,startPractice,
+ ensure,topics,renderLearn,renderNote,renderPractice,renderProgress,startPractice,
  dueCount,weakCount,reviewDates,todayStats,masterySummary,state:subject=>states[subject]
 });
 })();

@@ -1,40 +1,40 @@
-SCHOLAR'S GARDEN — V0.3.4.2 LEARN + GAME RUNTIME FIX
+SCHOLAR'S GARDEN — V0.3.4.3 TOPIC LEARN FIX
 
-Upload this package over the Scholar-Garden repository root.
+Upload every extracted file to the ROOT of the Scholar-Garden repository.
 
-1. Extract the ZIP.
-2. GitHub -> Scholar-Garden -> Add file -> Upload files.
-3. Upload every extracted file to repo ROOT.
-4. Commit.
-5. Wait for GitHub Pages deployment.
-6. Open the public site and hard-refresh once.
-7. Confirm footer:
-   V0.3.4.2 Learn + Game Runtime Fix
+Expected public footer:
+V0.3.4.3 Topic Learn Fix
 
-PUBLIC ACCEPTANCE TEST — do not skip:
+Priority public acceptance:
 
-Fresh/private browser:
-- Home -> Train Latin -> Learn
-- Home -> Train French -> Learn
-- Home -> Train Biology -> Learn
-- Study -> Biology Year 9 -> Learn
-- Study -> Chemistry -> Learn
-- Study -> Physics -> Learn
-For each: content must visibly appear, no endless loading, Back/tabs remain usable.
+Latin Foundation Training Hall:
+- Current Focus -> Continue Topic
+- every topic card -> Learn
+Especially verify:
+  Accusative forms
+  Adjective agreement
+  Case and grammar role
+  Case functions
+  Case-role introduction
+  Choose the complete translation
+  Choose the exact Latin
+  Choose the set-text translation
 
-Then:
-- Latin: Learn -> Practise -> Play -> Progress -> Learn
-- French: Learn -> Practise -> Play -> Progress -> Learn
+French Foundation Training Hall:
+- Current Focus -> Continue Topic
+- every visible topic card -> Learn
 
-Mini-games:
-- Quick Play -> Verbum Match -> Level 1
-- Quick Play -> Sentence Mosaic -> Level 1
-- See all games -> Forma Forge -> Level 1
-- See all games -> Manuscript Mystery -> Level 1
-- French Spelling Sprint
+Biology Foundation Training Hall:
+- Current Focus -> Continue Topic
+- every visible topic card -> Learn
 
-Upgrade/stale profile:
-- repeat the same tests without clearing learner localStorage.
-- verify progress/state remains.
+For each:
+1. click once
+2. Practice pane disappears
+3. Learn tab becomes active
+4. requested teaching note is visible
+5. Back to all topics works
+6. Practise this topic works
+7. browser Back returns to a coherent Subject Hub route
 
-If the footer is not V0.3.4.2, do not test the old page.
+Do not accept the release if the footer is not V0.3.4.3.

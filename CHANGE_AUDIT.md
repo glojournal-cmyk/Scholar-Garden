@@ -1,98 +1,77 @@
-# Scholar's Garden V0.3.4.2 — Learn + Game Runtime Fix
+# Scholar's Garden V0.3.4.3 — Targeted Topic Learn Fix
 
-## Exact root causes found
+## Exact root cause
 
-1. **Release/service-worker mismatch**
-   - `index.html` requested `?v=0.3.4.1`
-   - the service worker precached `?v=0.3.4.1.1`
-   - older Scholar Garden caches could therefore mix markup, loaders and runtime files.
+The Training Hall topic buttons were not missing handlers.
 
-2. **Unsafe service-worker fallback**
-   - non-navigation fetch handling could fall back too broadly.
-   - V0.3.4.2 uses exact-resource fallback for JavaScript, modules, JSON and CSS. These resource types never fall back to `index.html`.
+They were calling `renderNote(...)` directly while the Subject Hub was still on the Practice tab.
 
-3. **Async Subject Hub rendering was not awaited**
-   - `MasterY8.renderLearn`, `renderPractice`, `renderProgress` and Biology data paths could reject after the outer synchronous `try/catch` had already returned.
-   - This could leave an endless loading panel or make a click look dead.
+So the click executed, but:
+- `#genericPracticePane` stayed visible;
+- `#genericLearnPane` stayed hidden;
+- `renderNote(...)` wrote the correct teaching note into the hidden Learn pane.
 
-4. **Duplicate Side Task binding**
-   - Side Tasks still had a direct `.onclick` while the central ActionRouter also handled the same control.
+The learner therefore saw no visible change.
 
-5. **Latin Games V2 was not actually modularised**
-   - the migrated `latin-games.js` still referenced legacy-scope variables/functions that no longer existed:
-     - `state`
-     - `save`
-     - `show`
-     - `setNavActive`
-     - `bank`
-     - `ensureAudio`
-     - `playTone`
-   - `state` failed during GameV2 initialization.
-   - after bridging that, deeper game-level testing exposed `show`, `bank`, then `ensureAudio`.
-   - V0.3.4.2 explicitly bridges these dependencies to `LatinModule`, `LATIN_BANK`, and safe local audio hooks.
+## Fix
 
-6. **Quick Play race**
-   - Home Quick Play navigated to Play, waited an arbitrary 100 ms, then tried to call the game.
-   - V0.3.4.2 awaits the Subject Hub Play route and then starts the real engine immediately.
+A new Subject Hub method owns the transition:
 
-## Learn routes exercised in runtime harness
+`SubjectHub.openTopicLearn(subject, topicId)`
 
-- Latin Year 8 Foundation → Learn: visible structured content rendered
-- French Year 8 Foundation → Learn: visible structured content rendered
-- Biology Year 8 Foundation → Learn: visible structured content rendered
-- Biology Year 9 → Learn: visible topic cards rendered
-- Chemistry Year 9 → Learn: visible topic cards rendered
-- Physics Year 9 → Learn: visible topic cards rendered
+It:
 
-Also exercised:
-- Latin: Learn → Practise → Play → Progress → Learn
-- French: Learn → Practise → Play → Progress → Learn
+- keeps Subject Hub as source of truth for subject/track/tab;
+- creates a distinct Learn history entry;
+- awaits `renderTab('learn')`;
+- makes Learn visible and Practice hidden;
+- updates active Learn styling;
+- awaits the selected Latin/French/Biology note renderer;
+- scrolls the note into view.
 
-## Practice routes exercised
+Training Hall handlers now call this method for:
 
-- Latin Mixed Practice → real quiz rendered
-- French Mixed Practice → real quiz rendered
-- Biology Mixed Practice → real quiz rendered
-- Latin Extra Practice → real quiz rendered
-- French Extra Practice → real quiz rendered
-- Biology Extra Practice → real quiz rendered
+- `data-mcp-current-learn`
+- `data-mcp-topic-learn`
+- `data-bio-current-learn`
+- `data-bio-topic-learn`
 
-## Mini-games exercised
+`MasterY8.renderNote` and `BiologyY8.renderNote` are exported only so Subject Hub can orchestrate the correct visible destination.
 
-GameV2 initialization is now clean.
+## Related robustness fixes
 
-The harness opened:
-- Forma Forge
-- Sentence Mosaic
-- Verbum Match
-- Manuscript Mystery
+- `Practise this topic` now awaits the Subject Hub switch back to Practice before drawing a question.
+- Topic practice uses the production-led Extra Practice path with safe fallback for topics that have no production-format item.
+- Browser `popstate` now re-renders the route.
+- `popstate` and `hashchange` route renders are de-duplicated to prevent double-render races.
 
-It also entered Level 1 of every one of those four engines and confirmed game UI rendered.
+## Release/cache
 
-## Service worker changes
-
-Release is now **0.3.4.2 everywhere**:
-- index asset queries
-- app/service-worker registration
+Release bumped to **V0.3.4.3** consistently in:
+- index asset query strings
+- footer/build label
+- service-worker registration
 - service-worker cache namespace
 - service-worker precache URLs
-- footer/build label
 
-Activation removes older `scholars-garden-*` caches only. It does not clear localStorage or learner state.
+Old Scholar Garden service-worker caches are removed on activation.
+Learner localStorage/state is preserved.
 
-Navigation may fall back to cached `index.html`.
-JavaScript / `.mjs` / JSON / CSS requests may only use:
-- a successful exact network response, or
-- an exact cached copy.
-They never receive `index.html` as a substitute.
+## Files changed
 
-## Public deployment status
+Functional code:
+- `language-y8.js`
+- `biology-y8.js`
+- `subject-hub.js`
+- `app.js`
+- `index.html`
+- `sw.js`
 
-This is a deployment candidate, not a public-build acceptance.
-The public GitHub Pages site was still showing V0.3.4 while this package was produced.
-A public V0.3.4.2 click-through cannot be reported until this package is actually deployed.
+Reports/package metadata:
+- `CHANGE_AUDIT.md`
+- `QA_REPORT.txt`
+- `TOPIC_LEARN_QA.md`
+- `UPLOAD_ME.txt`
+- `SHA256SUMS.txt`
 
-## Browser limitation
-
-A real Chromium launch against a local HTTP server was attempted.
-The execution environment terminates Chromium before usable navigation, so no physical-browser or iPad claim is made from this environment.
+No question bank, answer bank, concept ID, mastery rule or learner-state key was regenerated.

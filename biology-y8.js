@@ -274,8 +274,10 @@ async function startPractice(mode='mixed',count=10,topicId='all'){
    beforeMastery:metric(topicId),
    strengthened:new Set(),retained:new Set()
  };state.sessions++;save();
- window.SubjectHub?.open?.('biology','foundation','practice');
- setTimeout(()=>{document.getElementById('genericPracticePane')?.classList.remove('hidden');renderQuestion()},0);return true;
+ const opened=await window.SubjectHub?.open?.('biology','foundation','practice');
+ if(opened===false)return false;
+ document.getElementById('genericPracticePane')?.classList.remove('hidden');
+ renderQuestion();return true;
 }
 function answerControl(q){
  if(q.format==='mc_single')return `<div class="options">${(q.options||[]).map(o=>`<button class="option" data-bio-opt="${esc(o)}">${esc(o)}</button>`).join('')}</div>`;
@@ -375,9 +377,13 @@ function renderFoundationHome(){
  pane.querySelector('[data-bio-mode="weak"]').onclick=()=>startPractice('weak',7,'all');
  pane.querySelector('[data-bio-mode="mixed"]').onclick=()=>startPractice('mixed',15,'all');
  pane.querySelector('[data-bio-current-extra]')?.addEventListener('click',e=>startPractice('extra',10,e.currentTarget.dataset.bioCurrentExtra));
- pane.querySelector('[data-bio-current-learn]')?.addEventListener('click',e=>renderNote(e.currentTarget.dataset.bioCurrentLearn));
+ pane.querySelector('[data-bio-current-learn]')?.addEventListener('click',async e=>{
+   await window.SubjectHub.openTopicLearn('biology',e.currentTarget.dataset.bioCurrentLearn);
+ });
  pane.querySelectorAll('[data-bio-topic-extra]').forEach(b=>b.onclick=()=>startPractice('extra',10,b.dataset.bioTopicExtra));
- pane.querySelectorAll('[data-bio-topic-learn]').forEach(b=>b.onclick=()=>renderNote(b.dataset.bioTopicLearn));
+ pane.querySelectorAll('[data-bio-topic-learn]').forEach(b=>b.onclick=async()=>{
+   await window.SubjectHub.openTopicLearn('biology',b.dataset.bioTopicLearn);
+ });
 }
 function renderLearn(){
  const pane=document.getElementById('genericLearnPane');if(!pane)return;
@@ -397,7 +403,7 @@ function renderNote(topicId){
  ${(n.commonMistakes||[]).length?`<h3>Common mistakes</h3><ul>${n.commonMistakes.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:''}
  <div class="quiz-actions"><button class="primary" id="bioTopicPractice">Practise this topic</button></div></article>`;
  document.getElementById('bioNotesBack').onclick=renderLearn;
- document.getElementById('bioTopicPractice').onclick=()=>startPractice('production',10,topicId);
+ document.getElementById('bioTopicPractice').onclick=()=>startPractice('extra',10,topicId);
 }
 function renderProgress(){
  const pane=document.getElementById('genericProgressPane');if(!pane)return;
@@ -416,6 +422,6 @@ function todayStats(){
 }
 
 window.BiologyY8=Object.freeze({
- KEY,ensureData,renderLearn,renderFoundationHome,renderProgress,renderPlay,startPractice,dueCount,weakCount,reviewDates,todayStats,masterySummary,state:()=>state,ready:()=>ready
+ KEY,ensureData,renderLearn,renderNote,renderFoundationHome,renderProgress,renderPlay,startPractice,dueCount,weakCount,reviewDates,todayStats,masterySummary,state:()=>state,ready:()=>ready
 });
 })();

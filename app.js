@@ -406,7 +406,17 @@ async function init(){
  const latinMasterReady=window.MasterY8.ensure('latin');
  const frenchMasterReady=window.MasterY8.ensure('french');
  document.addEventListener('click',handleActionClick);
- window.addEventListener('hashchange',()=>render().catch(err=>{console.error('[Router] hash render failed',err);toast('This page could not be opened.')}));
+ let routeRenderQueued=false;
+ const queueRouteRender=source=>{
+   if(routeRenderQueued)return;
+   routeRenderQueued=true;
+   queueMicrotask(async()=>{
+     routeRenderQueued=false;
+     try{await render()}catch(err){console.error(`[Router] ${source} render failed`,err);toast('This page could not be opened.')}
+   });
+ };
+ window.addEventListener('hashchange',()=>queueRouteRender('hash'));
+ window.addEventListener('popstate',()=>queueRouteRender('history'));
  document.addEventListener('lux:growth',()=>{
   const before=lastCollectibleCount,after=window.LuxGrowth.snapshot().collectibleCount;
   growth();
@@ -423,7 +433,7 @@ async function init(){
  document.addEventListener('lux:plan-change',()=>{if(routeInfo().screen==='home')renderHome()});
  await Promise.race([Promise.allSettled([frenchLegacyReady,biologyReady,latinMasterReady,frenchMasterReady]),new Promise(resolve=>setTimeout(resolve,2600))]);
  await render();
- if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=0.3.4.2',{updateViaCache:'none'}).then(reg=>reg.update()).catch(err=>console.warn('[PWA] service worker update failed',err));
+ if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=0.3.4.3',{updateViaCache:'none'}).then(reg=>reg.update()).catch(err=>console.warn('[PWA] service worker update failed',err));
 }
 document.readyState==='loading'?document.addEventListener('DOMContentLoaded',init):init();
 })();
