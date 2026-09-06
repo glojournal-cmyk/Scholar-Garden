@@ -3,168 +3,230 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#fbf7ef">
+<meta name="theme-color" content="#f8f4ea">
 <meta name="description" content="Lux et Labor — The Scholar's Garden">
 <title>Lux et Labor — The Scholar’s Garden</title>
 <link rel="manifest" href="./manifest.webmanifest">
-<link rel="stylesheet" href="./styles.css?v=0.3.0">
-<link rel="stylesheet" href="./latin-games.css?v=0.3.0">
+<link rel="stylesheet" href="./styles.css?v=0.3.0-reset">
+<link rel="stylesheet" href="./latin-games.css?v=0.3.0-reset">
 </head>
 <body>
-<header class="topbar">
- <button class="brand" type="button" data-route="home"><span class="brand-mark">II</span><span><strong>Lux et Labor</strong><small>The Scholar’s Garden</small></span></button>
- <nav><button data-route="home">Home</button><button data-route="latin">Latin</button><button data-route="french">French</button><button data-route="garden">Garden</button><button data-route="collection">Collection</button></nav>
- <button class="profile-btn" data-route="profile" aria-label="Scholar profile">S</button>
+<div class="app-shell">
+<header class="brandbar">
+ <button class="brand" type="button" data-brand-home aria-label="Home">
+   <span class="brand-mark">II</span>
+   <span><strong>Lux et Labor</strong><small>The Scholar’s Garden</small></span>
+ </button>
+ <div class="scholar-chip"><span>Lv <b data-growth="level">1</b></span><span><b data-growth="xp">0</b> XP</span></div>
 </header>
 
-<main>
+<nav class="global-nav" aria-label="Primary">
+ <button data-global-route="home"><span aria-hidden="true">⌂</span><b>Home</b></button>
+ <button data-global-route="study"><span aria-hidden="true">◇</span><b>Study</b></button>
+ <button data-global-route="garden"><span aria-hidden="true">❧</span><b>Garden</b></button>
+ <button data-global-route="scholar"><span aria-hidden="true">♙</span><b>Scholar</b></button>
+</nav>
 
-<section class="screen" data-screen="home" id="homeScreen">
- <article class="quest-hero">
-   <img src="hero_01.webp" alt="" fetchpriority="high">
-   <div class="quest-hero-copy">
-     <div class="date-line"><span id="todayDate">Today</span><span class="daily-seal" id="dailySealBadge">Daily Seal ○</span></div>
-     <p class="eyebrow">TODAY’S SCHOLAR QUEST</p>
-     <h1>What will you grow today?</h1>
-     <p id="questSummary">Your minimum study path is being prepared…</p>
-     <div class="quest-overall">
-       <div><strong id="questDone">0 / 6 tasks</strong><span id="activeTimeLabel">0 / 20 active min</span></div>
-       <div class="big-progress"><i id="questProgressBar"></i></div>
-     </div>
-   </div>
- </article>
+<main class="main-stage">
+<section class="route-screen" data-route-screen="home" id="homeScreen">
+ <header class="home-greeting">
+   <div><p class="eyebrow">TODAY</p><h1 id="homeGreeting">Good morning</h1><p id="homeDate"></p></div>
+   <div class="home-level"><small>Scholar Level</small><strong data-growth="level">1</strong></div>
+ </header>
+ <div class="week-strip" id="weekStrip" aria-label="Seven-day study completion"></div>
 
- <section class="daily-layout">
-   <article class="quest-board card">
-     <div class="quest-board-head">
-       <div><p class="eyebrow">TODAY’S MINIMUM</p><h2>Daily Quest Board</h2></div>
-       <div class="quest-reward"><small>Completion reward</small><strong>Daily Seal + 35 XP</strong></div>
-     </div>
-     <div id="dailyQuestList" class="quest-list"></div>
-     <div class="bonus-quest">
-       <div><span>✦</span><div><b>Bonus Quest</b><small>Do one learning game after your minimum work.</small></div></div>
-       <button class="secondary" data-route="latin">Open Games</button>
-     </div>
-   </article>
-
-   <aside class="week-card card">
-     <p class="eyebrow">THIS WEEK</p><h2>7-Day Study Trail</h2>
-     <div id="weekCalendar" class="week-calendar"></div>
-     <div class="week-legend"><span><i class="seal"></i> Daily Seal</span><span><i class="partial"></i> Study started</span></div>
-     <div class="next-reward"><small>NEXT GARDEN MILESTONE</small><strong id="nextGardenReward">Keep studying to grow your garden.</strong></div>
-   </aside>
+ <section class="today-section">
+   <div class="section-title"><div><p class="eyebrow">YOUR NEXT STEPS</p><h2>Today</h2></div><span id="todayTaskCount">0 / 0 complete</span></div>
+   <div class="today-list" id="todayList"></div>
  </section>
 
- <section class="garden-home card">
-   <img id="homeGardenImage" src="garden_01.webp" alt="Scholar's Garden" loading="lazy">
-   <div class="garden-home-copy">
-     <p class="eyebrow">YOUR WORLD</p><h2>Scholar’s Garden</h2>
-     <p id="gardenHomeMessage">Every real learning step adds to your Scholar journey.</p>
-     <div class="garden-home-stats">
-       <span><b>Lv <span data-growth="level">1</span></b>Scholar</span>
-       <span><b><span data-growth="xp">0</span>/<span data-growth="next">100</span></b>XP</span>
-       <span><b data-growth="items">0</b>Items</span>
-       <span><b data-growth="medals">0</b>Medals</span>
-     </div>
-     <div class="bar garden-xp"><i data-growth-bar></i></div>
-     <button class="secondary" data-route="garden">Enter Garden</button>
-   </div>
+ <p class="daily-minimum" id="dailyMinimum">Minimum today: complete the due review.</p>
+
+ <section class="home-progress card-soft">
+   <div><small>TODAY'S PROGRESS</small><strong id="todayProgressText">0 / 3 tasks complete</strong></div>
+   <div class="progress-track"><i id="todayProgressBar"></i></div>
+ </section>
+
+ <section class="reward-preview card-soft">
+   <div class="reward-symbol" aria-hidden="true">✦</div>
+   <div><small>NEXT REWARD</small><h3 id="nextRewardName">Ink Pot</h3><p id="nextRewardCopy">Keep learning to unlock your next Garden item.</p></div>
+   <div class="reward-xp"><strong><span data-growth="xp">0</span> XP</strong><div class="progress-track"><i data-growth-bar></i></div></div>
  </section>
 
  <section class="continue-section">
-   <div class="section-head"><div><p class="eyebrow">CONTINUE LEARNING</p><h2>Quick launch</h2></div><p>Subjects support today’s quest rather than dominating Home.</p></div>
-   <div class="quick-subject-grid">
-     <button class="quick-subject latin-quick" data-route="latin"><span>L</span><div><small>LATIN</small><strong>Practice & Games</strong><em id="latinHomeStatus">Ready</em></div><b>→</b></button>
-     <button class="quick-subject french-quick" data-route="french"><span>F</span><div><small>FRENCH</small><strong>Practice & Spelling</strong><em id="frenchHomeStatus">Ready</em></div><b>→</b></button>
-     <button class="quick-subject locked" data-locked="Biology"><span>B</span><div><small>COMING LATER</small><strong>Biology</strong><em>Locked</em></div><b>◆</b></button>
-     <button class="quick-subject locked" data-locked="Chemistry"><span>C</span><div><small>COMING LATER</small><strong>Chemistry</strong><em>Locked</em></div><b>◆</b></button>
+   <div class="section-title"><div><p class="eyebrow">CONTINUE LEARNING</p><h2>Pick up where you left off</h2></div></div>
+   <div class="continue-grid" id="continueCards"></div>
+ </section>
+</section>
+
+<section class="route-screen hidden" data-route-screen="study" id="studyScreen">
+ <header class="page-title"><p class="eyebrow">STUDY WORLD</p><h1>Study</h1><p>Current learning first. Foundation review stays ready when you need it.</p></header>
+
+ <section class="study-band">
+   <div class="section-title"><div><p class="eyebrow">CURRENT</p><h2>Year 9</h2></div><span class="route-pill current">Current curriculum</span></div>
+   <div class="study-grid" id="currentStudyGrid"></div>
+ </section>
+
+ <section class="study-band foundation-band">
+   <div class="section-title"><div><p class="eyebrow">FOUNDATION REVIEW</p><h2>Year 8</h2></div><span class="route-pill foundation">Consolidation</span></div>
+   <div class="study-grid" id="foundationStudyGrid"></div>
+ </section>
+</section>
+
+<section class="route-screen hidden" data-route-screen="subject" id="subjectScreen">
+ <button class="back-link" type="button" data-global-route="study">← Study</button>
+ <header class="subject-hub-header">
+   <div>
+     <div class="subject-kicker"><span id="subjectIcon">L</span><span id="subjectTrack" class="route-pill foundation">Foundation Review</span></div>
+     <h1 id="subjectTitle">Latin</h1>
+     <p id="subjectSubtitle">Build fluency through short, focused sessions.</p>
+   </div>
+   <div class="subject-summary">
+     <span id="subjectMastery">Learning in progress</span>
+     <span id="subjectDue">0 due</span>
+     <button class="primary" id="subjectContinue">Continue today</button>
+   </div>
+ </header>
+
+ <nav class="subject-tabs unified-tabs" aria-label="Subject sections">
+   <button data-subject-tab="learn">Learn</button>
+   <button data-subject-tab="practice">Practice</button>
+   <button data-subject-tab="review">Review</button>
+   <button data-subject-tab="play">Play</button>
+   <button data-subject-tab="progress">Progress</button>
+ </nav>
+
+ <div id="subjectContent">
+   <section class="subject-pane" data-subject-pane="learn" id="genericLearnPane"></section>
+   <section class="subject-pane hidden" data-subject-pane="practice" id="genericPracticePane"></section>
+   <section class="subject-pane hidden" data-subject-pane="review" id="genericReviewPane"></section>
+   <section class="subject-pane hidden" data-subject-pane="play" id="genericPlayPane"></section>
+   <section class="subject-pane hidden" data-subject-pane="progress" id="genericProgressPane"></section>
+
+   <div class="engine-host hidden" id="latinScreen">
+     <section class="latin-view" id="latinHome">
+<div class="subject-stats card"><div><b data-latin-stat="attempts">0</b><span>Practice</span></div><div><b data-latin-stat="due">0</b><span>Due reviews</span></div><div><b>Focus</b><span>Mixed learning</span></div></div>
+<div class="quick-actions"><button class="primary" id="latinMixed">Balanced mixed 15</button><button class="secondary" id="latinQuick">Quick 8</button></div>
+<div class="learning-grid" id="latinPracticeCards"></div>
+</section>
+<section class="latin-view hidden" id="latinQuiz"><div class="quiz-card card" id="latinQuizBox"></div></section>
+<section class="latin-view hidden" id="latinVocab"><div class="page-head"><div><p class="eyebrow">VOCABULARY</p><h2>Vocabulary review</h2></div><span id="latinVocabCount"></span></div><input class="search" id="latinVocabSearch" placeholder="Search Latin or English…"/><div class="vocab-list" id="latinVocabList"></div></section>
+<section class="latin-view hidden" id="latinNotes"><div class="page-head"><div><p class="eyebrow">TEACHER NOTES</p><h2>Browse by content, not summer date</h2></div></div><input class="search" id="latinNotesSearch" placeholder="Search notes…"/><div class="notes-list" id="latinNotesList"></div></section>
+<section class="latin-view hidden" id="latinNoteDetail"><article class="note-detail card" id="latinNoteDetailBox"></article></section>
+<section class="latin-view hidden" id="latinProgress"><div class="page-head"><div><p class="eyebrow">FORMAL LATIN PROGRESS</p><h2>Mastery stays academic</h2></div><p>Scholar XP is separate.</p></div><div class="progress-stats" id="latinProgressStats"></div><div class="topic-progress" id="latinMasteryList"></div></section>
+<section class="latin-view hidden" id="gamesHub">
+<div class="page-head"><div><p class="eyebrow">LATIN GAMES</p><h2>Learn by doing</h2></div><p>Game Points do not change formal Mastery.</p></div>
+<div class="game-card-grid">
+<button class="game-card" onclick="GameV2.start('forma')"><img alt="" src="hero_04.webp"/><span><small>FORMS</small><strong>Forma Forge</strong><em>Repair forms, endings and patterns.</em><u data-game-summary="forma"></u></span></button>
+<button class="game-card" onclick="GameV2.start('mosaic')"><img alt="" src="hero_05.webp"/><span><small>SENTENCES</small><strong>Sentence Mosaic</strong><em>Build valid Latin sentences.</em><u data-game-summary="mosaic"></u></span></button>
+<button class="game-card" onclick="GameV2.start('verbum')"><img alt="" src="hero_06.webp"/><span><small>CONNECTIONS</small><strong>Verbum Match 2.0</strong><em>Meanings, forms and grammar links.</em><u data-game-summary="verbum"></u></span></button>
+<button class="game-card" onclick="GameV2.start('manuscript')"><img alt="" src="hero_07.webp"/><span><small>INVESTIGATE</small><strong>Manuscript Mystery</strong><em>Restore, inspect and interpret.</em><u data-game-summary="manuscript"></u></span></button>
+</div>
+</section>
+<section class="latin-view hidden" id="gamePlay">
+<div class="game-shell-v2">
+<header class="game-top-v2"><div><button class="secondaryButton" onclick="GameV2.openHub()" type="button">← Games</button><p class="eyebrow">LATIN GAME</p><h1 id="gameTitle">Game</h1><p id="gameSubtitle"></p></div>
+<div class="game-hud-v2"><div><span id="gameLevel">Level 1 / 6</span><div class="game-level-dots" id="gameLevelDots"></div></div><div><small>Game Points</small><strong id="gamePoints">0</strong></div><div><small>Streak</small><strong id="gameStreak">0</strong></div><div><small>Focus Shields</small><strong id="gameShields">◆ ◆ ◆</strong></div><button id="gameSoundButton" type="button">♪ Soft sound</button></div></header>
+<div class="game-progress-v2"><i id="gameProgressFill"></i></div><p class="game-mood-v2" id="gameMood">Choose a level.</p><div id="gameArea"></div>
+</div>
+</section>
+   </div>
+   <div class="engine-host hidden" id="frenchScreen">
+     <small id="frenchLoadStatus" class="quiet-status">Preparing French learning tools…</small>
+     <section class="french-view" id="frenchHome">
+<div class="subject-stats card" id="frenchHomeStats"><div><b>Practice</b><span>Focused session</span></div><div><b>Review</b><span>Weak areas</span></div><div><b>—</b><span>Due review</span></div></div>
+<div class="practice-setup card"><div><label>Topic<select id="frenchTopic"><option value="all">Loading…</option></select></label><label>Questions<select id="frenchCount"><option>8</option><option selected="">10</option><option>15</option><option>20</option></select></label></div><div><button class="primary" id="frenchStartPractice">Start practice</button><button class="secondary" id="frenchDue">Due review</button></div></div>
+<div class="learning-grid" id="frenchTopicCards"></div>
+</section>
+<section class="french-view hidden" id="frenchQuiz"><div class="quiz-card card" id="frenchQuizBox"></div></section>
+<section class="french-view hidden" id="frenchVocab"><div class="page-head"><div><p class="eyebrow">VOCABULAIRE</p><h2>Vocabulary review</h2></div><span id="frenchVocabCount"></span></div><div class="filter-line"><input class="search" id="frenchVocabSearch" placeholder="Search French or English…"/><select id="frenchVocabTopic"><option value="all">All topics</option></select></div><div class="vocab-list" id="frenchVocabList"></div></section>
+<section class="french-view hidden" id="frenchWriting"><div class="page-head"><div><p class="eyebrow">ÉCRITURE</p><h2>Writing challenges</h2></div><p>Model answers are examples, not the only valid response.</p></div><div class="writing-grid"><aside id="frenchWritingTasks"></aside><article class="card" id="frenchWritingEditor"></article></div></section>
+<section class="french-view hidden" id="frenchSpelling"><article class="spelling-hero card"><img alt="" src="hero_08.webp"/><div><p class="eyebrow">ATELIER D’ORTHOGRAPHE</p><h2>Spell what you really know</h2><p>Exact learned French spelling. Accents count. Wrong words return later, not immediately.</p><p>Due spelling words: <b id="frenchSpellDue">0</b></p><button class="primary" id="startFrenchSpelling">Start 8-word session</button></div></article><div class="quiz-card card" id="frenchSpellingBox"></div></section>
+<section class="french-view hidden" id="frenchProgress"><div class="page-head"><div><p class="eyebrow">FRENCH PROGRESS</p><h2>Practice evidence</h2></div></div><div class="progress-stats" id="frenchProgressStats"></div><div class="topic-progress" id="frenchTopicProgress"></div></section>
+   </div>
+ </div>
+</section>
+
+<section class="route-screen hidden" data-route-screen="garden" id="gardenScreen">
+ <article class="garden-world">
+   <img id="gardenImage" src="garden_01.webp" alt="Scholar's Garden" fetchpriority="low">
+   <div class="garden-overlay">
+     <p class="eyebrow">YOUR GROWTH WORLD</p>
+     <h1>Scholar’s Garden</h1>
+     <div class="garden-meta">
+       <span><small>Garden stage</small><strong id="gardenStageText">Stage 1</strong></span>
+       <span><small>Scholar level</small><strong>Lv <span data-growth="level">1</span></strong></span>
+     </div>
+     <div class="garden-progress"><div><span>Next stage</span><b id="gardenNextLabel">400 XP</b></div><div class="progress-track"><i id="gardenStageBar"></i></div></div>
+     <div class="garden-next"><small>NEXT VISUAL UNLOCK</small><strong id="gardenUnlockName">Ink Pot</strong></div>
+     <button class="secondary light" id="gardenExplore">Explore growth</button>
+   </div>
+ </article>
+ <section class="garden-explore hidden" id="gardenExplorePanel">
+   <div class="section-title"><div><p class="eyebrow">RECENT GROWTH</p><h2>What your study has grown</h2></div></div>
+   <div class="reward-grid" id="gardenRewards"></div>
+ </section>
+</section>
+
+<section class="route-screen hidden" data-route-screen="scholar" id="scholarScreen">
+ <header class="page-title"><p class="eyebrow">YOUR SCHOLAR</p><h1>Scholar</h1><p>Your style, collection and achievements in one place.</p></header>
+ <nav class="scholar-tabs" aria-label="Scholar sections">
+   <button data-scholar-tab="wardrobe">Wardrobe</button>
+   <button data-scholar-tab="collection">Collection</button>
+   <button data-scholar-tab="achievements">Achievements</button>
+ </nav>
+
+ <section class="scholar-pane" data-scholar-pane="wardrobe">
+   <div class="scholar-layout">
+     <article class="avatar-stage card-soft" aria-label="Avatar preview area">
+       <div class="avatar-canvas" id="avatarCanvas" data-avatar-canvas="560x760">
+         <div class="avatar-layer layer-backhair" data-avatar-layer="back-hair"></div>
+         <div class="avatar-layer layer-body" data-avatar-layer="base-body"><span>Scholar</span></div>
+         <div class="avatar-layer layer-outfit" data-avatar-layer="outfit"></div>
+         <div class="avatar-layer layer-fronthair" data-avatar-layer="front-hair"></div>
+         <div class="avatar-layer layer-expression" data-avatar-layer="expression"></div>
+         <div class="avatar-layer layer-accessory" data-avatar-layer="accessory"></div>
+         <div class="avatar-layer layer-hand" data-avatar-layer="hand-item"></div>
+       </div>
+       <p class="avatar-note">Starter silhouette. More Scholar styles will be added later.</p>
+     </article>
+     <aside class="wardrobe-panel">
+       <p class="eyebrow">WARDROBE</p><h2>Build your look</h2>
+       <div id="wardrobeControls"></div>
+     </aside>
    </div>
  </section>
 
- <section class="recent-rewards">
-   <div class="section-head"><div><p class="eyebrow">RECENT GROWTH</p><h2>What you earned</h2></div><button class="secondary" data-route="collection">Open Collection</button></div>
-   <div id="recentRewards" class="recent-reward-grid"></div>
- </section>
-</section>
-
-<section class="screen hidden" data-screen="latin" id="latinScreen">
- <header class="subject-hero"><img src="hero_02.webp" alt="" loading="lazy"><div><p class="eyebrow">LATINA</p><h1>Latin</h1><p>Same 1,056 source-locked questions. New category route — no summer-date navigation.</p></div></header>
- <nav class="subject-tabs">
-  <button data-latin-view="latinHome" class="active">Practice</button><button data-latin-view="gamesHub">Games</button><button data-latin-view="latinVocab">Vocabulary</button><button data-latin-view="latinNotes">Notes</button><button data-latin-view="latinProgress">Progress</button>
- </nav>
- <section class="latin-view" id="latinHome">
-  <div class="subject-stats card"><div><b data-latin-stat="attempts">0</b><span>Answers</span></div><div><b data-latin-stat="due">0</b><span>Due reviews</span></div><div><b>1,056</b><span>Teacher-bank questions</span></div></div>
-  <div class="quick-actions"><button class="primary" id="latinMixed">Balanced mixed 15</button><button class="secondary" id="latinQuick">Quick 8</button></div>
-  <div id="latinPracticeCards" class="learning-grid"></div>
- </section>
- <section class="latin-view hidden" id="latinQuiz"><div id="latinQuizBox" class="quiz-card card"></div></section>
- <section class="latin-view hidden" id="latinVocab"><div class="page-head"><div><p class="eyebrow">VOCABULARY</p><h2>Source-covered word bank</h2></div><span id="latinVocabCount"></span></div><input class="search" id="latinVocabSearch" placeholder="Search Latin or English…"><div id="latinVocabList" class="vocab-list"></div></section>
- <section class="latin-view hidden" id="latinNotes"><div class="page-head"><div><p class="eyebrow">TEACHER NOTES</p><h2>Browse by content, not summer date</h2></div></div><input class="search" id="latinNotesSearch" placeholder="Search notes…"><div id="latinNotesList" class="notes-list"></div></section>
- <section class="latin-view hidden" id="latinNoteDetail"><article id="latinNoteDetailBox" class="note-detail card"></article></section>
- <section class="latin-view hidden" id="latinProgress"><div class="page-head"><div><p class="eyebrow">FORMAL LATIN PROGRESS</p><h2>Mastery stays academic</h2></div><p>Scholar XP is separate.</p></div><div id="latinProgressStats" class="progress-stats"></div><div id="latinMasteryList" class="topic-progress"></div></section>
-
- <section class="latin-view hidden" id="gamesHub">
-  <div class="page-head"><div><p class="eyebrow">LATIN GAMES</p><h2>Learn by doing</h2></div><p>Game Points do not change formal Mastery.</p></div>
-  <div class="game-card-grid">
-   <button class="game-card" onclick="GameV2.start('forma')"><img src="hero_04.webp" alt=""><span><small>FORMS</small><strong>Forma Forge</strong><em>Repair forms, endings and patterns.</em><u data-game-summary="forma"></u></span></button>
-   <button class="game-card" onclick="GameV2.start('mosaic')"><img src="hero_05.webp" alt=""><span><small>SENTENCES</small><strong>Sentence Mosaic</strong><em>Build valid Latin sentences.</em><u data-game-summary="mosaic"></u></span></button>
-   <button class="game-card" onclick="GameV2.start('verbum')"><img src="hero_06.webp" alt=""><span><small>CONNECTIONS</small><strong>Verbum Match 2.0</strong><em>Meanings, forms and grammar links.</em><u data-game-summary="verbum"></u></span></button>
-   <button class="game-card" onclick="GameV2.start('manuscript')"><img src="hero_07.webp" alt=""><span><small>INVESTIGATE</small><strong>Manuscript Mystery</strong><em>Restore, inspect and interpret.</em><u data-game-summary="manuscript"></u></span></button>
-  </div>
+ <section class="scholar-pane hidden" data-scholar-pane="collection">
+   <div class="filter-row" id="collectionFilters">
+     <button class="active" data-collection-filter="All">All</button>
+     <button data-collection-filter="Scholar">Scholar</button>
+     <button data-collection-filter="Latin">Latin</button>
+     <button data-collection-filter="French">French</button>
+     <button data-collection-filter="Prestige">Prestige</button>
+   </div>
+   <div class="collection-grid" id="collectionGrid"></div>
  </section>
 
- <section class="latin-view hidden" id="gamePlay">
-  <div class="game-shell-v2">
-   <header class="game-top-v2"><div><button class="secondaryButton" type="button" onclick="GameV2.openHub()">← Games</button><p class="eyebrow">LATIN GAME</p><h1 id="gameTitle">Game</h1><p id="gameSubtitle"></p></div>
-   <div class="game-hud-v2"><div><span id="gameLevel">Level 1 / 6</span><div id="gameLevelDots" class="game-level-dots"></div></div><div><small>Game Points</small><strong id="gamePoints">0</strong></div><div><small>Streak</small><strong id="gameStreak">0</strong></div><div><small>Focus Shields</small><strong id="gameShields">◆ ◆ ◆</strong></div><button id="gameSoundButton" type="button">♪ Soft sound</button></div></header>
-   <div class="game-progress-v2"><i id="gameProgressFill"></i></div><p id="gameMood" class="game-mood-v2">Choose a level.</p><div id="gameArea"></div>
-  </div>
+ <section class="scholar-pane hidden" data-scholar-pane="achievements">
+   <div class="medal-grid" id="medalGrid"></div>
  </section>
-</section>
-
-<section class="screen hidden" data-screen="french" id="frenchScreen">
- <header class="subject-hero french-hero"><img src="hero_03.webp" alt="" loading="lazy"><div><p class="eyebrow">FRANÇAIS</p><h1>French</h1><p>Audited Content Core V2 — 1,502 questions, 617 learned vocab, 19 writing tasks.</p><small id="frenchLoadStatus">Connecting to the existing French content core…</small></div></header>
- <nav class="subject-tabs">
-  <button data-french-view="frenchHome" class="active">Practice</button><button data-french-view="frenchVocab">Vocabulary</button><button data-french-view="frenchWriting">Writing</button><button data-french-view="frenchSpelling">Spelling Game</button><button data-french-view="frenchProgress">Progress</button>
- </nav>
- <section class="french-view" id="frenchHome">
-  <div id="frenchHomeStats" class="subject-stats card"><div><b>617</b><span>Learned vocab</span></div><div><b>1,220</b><span>Default-safe questions</span></div><div><b>—</b><span>Due review</span></div></div>
-  <div class="practice-setup card"><div><label>Topic<select id="frenchTopic"><option value="all">Loading…</option></select></label><label>Questions<select id="frenchCount"><option>8</option><option selected>10</option><option>15</option><option>20</option></select></label></div><div><button class="primary" id="frenchStartPractice">Start practice</button><button class="secondary" id="frenchDue">Due review</button></div></div>
-  <div id="frenchTopicCards" class="learning-grid"></div>
- </section>
- <section class="french-view hidden" id="frenchQuiz"><div id="frenchQuizBox" class="quiz-card card"></div></section>
- <section class="french-view hidden" id="frenchVocab"><div class="page-head"><div><p class="eyebrow">VOCABULAIRE</p><h2>617 learned words and expressions</h2></div><span id="frenchVocabCount"></span></div><div class="filter-line"><input id="frenchVocabSearch" class="search" placeholder="Search French or English…"><select id="frenchVocabTopic"><option value="all">All topics</option></select></div><div id="frenchVocabList" class="vocab-list"></div></section>
- <section class="french-view hidden" id="frenchWriting"><div class="page-head"><div><p class="eyebrow">ÉCRITURE</p><h2>Writing challenges</h2></div><p>Model answers are examples, not the only valid response.</p></div><div class="writing-grid"><aside id="frenchWritingTasks"></aside><article id="frenchWritingEditor" class="card"></article></div></section>
- <section class="french-view hidden" id="frenchSpelling"><article class="spelling-hero card"><img src="hero_08.webp" alt=""><div><p class="eyebrow">ATELIER D’ORTHOGRAPHE</p><h2>Spell what you really know</h2><p>Exact learned French spelling. Accents count. Wrong words return later, not immediately.</p><p>Due spelling words: <b id="frenchSpellDue">0</b></p><button class="primary" id="startFrenchSpelling">Start 8-word session</button></div></article><div id="frenchSpellingBox" class="quiz-card card"></div></section>
- <section class="french-view hidden" id="frenchProgress"><div class="page-head"><div><p class="eyebrow">FRENCH PROGRESS</p><h2>Practice evidence</h2></div></div><div id="frenchProgressStats" class="progress-stats"></div><div id="frenchTopicProgress" class="topic-progress"></div></section>
-</section>
-
-<section class="screen hidden" data-screen="garden" id="gardenScreen">
- <div class="page-head"><div><p class="eyebrow">YOUR GROWTH JOURNEY</p><h1>Scholar’s Garden</h1></div><p>Earned through learning — never random loot.</p></div>
- <article class="garden-stage card"><img id="gardenImage" src="garden_01.webp" alt="Scholar's Garden"><div><small>GARDEN LEVEL</small><h2 id="gardenStageText">Stage 1</h2><p>New artwork can replace or extend this scene later without changing the growth engine.</p></div></article>
- <div class="garden-slots"><article><b>Scholar</b><span>Shared study items</span></article><article><b>Latin</b><span>Classical items</span></article><article><b>French</b><span>French study items</span></article><article><b>Prestige</b><span>Cross-subject rewards</span></article></div>
-</section>
-
-<section class="screen hidden" data-screen="collection" id="collectionScreen">
- <div class="page-head"><div><p class="eyebrow">COLLECTION BOOK</p><h1>Things you earned</h1></div><p>Artwork slots are ready; new images can simply replace the placeholders.</p></div>
- <div class="filter-row"><button class="active" data-collection-filter="All">All</button><button data-collection-filter="Scholar">Scholar</button><button data-collection-filter="Latin">Latin</button><button data-collection-filter="French">French</button><button data-collection-filter="Prestige">Prestige</button></div>
- <div id="collectionGrid" class="collection-grid"></div>
- <h2 class="subheading">Medals</h2><div id="medalGrid" class="medal-grid"></div>
-</section>
-
-<section class="screen hidden" data-screen="profile" id="profileScreen">
- <div class="page-head"><div><p class="eyebrow">MY CLASSICAL STUDY</p><h1>Your scholar style</h1></div><p>The wardrobe engine is ready for the next image batch.</p></div>
- <div class="profile-grid"><article class="room card"><img src="room_01.webp" alt="Classical study room"><div class="avatar-placeholder"><span>Scholar</span><small>Starter look</small></div></article>
- <aside class="wardrobe card"><p class="eyebrow">WARDROBE</p><h2>Style slots</h2><h3>Hair</h3><div class="wardrobe-slots"><i class="open"></i><i></i><i></i><i></i><i></i></div><h3>Outfits</h3><div class="wardrobe-slots"><i class="open"></i><i></i><i></i><i></i><i></i></div><h3>Accessories</h3><div class="wardrobe-slots"><i></i><i></i><i></i><i></i><i></i></div><p>When the new avatar PNG/WebP files arrive, these slots become actual selectable looks; no state redesign is required.</p></aside></div>
 </section>
 </main>
-<div id="toast" role="status" aria-live="polite"></div>
-<footer><span>Lux et Labor · The Scholar’s Garden</span><span>V0.3.0 Daily Quest</span></footer>
+</div>
 
-<script src="latin-question-bank.js?v=0.3.0"></script>
-<script src="growth.js?v=0.3.0"></script>
-<script src="latin-module.js?v=0.3.0"></script>
-<script src="french-module.js?v=0.3.0"></script>
-<script src="latin-games.js?v=0.3.0"></script>
-<script src="app.js?v=0.3.0"></script>
-</body></html>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="./latin-question-bank.js?v=0.3.0-reset"></script>
+<script src="./growth.js?v=0.3.0-reset"></script>
+<script src="./latin-module.js?v=0.3.0-reset"></script>
+<script src="./french-module.js?v=0.3.0-reset"></script>
+<script src="./latin-games.js?v=0.3.0-reset"></script>
+<script src="./science-notes.js?v=0.3.0-reset"></script>
+<script src="./daily-plan.js?v=0.3.0-reset"></script>
+<script src="./subject-hub.js?v=0.3.0-reset"></script>
+<script src="./scholar.js?v=0.3.0-reset"></script>
+<script src="./app.js?v=0.3.0-reset"></script>
+<footer class="build-footer">Lux et Labor · Scholar’s Garden · V0.3.0 UX Reset</footer>
+</body>
+</html>

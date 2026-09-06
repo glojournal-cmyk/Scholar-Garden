@@ -1,11 +1,11 @@
 {
-  "name": "Lux et Labor \u2014 The Scholar\u2019s Garden",
-  "short_name": "Lux et Labor",
+  "name": "Lux et Labor — The Scholar's Garden",
+  "short_name": "Scholar's Garden",
   "start_url": "./#home",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#fbf7ef",
-  "theme_color": "#fbf7ef",
-  "description": "Latin and French daily revision with a Scholar's Garden daily quest and growth journey.",
+  "background_color": "#f8f4ea",
+  "theme_color": "#f8f4ea",
+  "description": "An iPad-first daily study and cultivation PWA for Latin, French and science learning.",
   "icons": []
 }

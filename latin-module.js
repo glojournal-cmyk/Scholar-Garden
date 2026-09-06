@@ -168,8 +168,8 @@ function renderHome(){
  const due=dueQuestions().length,weak=weakQuestions().length,root=document.getElementById('latinPracticeCards');
  const cats=['Vocabulary','Grammar','Translation','Roman World'];
  root.innerHTML=cats.map((c,i)=>{const cy=cycleFor(c),p=pool(c).length,mastered=cy.completedPercent>=TARGET;return `<button class="learning-card" data-start-latin="${c}">
- <span>${String(i+1).padStart(2,'0')}</span><h3>${c}</h3><p>${p} source questions</p><small>${mastered?`Mastered ${cy.completedPercent}%`:cy.completedPercent!=null?`Last full cycle ${cy.completedPercent}%`:`Cycle ${cy.round}`}</small></button>`}).join('')+
- `<button class="learning-card due-card" data-start-due><span>↺</span><h3>Due Review</h3><p>${due} due now · ${weak} saved weak</p><small>2-day → 7-day schedule</small></button>`;
+ <span>${String(i+1).padStart(2,'0')}</span><h3>${c}</h3><p>Focused practice</p><small>${mastered?`Mastered ${cy.completedPercent}%`:cy.completedPercent!=null?`Last full cycle ${cy.completedPercent}%`:`Cycle ${cy.round}`}</small></button>`}).join('')+
+ `<button class="learning-card due-card" data-start-due><span>↺</span><h3>Due Review</h3><p>${due} due now · ${weak} to revisit</p><small>2-day → 7-day schedule</small></button>`;
  root.querySelectorAll('[data-start-latin]').forEach(b=>b.onclick=()=>startPractice(b.dataset.startLatin,10,false));
  root.querySelector('[data-start-due]').onclick=()=>startPractice('Mixed',Math.min(20,Math.max(1,due)),true);
  document.getElementById('latinMixed').onclick=()=>startPractice('Mixed',15,false);
@@ -242,9 +242,15 @@ function init(){
  document.getElementById('latinNotesSearch').addEventListener('input',renderNotes);
  renderHome();renderVocab();renderProgress();renderNotes();
 }
+function startWeakPractice(count=7){
+ const qs=shuffle(weakQuestions()).slice(0,Math.max(1,count));
+ if(!qs.length){window.LuxApp.toast('No saved Latin weak items right now.');return}
+ session={questions:qs,index:0,score:0,cat:'Mixed',isReview:false,answers:[],weakPractice:true};
+ latinView('latinQuiz');renderQuestion();
+}
 function todayStats(){
  const k=today(),rows=(state.attempts||[]).filter(a=>String(a.date||'').slice(0,10)===k);
- return {answers:rows.length,correct:rows.filter(a=>a.ok).length,translation:rows.filter(a=>a.category==='Translation').length,due:dueQuestions().length};
+ return {answers:rows.length,correct:rows.filter(a=>a.ok).length,translation:rows.filter(a=>a.category==='Translation').length,due:dueQuestions().length,weak:weakQuestions().length};
 }
-window.LatinModule={init,show:latinView,startPractice,renderHome,renderProgress,dueCount:()=>dueQuestions().length,state:()=>state,todayStats};
+window.LatinModule={init,show:latinView,startPractice,renderHome,renderProgress,dueCount:()=>dueQuestions().length,weakCount:()=>weakQuestions().length,state:()=>state,todayStats,startWeakPractice};
 })();

@@ -31,15 +31,15 @@ function loadMarker(){
 async function ensureData(){
  if(dataReady)return true;if(loadPromise)return loadPromise;
  loadPromise=(async()=>{
-  const status=document.getElementById('frenchLoadStatus');status.textContent='Loading the audited French content core…';
+  const status=document.getElementById('frenchLoadStatus');if(status)status.textContent='Preparing French learning tools…';
   try{
    await loadMarker();
    const [q,v,w,n]=await Promise.all([loadJson('question-bank.json'),loadJson('vocab-bank.json'),loadJson('writing-bank.json'),loadJson('notes-by-section.json')]);
    DATA.questions=q;DATA.vocab=v;DATA.writing=w;DATA.notes=n;vocabRows=[...v];dataReady=true;
-   status.textContent=`Loaded ${q.length.toLocaleString()} questions · ${v.length.toLocaleString()} vocab · ${w.length} writing tasks`;
+   if(status)status.textContent='French learning tools ready.';
    hydrate();return true;
   }catch(e){
-   console.error(e);status.innerHTML='French content could not be loaded. Keep the existing <b>French-Revision</b> repo online, or later copy its JSON banks into this repo root.';
+   console.error(e);if(status)status.textContent='French learning tools are temporarily unavailable.';
    return false;
   }
  })();
@@ -62,9 +62,9 @@ function frenchView(id){
 function renderHome(){
  if(!dataReady)return;
  const e=enabled();
- document.getElementById('frenchHomeStats').innerHTML=`<div><b>${DATA.vocab.length}</b><span>Learned vocab</span></div><div><b>${e.length}</b><span>Default-safe questions</span></div><div><b>${dueCount()}</b><span>Due review</span></div>`;
+ document.getElementById('frenchHomeStats').innerHTML=`<div><b>Practice</b><span>Focused session</span></div><div><b>${weakCount()}</b><span>To revisit</span></div><div><b>${dueCount()}</b><span>Due review</span></div>`;
  const groups=[...new Map(e.map(q=>[q.section,q.topic])).entries()].slice(0,12);
- document.getElementById('frenchTopicCards').innerHTML=groups.map(([s,n])=>`<button class="learning-card" data-fr-sec="${s}"><span>${String(s).padStart(2,'0')}</span><h3>${esc(n)}</h3><p>${e.filter(q=>String(q.section)===String(s)).length} safe questions</p><small>Open practice</small></button>`).join('');
+ document.getElementById('frenchTopicCards').innerHTML=groups.map(([s,n])=>`<button class="learning-card" data-fr-sec="${s}"><span>${String(s).padStart(2,'0')}</span><h3>${esc(n)}</h3><p>Focused topic practice</p><small>Open practice</small></button>`).join('');
  document.querySelectorAll('[data-fr-sec]').forEach(b=>b.onclick=()=>startQuiz(b.dataset.frSec,10,false));
 }
 function smartMark(q,input,selected){
@@ -182,8 +182,8 @@ function firstDiff(a,b){let i=0;while(i<a.length&&i<b.length&&a[i]===b[i])i++;re
 function checkSpell(){
  const v=spellSession.items[spellSession.index],input=document.getElementById('spellAnswer').value.trim(),target=strictSpell(v.french),got=strictSpell(input),fb=document.getElementById('spellFeedback');if(!input)return window.LuxApp.toast('Type the word first.');
  const ok=got===target,rec=progress.spelling[v.id]||{tries:0,independentCorrect:0};rec.tries++;spellSession.attempts++;
- if(ok){spellSession.score++;rec.status='correct';rec.independentCorrect=(rec.independentCorrect||0)+1;rec.dueAt=null;progress.spelling[v.id]=rec;addActivity({kind:'spelling',id:v.id,correct:true,independent:true});save();window.LuxGrowth?.award({subject:'french',type:'spelling_first_independent',itemId:v.id});fb.innerHTML=`<div class="feedback good"><h3>Correct spelling.</h3><div class="model-answer">${esc(v.french)}</div><button class="primary" id="spellNext">Next word</button></div>`;document.getElementById('spellNext').onclick=nextSpell;return}
- const i=firstDiff(got,target);rec.status='wrong';rec.dueAt=Date.now()+48*60*60*1000;progress.spelling[v.id]=rec;addActivity({kind:'spelling',id:v.id,correct:false,independent:true});save();
+ if(ok){spellSession.score++;rec.status='correct';rec.independentCorrect=(rec.independentCorrect||0)+1;rec.dueAt=null;progress.spelling[v.id]=rec;save();window.LuxGrowth?.award({subject:'french',type:'spelling_first_independent',itemId:v.id});fb.innerHTML=`<div class="feedback good"><h3>Correct spelling.</h3><div class="model-answer">${esc(v.french)}</div><button class="primary" id="spellNext">Next word</button></div>`;document.getElementById('spellNext').onclick=nextSpell;return}
+ const i=firstDiff(got,target);rec.status='wrong';rec.dueAt=Date.now()+48*60*60*1000;progress.spelling[v.id]=rec;save();
  if(rec.tries%2===1){
    fb.innerHTML=`<div class="feedback bad"><h3>Repair once.</h3><p>First difference is around character ${i+1}. Check accents and exact letters.</p><p><b>Your spelling:</b> ${esc(input)}</p></div>`;
  }else{
@@ -199,9 +199,18 @@ function init(){
  document.getElementById('startFrenchSpelling').onclick=async()=>{if(await ensureData())startSpelling()};
  ensureData();
 }
+function startWeakPractice(count=7){
+ if(!dataReady)return;
+ const ids=new Set(Object.entries(progress.attempts||{}).filter(([id,a])=>a?.status==='wrong').map(([id])=>id));
+ const qs=shuffle(enabled().filter(q=>ids.has(q.id))).slice(0,Math.max(1,count));
+ if(!qs.length){window.LuxApp.toast('No saved French weak items right now.');return}
+ session={questions:qs,index:0,score:0,manual:0,sec:'all',reviewOnly:false,weakPractice:true};
+ progress.sessions++;save();frenchView('frenchQuiz');renderQuestion();
+}
 function todayStats(){
  const k=today(),rows=(progress.history||[]).filter(x=>x.day===k);
  return {answers:rows.filter(x=>x.kind==='question').length,correct:rows.filter(x=>x.kind==='question'&&x.correct).length,writing:rows.filter(x=>x.kind==='writing').length,spelling:rows.filter(x=>x.kind==='spelling').length,due:dataReady?dueCount():0,loaded:dataReady};
 }
-window.FrenchModule={init,ensureData,show:frenchView,startQuiz,dueCount:()=>dataReady?dueCount():0,renderProgress,todayStats};
+function weakCount(){return Object.values(progress.attempts||{}).filter(x=>x.status==='wrong').length}
+window.FrenchModule={init,ensureData,show:frenchView,startQuiz,startSpelling,dueCount:()=>dataReady?dueCount():0,weakCount,todayStats,startWeakPractice,renderProgress};
 })();

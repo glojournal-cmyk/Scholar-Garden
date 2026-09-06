@@ -1,15 +1,18 @@
-LUX ET LABOR — THE SCHOLAR'S GARDEN V0.3.0 DAILY QUEST
+SCHOLAR'S GARDEN — V0.3.0 UX RESET
 
-Upload EVERY file in this ZIP directly to the ROOT of the Scholar-Garden GitHub repository.
-Keep the package flat exactly as supplied.
+Upload every file in this ZIP directly to the ROOT of the Scholar-Garden GitHub repository.
+This release intentionally remains flat-root for safe GitHub web upload.
 
-After deploy:
-1. Confirm footer says V0.3.0 Daily Quest.
-2. Home must show today's date, Daily Quest Board and 7-Day Study Trail.
-3. Leave the app visibly active for about a minute; Active Study Minutes should begin increasing.
-4. Answer Latin questions, return Home and confirm Latin progress updates.
-5. Use French Spelling, return Home and confirm the spelling task updates.
-6. Complete all six minimum tasks to earn today's Daily Seal (+35 XP once).
-7. Check Garden and Recent Growth.
+After GitHub Pages redeploy:
+1. Confirm footer says: V0.3.0 UX Reset
+2. Confirm global navigation contains exactly Home / Study / Garden / Scholar.
+3. Home: confirm the next Today task is visible immediately and starts with one tap.
+4. Study: open Latin and French Foundation Review; test Practice, Review, Play and Progress.
+5. Study: open Biology, Chemistry and Physics Current Year 9; confirm Learn works and Practice says unavailable.
+6. Garden: confirm stage/XP/next unlock load from existing Scholar state.
+7. Scholar: confirm Wardrobe / Collection / Achievements, then refresh and confirm state remains.
+8. Test old hashes #latin, #french, #collection and #profile.
+9. On iPad Safari, confirm bottom navigation, no horizontal overflow and 44px+ touch targets.
+10. After first online load, test refresh/offline shell.
 
-Do not create folders manually.
+Important: Year 8 Biology Foundation Practice remains intentionally unavailable until Master_Content_Pack_V1 is supplied.

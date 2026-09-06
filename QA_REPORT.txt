@@ -1,47 +1,70 @@
-LUX ET LABOR — THE SCHOLAR'S GARDEN
-V0.3.0 DAILY QUEST QA
+Lux et Labor — The Scholar's Garden
+V0.3.0 UX Reset — deterministic QA
 
-Latin bank: {'q': 1056, 'b': 24, 'n': 24}
-Missing HTML refs: []
-Missing SW refs: []
+Result: 54/54 checks PASS
 
-- JS syntax growth.js: PASS
-- JS syntax latin-module.js: PASS
-- JS syntax french-module.js: PASS
-- JS syntax latin-games.js: PASS
-- JS syntax app.js: PASS
-- JS syntax sw.js: PASS
-- JS syntax latin-question-bank.js: PASS
-- No duplicate IDs: PASS
-- Today date UI: PASS
-- Daily Quest board: PASS
-- 7-day calendar: PASS
-- Daily Seal engine: PASS
-- Active minutes tracker: PASS
-- Latin live today stats: PASS
-- French live today stats: PASS
-- French spelling tracked: PASS
-- Garden feedback on Home: PASS
-- Recent rewards on Home: PASS
-- Quick launch below quest: PASS
-- Bio/Chem locked: PASS
-- V0.3 visible: PASS
-- Flat-root preserved: PASS
-- All local HTML refs exist: PASS
-- Latin 1056/24/24: PASS
-- SW core refs exist: PASS
-- V0.3 cache: PASS
+Automated/static checks:
+- PASS — JS syntax — growth.js
+- PASS — JS syntax — latin-module.js
+- PASS — JS syntax — french-module.js
+- PASS — JS syntax — latin-games.js
+- PASS — JS syntax — science-notes.js
+- PASS — JS syntax — daily-plan.js
+- PASS — JS syntax — subject-hub.js
+- PASS — JS syntax — scholar.js
+- PASS — JS syntax — app.js
+- PASS — JS syntax — sw.js
+- PASS — JS syntax — latin-question-bank.js
+- PASS — No duplicate HTML IDs
+- PASS — Exactly four global navigation items
+- PASS — Collection is inside Scholar, not global navigation
+- PASS — Home seven-day strip exists
+- PASS — Home Today list exists
+- PASS — Home planner capped at 3
+- PASS — Home daily minimum exists
+- PASS — Home progress + reward + continue exist
+- PASS — Study has Current Year 9 + Foundation Review
+- PASS — Unified Subject Hub has five tabs
+- PASS — Scholar has Wardrobe / Collection / Achievements
+- PASS — Biology B1–B16 Learn topics present
+- PASS — Chemistry C1–C17 Learn topics present
+- PASS — Physics P1–P18 Learn topics present
+- PASS — Year 9 Science practice stays unavailable
+- PASS — Extension notes have separate visual treatment
+- PASS — Latin persisted key preserved
+- PASS — French persisted key preserved
+- PASS — Shared Scholar persisted key preserved
+- PASS — UX reset uses additive separate key
+- PASS — Latin 2-day → 7-day review logic retained
+- PASS — French accent-sensitive spelling retained
+- PASS — French specialised marker retained
+- PASS — Latin game engine byte-identical to V0.2
+- PASS — Latin game CSS byte-identical to V0.2
+- PASS — Latin question bank byte-identical to V0.2
+- PASS — Growth engine byte-identical to V0.2
+- PASS — Latin academic bank count unchanged (1056 / 24 / 24)
+- PASS — Existing image assets unchanged; no character art produced
+- PASS — Learner HTML removes raw bank/developer wording
+- PASS — Legacy redirects retained
+- PASS — Daily planner priority: due → weak → current learning
+- PASS — Daily planner uses 7-question quick + 15-question standard
+- PASS — Shared daily completion XP uses existing growth event
+- PASS — Avatar layer order locked
+- PASS — Avatar viewport locked at 560×760 logical canvas
+- PASS — All local HTML references exist
+- PASS — Service worker cache version bumped
+- PASS — New UX modules in offline core
+- PASS — Heavy artwork excluded from core precache
+- PASS — Flat-root deployment retained
+- PASS — Planner runtime test prioritises both due queues
+- PASS — Existing Scholar state survives load unchanged
 
-HOME CHANGES
-- Live date is now visible on the first screen.
-- Six minimum daily tasks show live progress and one-click entry points.
-- Active study time is tracked while the app is visible/in use.
-- A 7-day study trail marks started days and earned Daily Seals.
-- Completing all six minimum tasks awards one Daily Seal + 35 shared XP per day.
-- Garden state and recent rewards are visible on Home.
-- Subject modules are quick launch tools below the daily quest loop.
+Source-safe limitation:
+- Master_Content_Pack_V1 was not available as an accessible structured file during this implementation.
+- Therefore Year 8 Biology Foundation Practice/Review is deliberately unavailable rather than reconstructed from booklet PDFs.
+- No Year 9 Science practice bank was generated.
 
-LIMITATIONS
-- Final chibi/avatar/medal/collectible artwork is still waiting for the next image batches.
-- Existing 13 images remain the visual base and can be replaced later without changing the daily quest engine.
-- Physical iPad Safari interaction is not claimed until post-deploy testing.
+Runtime-testing limitation:
+- Chromium headless was attempted against a local server but terminated in this environment before page navigation.
+- This report therefore does NOT claim a fresh physical iPad Safari or full browser end-to-end pass.
+- Post-deploy iPad interaction/offline checks remain required.
