@@ -97,6 +97,11 @@ function migrateLegacy(subject){
  s.migratedLegacy=true;saveState(subject,s);
 }
 
+function renderPackError(subject,pane,kind='Practice'){
+ if(!pane)return;
+ pane.innerHTML=`<div class="load-error"><p class="eyebrow">${SUBJECTS[subject]?.label?.toUpperCase()||'FOUNDATION'}</p><h2>${kind} data could not be loaded.</h2><p>Please retry. Your existing learner state is safe.</p><button class="primary" data-mcp-retry="${subject}" data-mcp-retry-kind="${kind.toLowerCase()}">Retry</button></div>`;
+}
+
 async function ensure(subject){
  if(!(await loadCore()))return false;
  migrateLegacy(subject);return true;
@@ -159,7 +164,7 @@ async function questionsForConcepts(subject,ids){
  for(const [topicId,set] of byTopic){
   const data=await loadTopic(subject,topicId);
   set.forEach(cid=>{
-   const candidates=(data.questions||[]).filter(q=>ordinaryEligible(subject,q)&&q.conceptId===cid);
+   const candidates=(data.questions||[]).filter(q=>enabled(q)&&q.conceptId===cid);
    const production=candidates.filter(q=>!isRecognition(q));
    const choice=shuffle(production.length?production:candidates)[0];if(choice)out.push(choice);
   });
@@ -188,9 +193,13 @@ async function choose(subject,mode,count,topicId='all'){
  const pool=[];
  for(const tid of selectedTopics){
   const data=await loadTopic(subject,tid);
-  pool.push(...(data.questions||[]).filter(q=>ordinaryEligible(subject,q)));
+  pool.push(...(data.questions||[]).filter(q=>enabled(q)));
  }
- if(mode==='production'||mode==='extra')return sessionMix(pool.filter(q=>!isRecognition(q)),count);
+ if(mode==='production')return sessionMix(pool.filter(q=>!isRecognition(q)),count);
+ if(mode==='extra'){
+   const production=pool.filter(q=>!isRecognition(q));
+   return sessionMix(production.length?production:pool,count);
+ }
  return sessionMix(pool,count);
 }
 
@@ -393,9 +402,13 @@ function finishSession(subject){
  document.getElementById('mcpHome').onclick=()=>window.LuxApp?.go?.('home');
 }
 async function startPractice(subject,mode='mixed',count=15,topicId='all'){
- if(!(await ensure(subject)))return window.LuxApp.toast(`${SUBJECTS[subject].label} Foundation tools are unavailable.`);
- const qs=await choose(subject,mode,count,topicId);
- if(!qs.length)return window.LuxApp.toast(mode==='due'?'No reviews are due right now.':'No matching enabled questions are available.');
+ const pane=document.getElementById('genericPracticePane');
+ if(pane){pane.classList.remove('hidden');pane.innerHTML='<div class="loading-panel" role="status"><span class="loading-dot"></span><p>Preparing your questions…</p></div>'}
+ if(!(await ensure(subject))){renderPackError(subject,pane,'Practice');return false}
+ let qs=[];
+ try{qs=await choose(subject,mode,count,topicId)}
+ catch(err){console.error('[MasterY8] question load failed',subject,mode,topicId,err);renderPackError(subject,pane,'Practice');return false}
+ if(!qs.length){window.LuxApp.toast(mode==='due'?'No reviews are due right now.':'No matching enabled questions are available.');renderPractice(subject);return false}
  sessions[subject]={
    questions:qs,index:0,score:0,manual:0,mode,topicId,
    xpBefore:window.LuxGrowth?.snapshot?.().total||0,
@@ -404,10 +417,12 @@ async function startPractice(subject,mode='mixed',count=15,topicId='all'){
  };
  states[subject].sessions++;saveState(subject,states[subject]);
  window.SubjectHub?.open?.(subject,'foundation','practice');
- setTimeout(()=>renderQuestion(subject),0);
+ setTimeout(()=>renderQuestion(subject),0);return true;
 }
 async function renderLearn(subject){
- const pane=document.getElementById('genericLearnPane');if(!(await ensure(subject))){pane.innerHTML='<div class="unavailable-pane"><h2>Learning notes are unavailable.</h2></div>';return}
+ const pane=document.getElementById('genericLearnPane');
+ pane.innerHTML='<div class="loading-panel" role="status"><span class="loading-dot"></span><p>Loading learning notes…</p></div>';
+ if(!(await ensure(subject))){renderPackError(subject,pane,'Learn');return}
  const ts=topics(subject).filter(t=>t.enabledCount>0);
  pane.innerHTML=`<div class="section-title"><div><p class="eyebrow">YEAR 8 FOUNDATION</p><h2>${SUBJECTS[subject].label} Learn</h2></div><span>${ts.length} topics</span></div>
  <div class="note-topic-list">${ts.map(t=>{const p=topicProgress(subject,t.topicId);return `<article class="note-topic"><p class="eyebrow">${p.pct}% SECURE</p><h3>${esc(t.title)}</h3><p>Review the structured teaching notes for this topic.</p><button class="secondary" data-mcp-note="${esc(t.topicId)}">Open notes</button></article>`}).join('')}</div>`;
@@ -427,7 +442,9 @@ async function renderNote(subject,topicId){
  document.getElementById('mcpTopicPractice').onclick=()=>startPractice(subject,'production',10,topicId);
 }
 async function renderPractice(subject){
- const pane=document.getElementById('genericPracticePane');if(!(await ensure(subject))){pane.innerHTML='<div class="unavailable-pane"><h2>Practice is unavailable.</h2></div>';return}
+ const pane=document.getElementById('genericPracticePane');
+ pane.innerHTML='<div class="loading-panel" role="status"><span class="loading-dot"></span><p>Loading structured practice…</p></div>';
+ if(!(await ensure(subject))){renderPackError(subject,pane,'Practice');return}
  const d=dueCount(subject),w=weakCount(subject),ts=topics(subject).filter(t=>t.enabledCount>0);
  const recent=states[subject].history.slice().reverse().find(h=>h.topicId)?.topicId;
  const current=ts.find(t=>t.topicId===recent)||ts[0];
@@ -459,7 +476,9 @@ async function renderPractice(subject){
  pane.querySelectorAll('[data-mcp-topic-learn]').forEach(b=>b.onclick=()=>renderNote(subject,b.dataset.mcpTopicLearn));
 }
 async function renderProgress(subject){
- const pane=document.getElementById('genericProgressPane');if(!(await ensure(subject)))return;
+ const pane=document.getElementById('genericProgressPane');
+ pane.innerHTML='<div class="loading-panel" role="status"><span class="loading-dot"></span><p>Loading progress…</p></div>';
+ if(!(await ensure(subject))){renderPackError(subject,pane,'Progress');return}
  const s=masterySummary(subject),ts=topics(subject).filter(t=>t.enabledCount>0);
  pane.innerHTML=`<div class="section-title"><div><p class="eyebrow">FOUNDATION PROGRESS</p><h2>${SUBJECTS[subject].label} mastery</h2></div><span>${s.secure} secure</span></div>
  <div class="progress-stats"><div><b>${s.secure}</b><span>Secure</span></div><div><b>${s.consolidating+s.learning}</b><span>Building</span></div><div><b>${dueCount(subject)}</b><span>Due review</span></div></div>

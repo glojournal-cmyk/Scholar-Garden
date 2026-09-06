@@ -54,6 +54,11 @@ async function fetchJson(name){
  if(!r.ok)throw new Error(`${name}: ${r.status}`);
  return r.json();
 }
+function renderBiologyError(pane,kind='Practice'){
+ if(!pane)return;
+ pane.innerHTML=`<div class="load-error"><p class="eyebrow">BIOLOGY FOUNDATION</p><h2>${kind} data could not be loaded.</h2><p>Please retry. Your saved Biology progress is safe.</p><button class="primary" data-bio-retry="${kind.toLowerCase()}">Retry</button></div>`;
+}
+
 async function ensureData(){
  if(ready)return true;
  if(loading)return loading;
@@ -258,9 +263,11 @@ function choose(mode,count,topicId='all'){
  return [...shuffle(unseen),...shuffle(seen)].slice(0,Math.min(count,p.length));
 }
 async function startPractice(mode='mixed',count=10,topicId='all'){
- if(!(await ensureData()))return window.LuxApp.toast('Biology Foundation tools are unavailable.');
+ const pane=document.getElementById('genericPracticePane');
+ if(pane){pane.classList.remove('hidden');pane.innerHTML='<div class="loading-panel" role="status"><span class="loading-dot"></span><p>Preparing Biology questions…</p></div>'}
+ if(!(await ensureData())){renderBiologyError(pane,'Practice');return false}
  const qs=choose(mode,count,topicId);
- if(!qs.length)return window.LuxApp.toast(mode==='due'?'No Biology reviews are due right now.':'No matching Biology questions are available.');
+ if(!qs.length){window.LuxApp.toast(mode==='due'?'No Biology reviews are due right now.':'No matching Biology questions are available.');renderFoundationHome();return false}
  session={
    questions:qs,index:0,score:0,manual:0,mode,topicId,isDueReview:mode==='due',
    xpBefore:window.LuxGrowth?.snapshot?.().total||0,
@@ -268,7 +275,7 @@ async function startPractice(mode='mixed',count=10,topicId='all'){
    strengthened:new Set(),retained:new Set()
  };state.sessions++;save();
  window.SubjectHub?.open?.('biology','foundation','practice');
- setTimeout(()=>{document.getElementById('genericPracticePane')?.classList.remove('hidden');renderQuestion()},0);
+ setTimeout(()=>{document.getElementById('genericPracticePane')?.classList.remove('hidden');renderQuestion()},0);return true;
 }
 function answerControl(q){
  if(q.format==='mc_single')return `<div class="options">${(q.options||[]).map(o=>`<button class="option" data-bio-opt="${esc(o)}">${esc(o)}</button>`).join('')}</div>`;
@@ -345,7 +352,7 @@ function finishSession(){
 }
 function renderFoundationHome(){
  const pane=document.getElementById('genericPracticePane');if(!pane)return;
- if(!ready){pane.innerHTML=`<div class="unavailable-pane"><h2>Preparing Biology Foundation Review…</h2></div>`;return}
+ if(!ready){pane.innerHTML=`<div class="loading-panel" role="status"><span class="loading-dot"></span><p>Preparing Biology Foundation Review…</p></div>`;ensureData().then(ok=>ok?renderFoundationHome():renderBiologyError(pane,'Practice'));return}
  const d=dueCount(),w=weakCount(),ts=topics();
  const recent=state.history.slice().reverse().find(h=>h.topicId)?.topicId;
  const current=ts.find(t=>t.id===recent)||ts[0],cp=current?topicProgress(current.id):null;

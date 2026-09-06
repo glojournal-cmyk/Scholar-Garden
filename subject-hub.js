@@ -68,8 +68,26 @@ function renderStudy(){
  if(!currentGrid||!foundationGrid)return;
  currentGrid.innerHTML=unavailableCurrent('latin')+unavailableCurrent('french')+scienceCard('biology')+scienceCard('chemistry')+scienceCard('physics');
  foundationGrid.innerHTML=foundationCard('latin')+foundationCard('french')+foundationCard('biology');
- document.querySelectorAll('[data-open-subject]').forEach(b=>b.onclick=()=>window.LuxApp.goSubject(b.dataset.openSubject,b.dataset.track));
 }
+
+function configureTabs(subject,track){
+ const supported=new Set(['learn','practice','play','progress']);
+ document.querySelectorAll('[data-subject-tab]').forEach(b=>{
+   const tab=b.dataset.subjectTab;
+   let enabled=supported.has(tab);
+   let reason='';
+   if(track==='current'&&['biology','chemistry','physics'].includes(subject)){
+     if(tab==='practice'){enabled=false;reason='Practice bank not yet available'}
+     if(tab==='play'){enabled=false;reason='Verified learning game not yet available'}
+   }
+   if(track==='foundation'&&subject==='biology'&&tab==='play'){
+     enabled=false;reason='Verified Biology game not yet available';
+   }
+   b.disabled=!enabled;
+   b.title=reason;
+   b.setAttribute('aria-disabled',String(!enabled));
+ }
+)}
 
 function setHeader(subject,track){
  document.getElementById('subjectIcon').textContent=ICON[subject]||'?';
@@ -80,7 +98,7 @@ function setHeader(subject,track){
  document.getElementById('subjectSubtitle').textContent=
    track==='current'?'Learn the current course in a clear topic sequence.':'Consolidate prior learning with spaced review and focused practice.';
  const d=track==='foundation'?(subject==='biology'?(Number(window.BiologyY8?.dueCount?.())||0):due(subject)):0;
- document.getElementById('subjectDue').textContent=track==='foundation'&&['latin','french'].includes(subject)?`${d} due`:'Current learning';
+ document.getElementById('subjectDue').textContent=track==='foundation'&&['latin','french','biology'].includes(subject)?`${d} due`:'Current learning';
  document.getElementById('subjectMastery').textContent=
    track==='foundation'&&['latin','french'].includes(subject)?((window.MasterY8?.masterySummary?.(subject)?.secure||0)+' secure concepts'):
    track==='foundation'&&subject==='biology'?((window.BiologyY8?.masterySummary?.().secure||0)+' secure concepts'):
@@ -88,7 +106,8 @@ function setHeader(subject,track){
  const c=document.getElementById('subjectContinue');
  const available=(track==='foundation'&&['latin','french','biology'].includes(subject))||(track==='current'&&!!window.ScholarScience?.get(subject));
  c.disabled=!available;c.textContent=available?'Continue today':'Not available yet';
- c.onclick=available?()=>continueToday(subject,track):null;
+ c.dataset.subjectContinue=subject;c.dataset.subjectTrack=track;
+ configureTabs(subject,track);
 }
 function hideAllHosts(){
  document.getElementById('latinScreen').classList.add('hidden');
@@ -175,15 +194,31 @@ function renderFoundationEngine(subject,tab){
    window.ScholarUX.touchSubject(subject);
  }
 }function renderTab(tab){
+ const allowed=['learn','practice','play','progress'];
+ if(!allowed.includes(tab)){console.error('[SubjectHub] Unknown tab:',tab);window.LuxApp?.toast?.('That study section is unavailable.');return}
+ const {subject,track}=current;
+ if(!LABEL[subject]){console.error('[SubjectHub] Unknown subject:',subject);window.LuxApp?.toast?.('Unknown subject.');return}
+ const tabButton=document.querySelector(`[data-subject-tab="${tab}"]`);
+ if(tabButton?.disabled){window.LuxApp?.toast?.(tabButton.title||'This section is not available yet.');return}
+
  current.tab=tab;hideAllHosts();
  document.querySelectorAll('[data-subject-tab]').forEach(b=>b.classList.toggle('active',b.dataset.subjectTab===tab));
- const {subject,track}=current;
- if(track==='current'){
-   const pane=document.getElementById(`generic${tab[0].toUpperCase()+tab.slice(1)}Pane`);pane.classList.remove('hidden');
-   if(tab==='learn')renderScienceLearn(subject);else renderScienceOther(subject,tab);
- }else if(subject==='biology'){
-   const pane=document.getElementById(`generic${tab[0].toUpperCase()+tab.slice(1)}Pane`);pane.classList.remove('hidden');renderFoundationBio(tab);
- }else renderFoundationEngine(subject,tab);
+
+ const pane=document.getElementById(`generic${tab[0].toUpperCase()+tab.slice(1)}Pane`);
+ if(pane){pane.classList.remove('hidden');pane.innerHTML='<div class="loading-panel" role="status"><span class="loading-dot"></span><p>Loading learning tools…</p></div>'}
+
+ try{
+   if(track==='current'){
+     if(tab==='learn')renderScienceLearn(subject);else renderScienceOther(subject,tab);
+   }else if(subject==='biology'){
+     renderFoundationBio(tab);
+   }else{
+     renderFoundationEngine(subject,tab);
+   }
+ }catch(err){
+   console.error('[SubjectHub] render failed',subject,track,tab,err);
+   if(pane)pane.innerHTML=`<div class="load-error"><h2>Could not open this activity.</h2><p>Please retry. Your saved progress has not been changed.</p><button class="primary" data-retry-subject-tab="${tab}">Retry</button></div>`;
+ }
  const canonical=`#subject/${subject}${track==='foundation'&&subject==='biology'?'-foundation':''}/${tab}`;
  history.replaceState(null,'',canonical);
 }
@@ -199,8 +234,10 @@ function continueToday(subject,track){
  }
 }
 function open(subject,track='current',tab){
+ if(!LABEL[subject]){console.error('[SubjectHub] Unknown subject route:',subject);window.LuxApp?.toast?.('Unknown subject route.');return false}
+ if(!['current','foundation'].includes(track)){console.error('[SubjectHub] Unknown track:',track);track='current'}
  current={subject,track,tab:tab||((track==='foundation')?'practice':'learn')};
- setHeader(subject,track);renderTab(current.tab);
+ setHeader(subject,track);renderTab(current.tab);return true;
 }
 function parseRoute(hash){
  const raw=hash.replace(/^#/,'').split('/').filter(Boolean);
@@ -211,9 +248,5 @@ function parseRoute(hash){
  let tab=['learn','practice','play','progress'].includes(raw[2])?raw[2]:undefined;if(raw[2]==='review')tab='practice';
  return {subject,track,tab};
 }
-function bind(){
- document.querySelectorAll('[data-subject-tab]').forEach(b=>b.onclick=()=>renderTab(b.dataset.subjectTab));
-}
 window.SubjectHub=Object.freeze({renderStudy,open,parseRoute,renderTab,continueToday,showScienceTopic});
-window.addEventListener('DOMContentLoaded',bind,{once:true});
 })();

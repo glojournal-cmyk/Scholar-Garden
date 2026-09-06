@@ -801,3 +801,50 @@ button:disabled{opacity:.45;cursor:not-allowed}
 
 .scene-unlocks{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px}
 .scene-unlocks span{font-size:7px;padding:4px 6px;border-radius:99px;background:#eee7da;color:#776e60}
+
+
+/* V0.3.4.1 functional safety */
+.base-scene-backdrop,
+.base-character-stage::before,
+.home-avatar-layer,
+.character-art-label,
+.reward-art-slot::before,
+.main-quest::before,
+.training-access-card::before,
+.quest-log-main::before{
+  pointer-events:none!important;
+}
+.quest-log-panel button,
+.scholar-base-scene button,
+.subject-training-section button,
+.quick-play-section button,
+.subject-tabs button,
+.subject-pane button{
+  position:relative;
+  z-index:5;
+  pointer-events:auto;
+}
+.loading-panel,.load-error{
+  min-height:180px;
+  display:grid;
+  place-items:center;
+  align-content:center;
+  gap:10px;
+  padding:28px;
+  text-align:center;
+  border-radius:18px;
+  background:rgba(255,253,248,.9);
+  border:1px solid var(--line2);
+}
+.loading-panel p,.load-error p{margin:0;color:var(--muted);max-width:520px}
+.loading-dot{
+  width:18px;height:18px;border-radius:50%;
+  border:3px solid #d7cfbf;border-top-color:var(--navy);
+  animation:loadingSpin .8s linear infinite;
+}
+@keyframes loadingSpin{to{transform:rotate(360deg)}}
+.subject-tabs button[disabled]{
+  opacity:.42;
+  cursor:not-allowed;
+  pointer-events:auto;
+}

@@ -1,21 +1,37 @@
-SCHOLAR'S GARDEN — V0.3.4 GITHUB-SAFE PACKAGE
+SCHOLAR'S GARDEN — V0.3.4.1 CRITICAL FUNCTIONAL FIX
 
-This repack is specifically for GitHub browser upload.
-
-Package facts:
-- 71 flat-root files
-- largest individual file: mcp-french-runtime-3.json (3.57 MiB)
-- Latin runtime split into 2 chunks
-- French runtime split into 4 chunks
-- duplicate full editorial banks removed from DEPLOY package only
-- runtime academic content remains complete through the structured chunk bundles
+Use THIS package instead of the earlier V0.3.4 build.
 
 Upload:
-1. Extract this ZIP.
-2. GitHub -> Scholar-Garden repo -> Add file -> Upload files.
-3. Drag all extracted files, not the ZIP itself.
+1. Extract the ZIP.
+2. GitHub -> Scholar-Garden -> Add file -> Upload files.
+3. Drag every extracted file into the ROOT of the repository.
 4. Commit.
-5. Wait for Pages redeploy.
-6. Hard-refresh the live site.
+5. Wait for GitHub Pages deployment.
+6. Open the live site.
+7. Hard refresh once.
 
-If GitHub still reports "file too large" with THIS package, stop retrying and use GitHub Desktop/command line because the issue is no longer file size in this package.
+Important cache fix:
+- index assets now use ?v=0.3.4.1
+- service worker internal cache is also V0.3.4.1
+- learner progress/localStorage is NOT cleared
+
+Post-deploy priority click test:
+1. Home Main Quest
+2. every Side Task
+3. Train Latin -> Practise -> Mixed Training
+4. Train French -> Practise -> Mixed Training
+5. Train Biology -> Practise -> Mixed Training
+6. Latin Extra Practice
+7. French Extra Practice
+8. Biology Extra Practice
+9. Quick Play -> Verbum Match
+10. Quick Play -> Sentence Mosaic
+11. See all games -> Forma Forge
+12. See all games -> Manuscript Mystery
+13. French Spelling Sprint
+14. reload and confirm state persists
+15. test iPad/mobile widths
+
+Expected footer:
+V0.3.4.1 Critical Functional Fix

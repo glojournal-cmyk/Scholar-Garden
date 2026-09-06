@@ -1,42 +1,129 @@
-# Scholar's Garden V0.3.2 — Change Audit
+# Scholar's Garden V0.3.4.1 — Critical Functional Fix Change Audit
 
-## Home game-feel recomposition
-- Rebuilt the upper Home into a two-column hero on desktop/tablet.
-- Left column: compact greeting/date, compact seven-day strip, featured Main Quest, two secondary tasks, one Today Progress component.
-- Right column: Scholar Scene with stable future-art slot, Scholar level/XP, Garden stage, and a visually larger Next Reward card.
-- Quick Play is now a visual tile area with three recommended real games and a retained See all games drawer.
-- Continue Learning remains below the hero/game loop as secondary navigation.
-- Mobile ordering intentionally keeps greeting/calendar compact, then Scholar Scene, then Main Quest and supporting tasks.
-- No character art was generated.
+## Root causes found
 
-## Master Content Pack V1 integration
-### Latin Year 8 Foundation
-- Full editorial bank included byte-for-byte: 2,492 questions, 778 concepts.
-- 65 topic runtime shards copied byte-for-byte and lazy-loaded.
-- Foundation Learn / Practise / Progress now use the structured Master Content Pack.
-- Existing Latin mini-games remain the Play surface and are unchanged.
+### 1. Latin/French Practice crashed at runtime
+`language-y8.js` called `ordinaryEligible(...)`, but no such function existed in the deployed V0.3.4 code.
+That produced a `ReferenceError` as soon as Latin/French Practice attempted to build a question pool.
 
-### French Year 8 Foundation
-- Full editorial bank included byte-for-byte: 5,585 questions, 1,913 concepts.
-- Release status preserved: 4,555 enabled / 171 preview / 859 disabled.
-- 32 topic runtime shards copied byte-for-byte and lazy-loaded.
-- Ordinary sessions select enabled content only.
-- Foundation Learn / Practise / Progress now use the structured Master Content Pack.
-- Existing French Spelling game remains the Play surface.
-- listen_type source records are preserved but are not auto-selected until a reliable approved audio source exists.
+Effect:
+- Latin Practice could open a shell but could not render questions.
+- French Practice could open a shell but could not render questions.
+- Latin/French Extra Practice also failed before question rendering.
 
-### Biology Year 8 Foundation
-- Existing V0.3.1 structured integration retained: 989 questions plus concepts/notes/keywords/diagram specs.
+Fix:
+- Removed the undefined call and routed eligibility through the existing `enabled(q)` gate.
+- That gate still excludes French `listen_type` from ordinary sessions while preserving the source records.
 
-## Mastery / review / migration
-- New additive structured state keys: latinY8MasteryV1 and frenchY8MasteryV1.
-- Existing latinSummerV8State and monJardinFrancais.progress.v2 are not deleted or overwritten.
-- Migration maps preserved verified legacy question IDs into Master Pack conceptIds where possible.
-- The supplied reference marker is used for Latin/French structured marking.
-- Recognition-only evidence cannot directly become secure.
-- Production/application plus 2-day and 7-day recall and >=85% weighted accuracy are required for secure state.
+### 2. Extra Practice could resolve to an empty pool
+Some valid topics have recognition-only material and no production-format questions.
+V0.3.4 treated Extra Practice as production-only, so a visible Extra Practice CTA could lead to no exercise.
+
+Fix:
+- Extra Practice remains production-led when production questions exist.
+- When a supported topic has no production question, it falls back to valid enabled questions for that topic.
+- Recognition-only evidence still cannot directly make a concept secure.
+
+### 3. Service-worker/cache version mismatch
+The GitHub-safe V0.3.4 package had `index.html` requesting `?v=0.3.4`, but `sw.js` still used the V0.3.2 internal cache name and V0.3.2 precache URLs.
+
+This was especially risky after the runtime-bank repack:
+- old loader code could remain cached
+- old loader code expected removed bundle filenames
+- new markup + old JS could therefore produce apparently dead buttons/routes
+
+Fix:
+- Internal SW cache bumped to `scholars-garden-v0-3-4-1-critical-functional-fix-20260906`
+- every core asset reference aligned to `?v=0.3.4.1`
+- install precache explicitly fetches with `cache: 'reload'`
+- navigation requests prefer a fresh `index.html`
+- registration uses `updateViaCache: 'none'` and calls `reg.update()`
+- learner localStorage/state is not cleared
+
+### 4. High-level navigation was fragmented
+Navigation was split across per-render `onclick` assignment, Subject Hub bindings, hash routing and dynamic card binding.
+This increased the chance that DOM rewrites left a visually active control disconnected from the expected handler.
+
+Fix:
+One delegated high-level action router now handles:
+- global navigation
+- Home subject training
+- Study subject cards
+- Subject Continue
+- Subject tabs
+- Main Quest
+- Side Tasks
+- Quick Play
+- See-all game choices
+- retry actions
+
+Activity-local answer controls remain inside their learning/game engines.
+
+## Practice routes verified by runtime harness
+
+The deterministic runtime harness loads the actual packaged JSON and calls the real Foundation practice engines with a minimal DOM shell.
+
+PASS:
+- Latin Master Pack data loads
+- French Master Pack data loads
+- Biology Master Pack data loads
+- Latin mixed Practice starts and renders a real quiz card
+- French mixed Practice starts and renders a real quiz card
+- Biology mixed Practice starts and renders a real quiz card
+- Latin Extra Practice starts and renders a real quiz card
+- French Extra Practice starts and renders a real quiz card
+- Biology Extra Practice starts and renders a real quiz card
+
+## Home / routing wiring
+
+Verified in source/static QA:
+- Scholar scene present
+- Quest Log present
+- Subject Training present
+- Quick Play present
+- Main Quest and Side Task selectors are handled by the central action router
+- all Study subject-card selectors are handled by the central action router
+- Subject Hub has Learn / Practise / Play / Progress
+- supported Foundation Practice routes call the real engines
+- Year 9 Science Practice is intentionally disabled with `Practice bank not yet available`
+- Biology Foundation Play is intentionally disabled because no verified Biology game engine exists
 
 ## Mini-games
-- No new top-level Games destination.
-- Latin Games V2 JS/CSS are byte-identical to V0.3.1.
-- Home Quick Play links directly to Verbum Match, Sentence Mosaic and French Spelling Sprint.
+
+Preserved without changing the Latin game engine:
+- Verbum Match
+- Forma Forge
+- Sentence Mosaic
+- Manuscript Mystery
+
+`latin-games.js` and `latin-games.css` remain byte-identical to the previous build.
+Home Quick Play still calls `GameV2.start(gameId)`.
+French Quick Play still calls the existing French spelling engine.
+
+## Overlay/touch safety
+
+Decorative Scholar/scene layers and pseudo-elements now use `pointer-events: none`.
+Interactive controls are explicitly placed above decorative layers.
+
+## Files changed in this fix
+
+- `app.js`
+- `subject-hub.js`
+- `language-y8.js`
+- `biology-y8.js`
+- `styles.css`
+- `sw.js`
+- `index.html`
+- reports/instructions/checksums
+
+Verified question-bank source JSON, concept IDs and answer specifications were not regenerated.
+
+## QA limits
+
+A Chromium browser launch was attempted in this execution environment.
+The environment blocked local browser navigation / terminated Chromium before a usable page session, so this report does NOT claim:
+- fresh physical iPad Safari QA
+- full real-browser click-through of every mini-game
+- deployed GitHub Pages end-to-end QA
+
+Those checks must be completed after this package is deployed.

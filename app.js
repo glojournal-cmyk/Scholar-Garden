@@ -110,7 +110,6 @@ function renderToday(){
    <div><small>${window.DailyPlan.displaySubject(t.subject).toUpperCase()} · ${t.reason}</small><h3>${displayTaskTitle(t)}</h3><p>${taskProgressText(t)} · ~${t.minutes} min</p></div>
    <button class="secondary" data-start-secondary="${t.id}">${taskButtonLabel(t)}</button>
   </article>`).join('');
- mainRoot.querySelector('[data-start-main]')?.addEventListener('click',()=>startTask(main));
  secondaryRoot.querySelectorAll('[data-start-secondary]').forEach(b=>b.onclick=()=>startTask(s.tasks.find(t=>t.id===b.dataset.startSecondary)));
 }
 async function startQuickGame(subject,gameId){
@@ -208,7 +207,6 @@ function renderQuickPlay(){
    <div class="quick-play-icon">${g.icon}</div><div><small>${g.subject.toUpperCase()}</small><strong>${g.name}</strong><em>${g.copy} · ${g.time}</em></div>
    <button class="primary" data-quick-game="${g.id}" data-game-subject="${g.subject}">Play</button>
   </article>`).join('');
- root.querySelectorAll('[data-quick-game]').forEach(b=>b.onclick=()=>startQuickGame(b.dataset.gameSubject,b.dataset.quickGame));
  const all=[
   ['latin','forma','Forma Forge','Build and repair Latin forms'],
   ['latin','mosaic','Sentence Mosaic','Build valid Latin sentences'],
@@ -217,7 +215,6 @@ function renderQuickPlay(){
   ['french','atelier-spelling','Atelier d’Orthographe','French spelling recall']
  ];
  drawer.innerHTML=`<div class="all-games-grid">${all.map(g=>`<button class="all-game-button" data-all-game="${g[1]}" data-game-subject="${g[0]}"><strong>${g[2]}</strong><small>${g[0][0].toUpperCase()+g[0].slice(1)} · ${g[3]}</small></button>`).join('')}</div>`;
- drawer.querySelectorAll('[data-all-game]').forEach(b=>b.onclick=()=>startQuickGame(b.dataset.gameSubject,b.dataset.allGame));
 }
 function renderSubjectTraining(){
  const root=document.getElementById('subjectTrainingGrid');if(!root)return;
@@ -238,10 +235,6 @@ function renderSubjectTraining(){
   <div class="training-access-stats">${c.stats.map(s=>`<span>${s}</span>`).join('')}</div>
   <button class="primary" data-train-subject="${c.subject}" data-train-track="${c.track}">${c.cta}</button>
  </article>`).join('');
- root.querySelectorAll('[data-train-subject]').forEach(b=>b.onclick=()=>{
-   const subject=b.dataset.trainSubject,track=b.dataset.trainTrack;
-   goSubject(subject,track,track==='foundation'?'practice':'learn');
- });
 }
 function prettyWardrobe(v,fallback='None'){
  if(v===null||v===undefined||v==='none')return fallback;
@@ -303,6 +296,85 @@ function render(){
  const ux=window.ScholarUX.load();ux.lastRoute=location.hash||'#home';window.ScholarUX.save(ux);
  window.scrollTo({top:0,behavior:'auto'});
 }
+
+function currentDailyTask(id){
+ try{return window.DailyPlan.status().tasks.find(t=>t.id===id)||null}catch(err){console.error('[ActionRouter] Daily task lookup failed',err);return null}
+}
+async function handleActionClick(event){
+ const el=event.target.closest('button,[role="button"],a');
+ if(!el)return;
+
+ try{
+   if(el.matches('[data-global-route]')){
+     event.preventDefault();go(el.dataset.globalRoute);return;
+   }
+   if(el.matches('[data-brand-home]')){
+     event.preventDefault();go('home');return;
+   }
+   if(el.matches('[data-train-subject]')){
+     event.preventDefault();goSubject(el.dataset.trainSubject,el.dataset.trainTrack||'current',(el.dataset.trainTrack==='foundation'?'practice':'learn'));return;
+   }
+   if(el.matches('[data-open-subject]')){
+     event.preventDefault();goSubject(el.dataset.openSubject,el.dataset.track||'current');return;
+   }
+   if(el.matches('[data-cont-subject]')){
+     event.preventDefault();goSubject(el.dataset.contSubject,el.dataset.contTrack||'current');return;
+   }
+   if(el.matches('[data-subject-continue]')){
+     event.preventDefault();
+     if(el.disabled){toast('This activity is not available yet.');return}
+     window.SubjectHub.continueToday(el.dataset.subjectContinue,el.dataset.subjectTrack||'current');return;
+   }
+   if(el.matches('[data-subject-tab]')){
+     event.preventDefault();
+     if(el.disabled||el.getAttribute('aria-disabled')==='true'){toast(el.title||'This section is not available yet.');return}
+     window.SubjectHub.renderTab(el.dataset.subjectTab);return;
+   }
+   if(el.matches('[data-retry-subject-tab]')){
+     event.preventDefault();window.SubjectHub.renderTab(el.dataset.retrySubjectTab);return;
+   }
+   if(el.matches('[data-start-main]')){
+     event.preventDefault();const t=currentDailyTask(el.dataset.startMain);if(!t){console.error('[ActionRouter] Unknown Main Quest task',el.dataset.startMain);toast('This quest could not be opened.');return}await startTask(t);return;
+   }
+   if(el.matches('[data-start-secondary]')){
+     event.preventDefault();const t=currentDailyTask(el.dataset.startSecondary);if(!t){console.error('[ActionRouter] Unknown Side Task',el.dataset.startSecondary);toast('This task could not be opened.');return}await startTask(t);return;
+   }
+   if(el.matches('[data-quick-game]')){
+     event.preventDefault();await startQuickGame(el.dataset.gameSubject,el.dataset.quickGame);return;
+   }
+   if(el.matches('[data-all-game]')){
+     event.preventDefault();await startQuickGame(el.dataset.gameSubject,el.dataset.allGame);return;
+   }
+   if(el.id==='seeAllGames'){
+     event.preventDefault();document.getElementById('allGamesDrawer')?.classList.toggle('hidden');return;
+   }
+   if(el.id==='gardenExplore'){
+     event.preventDefault();document.getElementById('gardenExplorePanel')?.classList.toggle('hidden');return;
+   }
+   if(el.matches('[data-mcp-retry]')){
+     event.preventDefault();
+     const subject=el.dataset.mcpRetry,kind=el.dataset.mcpRetryKind;
+     if(kind==='learn')await window.MasterY8.renderLearn(subject);
+     else if(kind==='progress')await window.MasterY8.renderProgress(subject);
+     else await window.MasterY8.renderPractice(subject);
+     return;
+   }
+   if(el.matches('[data-bio-retry]')){
+     event.preventDefault();
+     const kind=el.dataset.bioRetry;
+     const ok=await window.BiologyY8.ensureData();
+     if(!ok){toast('Biology data still could not be loaded.');return}
+     if(kind==='learn')window.BiologyY8.renderLearn();
+     else if(kind==='progress')window.BiologyY8.renderProgress();
+     else window.BiologyY8.renderFoundationHome();
+     return;
+   }
+ }catch(err){
+   console.error('[ActionRouter] Action failed',el,err);
+   toast('This activity could not be opened. Please retry.');
+ }
+}
+
 async function init(){
  window.LuxApp={go,goSubject,toast,render,renderHome};
  window.LatinModule.init();window.FrenchModule.init();
@@ -310,10 +382,7 @@ async function init(){
  const biologyReady=window.BiologyY8.ensureData();
  const latinMasterReady=window.MasterY8.ensure('latin');
  const frenchMasterReady=window.MasterY8.ensure('french');
- document.querySelectorAll('[data-global-route]').forEach(b=>b.onclick=()=>go(b.dataset.globalRoute));
- document.querySelector('[data-brand-home]')?.addEventListener('click',()=>go('home'));
- document.getElementById('gardenExplore').onclick=()=>document.getElementById('gardenExplorePanel').classList.toggle('hidden');
- document.getElementById('seeAllGames').onclick=()=>document.getElementById('allGamesDrawer').classList.toggle('hidden');
+ document.addEventListener('click',handleActionClick);
  window.addEventListener('hashchange',render);
  document.addEventListener('lux:growth',()=>{
   const before=lastCollectibleCount,after=window.LuxGrowth.snapshot().collectibleCount;
@@ -331,7 +400,7 @@ async function init(){
  document.addEventListener('lux:plan-change',()=>{if(routeInfo().screen==='home')renderHome()});
  await Promise.race([Promise.allSettled([frenchLegacyReady,biologyReady,latinMasterReady,frenchMasterReady]),new Promise(resolve=>setTimeout(resolve,2600))]);
  render();
- if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=0.3.4').catch(()=>{});
+ if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=0.3.4.1',{updateViaCache:'none'}).then(reg=>reg.update()).catch(err=>console.warn('[PWA] service worker update failed',err));
 }
 document.readyState==='loading'?document.addEventListener('DOMContentLoaded',init):init();
 })();

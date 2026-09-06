@@ -1,26 +1,57 @@
-V0.3.4 GITHUB-SAFE PACKAGING QA
-Result: 21/21 PASS
-Files: 71
-Largest: mcp-french-runtime-3.json 3.57 MiB
+LUX ET LABOR — THE SCHOLAR'S GARDEN
+V0.3.4.1 CRITICAL FUNCTIONAL FIX QA
 
-- PASS — JS syntax growth.js
-- PASS — JS syntax latin-module.js
-- PASS — JS syntax french-module.js
-- PASS — JS syntax latin-games.js
-- PASS — JS syntax science-notes.js
-- PASS — JS syntax biology-y8.js
-- PASS — JS syntax language-y8.js
-- PASS — JS syntax daily-plan.js
-- PASS — JS syntax subject-hub.js
-- PASS — JS syntax scholar.js
-- PASS — JS syntax app.js
-- PASS — JS syntax sw.js
-- PASS — JS syntax latin-question-bank.js
-- PASS — File count <= 100
-- PASS — Largest file < 4 MiB
-- PASS — No old >10MB runtime/full-bank files
-- PASS — All runtime topics have bundle mapping
-- PASS — Latin 65 + French 32 topic mappings
-- PASS — All referenced bundle files exist
-- PASS — All HTML local refs exist
-- PASS — SW runtime-caches MCP JSON
+Deterministic/static/runtime-harness result: 65/65 PASS
+
+Runtime practice harness:
+- PASS Latin structured data load
+- PASS French structured data load
+- PASS Biology structured data load
+- PASS Latin mixed Practice -> quiz rendered
+- PASS French mixed Practice -> quiz rendered
+- PASS Biology mixed Practice -> quiz rendered
+- PASS Latin Extra Practice -> quiz rendered
+- PASS French Extra Practice -> quiz rendered
+- PASS Biology Extra Practice -> quiz rendered
+- PASS no runtime-harness JS stderr errors
+
+Functional fixes:
+- PASS undefined ordinaryEligible ReferenceError removed
+- PASS empty Extra Practice topic fallback fixed
+- PASS centralized high-level delegated action router
+- PASS explicit loading states
+- PASS recoverable Retry states
+- PASS unsupported Y9 Science Practice intentionally disabled
+- PASS decorative scene layers cannot intercept taps
+- PASS all index assets versioned 0.3.4.1
+- PASS SW internal cache version bumped
+- PASS SW fresh-reload precache
+- PASS SW fresh navigation handling
+- PASS SW registration updateViaCache:none
+
+Mini-game preservation:
+- PASS Latin GameV2 exposes start API
+- PASS Verbum Match route present
+- PASS Forma Forge route present
+- PASS Sentence Mosaic route present
+- PASS Manuscript Mystery route present
+- PASS Home Quick Play calls GameV2.start
+- PASS French Quick Play calls existing spelling engine
+- PASS Latin Games V2 JS/CSS unchanged from prior build
+
+State/data preservation:
+- PASS latinSummerV8State key preserved
+- PASS monJardinFrancais.progress.v2 key preserved
+- PASS luxScholarGardenV1 key preserved
+- PASS MasterY8 concept/runtime mappings retained
+- PASS verified banks were not regenerated
+
+Packaging:
+- 71 flat-root files
+- largest individual file: 3.57 MiB
+- GitHub browser-upload-safe target retained
+
+Browser/manual QA limitation:
+- Chromium launch was attempted but this environment blocked local navigation / terminated Chromium.
+- No physical iPad Safari claim is made.
+- Full deployed click-through must be done after upload.
