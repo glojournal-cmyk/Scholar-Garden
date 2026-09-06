@@ -21,14 +21,14 @@ function isScienceRead(topicId,k=day()){return !!load().scienceRead?.[k]?.[topic
 
 function latinStats(){
  try{
-  const s=window.LatinModule?.todayStats?.()||{};
-  return {answers:Number(s.answers)||0,due:Number(s.due)||0,weak:Number(s.weak)||0};
- }catch{return {answers:0,due:0,weak:0}}
+  const s=window.MasterY8?.todayStats?.('latin')||{};
+  return {answers:Number(s.answers)||0,due:Number(s.due)||0,weak:Number(s.weak)||0,loaded:!!s.loaded};
+ }catch{return {answers:0,due:0,weak:0,loaded:false}}
 }
 function frenchStats(){
  try{
-  const s=window.FrenchModule?.todayStats?.()||{};
-  return {answers:Number(s.answers)||0,due:Number(s.due)||0,weak:Number(window.FrenchModule?.weakCount?.())||0,loaded:!!s.loaded};
+  const s=window.MasterY8?.todayStats?.('french')||{};
+  return {answers:Number(s.answers)||0,due:Number(s.due)||0,weak:Number(s.weak)||0,loaded:!!s.loaded};
  }catch{return {answers:0,due:0,weak:0,loaded:false}}
 }
 function biologyStats(){
@@ -45,10 +45,10 @@ function sciencePick(k){
 }
 function makePlan(k=day()){
  const l=latinStats(),f=frenchStats(),b=biologyStats(),tasks=[];
- if(l.due>0)tasks.push({id:`latin-due-${k}`,subject:'latin',reason:'Due review',title:'Spaced review',target:7,minutes:2,kind:'latin-due'});
+ if(l.loaded&&l.due>0)tasks.push({id:`latin-due-${k}`,subject:'latin',reason:'Due review',title:'Spaced review',target:7,minutes:2,kind:'latin-due'});
  if(f.loaded&&f.due>0)tasks.push({id:`french-due-${k}`,subject:'french',reason:'Due review',title:'Spaced review',target:7,minutes:2,kind:'french-due'});
  if(b.loaded&&b.due>0&&tasks.length<3)tasks.push({id:`biology-due-${k}`,subject:'biology',reason:'Due review',title:'Spaced review',target:7,minutes:3,kind:'biology-due'});
- if(tasks.length<3&&l.weak>0&&!tasks.some(t=>t.subject==='latin'))tasks.push({id:`latin-weak-${k}`,subject:'latin',reason:'Weak area',title:'Latin Boost',target:7,minutes:2,kind:'latin-weak',baseline:l.answers});
+ if(tasks.length<3&&l.loaded&&l.weak>0&&!tasks.some(t=>t.subject==='latin'))tasks.push({id:`latin-weak-${k}`,subject:'latin',reason:'Weak area',title:'Latin Boost',target:7,minutes:2,kind:'latin-weak',baseline:l.answers});
  if(tasks.length<3&&f.loaded&&f.weak>0&&!tasks.some(t=>t.subject==='french'))tasks.push({id:`french-weak-${k}`,subject:'french',reason:'Weak area',title:'French Boost',target:7,minutes:2,kind:'french-weak',baseline:f.answers});
  if(tasks.length<3&&b.loaded&&b.weak>0&&!tasks.some(t=>t.subject==='biology'))tasks.push({id:`biology-weak-${k}`,subject:'biology',reason:'Weak area',title:'Biology Boost',target:7,minutes:3,kind:'biology-weak',baseline:b.answers});
  if(tasks.length<3){
@@ -65,10 +65,11 @@ function makePlan(k=day()){
  for(const subject of order){
    if(tasks.length>=3)break;
    if(tasks.some(t=>t.subject===subject))continue;
+   if(subject==='latin'&&!l.loaded)continue;
    if(subject==='french'&&!f.loaded)continue;
    tasks.push({id:`${subject}-standard-${k}`,subject,reason:'Foundation consolidation',title:'Standard practice',target:15,minutes:5,kind:`${subject}-practice`,baseline:subject==='latin'?l.answers:f.answers});
  }
- if(tasks.length<3&&!tasks.some(t=>t.subject==='latin'))tasks.push({id:`latin-standard-${k}`,subject:'latin',reason:'Foundation consolidation',title:'Standard practice',target:15,minutes:5,kind:'latin-practice',baseline:l.answers});
+ if(tasks.length<3&&l.loaded&&!tasks.some(t=>t.subject==='latin'))tasks.push({id:`latin-standard-${k}`,subject:'latin',reason:'Foundation consolidation',title:'Standard practice',target:15,minutes:5,kind:'latin-practice',baseline:l.answers});
  return tasks.slice(0,3);
 }
 function plan(k=day()){

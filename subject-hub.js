@@ -6,13 +6,13 @@ let current={subject:'latin',track:'foundation',tab:'practice'};
 
 function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function due(subject){
- if(subject==='latin')return Number(window.LatinModule?.dueCount?.())||0;
- if(subject==='french')return Number(window.FrenchModule?.dueCount?.())||0;
+ if(subject==='latin'||subject==='french')return Number(window.MasterY8?.dueCount?.(subject))||0;
+ if(subject==='biology')return Number(window.BiologyY8?.dueCount?.())||0;
  return 0;
 }
 function weak(subject){
- if(subject==='latin')return Number(window.LatinModule?.weakCount?.())||0;
- if(subject==='french')return Number(window.FrenchModule?.weakCount?.())||0;
+ if(subject==='latin'||subject==='french')return Number(window.MasterY8?.weakCount?.(subject))||0;
+ if(subject==='biology')return Number(window.BiologyY8?.weakCount?.())||0;
  return 0;
 }
 function latinMastery(){
@@ -82,8 +82,7 @@ function setHeader(subject,track){
  const d=track==='foundation'?(subject==='biology'?(Number(window.BiologyY8?.dueCount?.())||0):due(subject)):0;
  document.getElementById('subjectDue').textContent=track==='foundation'&&['latin','french'].includes(subject)?`${d} due`:'Current learning';
  document.getElementById('subjectMastery').textContent=
-   track==='foundation'&&subject==='latin'?latinMastery():
-   track==='foundation'&&subject==='french'?frenchMastery():
+   track==='foundation'&&['latin','french'].includes(subject)?((window.MasterY8?.masterySummary?.(subject)?.secure||0)+' secure concepts'):
    track==='foundation'&&subject==='biology'?((window.BiologyY8?.masterySummary?.().secure||0)+' secure concepts'):
    track==='current'&&window.ScholarScience?.get(subject)?'Learn available':'Not available yet';
  const c=document.getElementById('subjectContinue');
@@ -156,24 +155,26 @@ function renderFrenchPlay(){
  };
 }
 function renderFoundationEngine(subject,tab){
- if(subject==='latin'){
-   document.getElementById('latinScreen').classList.remove('hidden');
-   const map={learn:'latinNotes',practice:'latinHome',play:'gamesHub',progress:'latinProgress'};
-   if(tab==='play'&&window.GameV2)window.GameV2.openHub();else window.LatinModule.show(map[tab]||'latinHome');
- }
- if(subject==='french'){
+ if(subject==='latin'||subject==='french'){
    if(tab==='play'){
-     document.getElementById('frenchScreen').classList.add('hidden');
-     renderFrenchPlay();
-   }else{
-     document.getElementById('frenchScreen').classList.remove('hidden');
-     const map={learn:'frenchVocab',practice:'frenchHome',progress:'frenchProgress'};
-     window.FrenchModule.show(map[tab]||'frenchHome');window.FrenchModule.ensureData();
+     if(subject==='latin'){
+       document.getElementById('latinScreen').classList.remove('hidden');
+       if(window.GameV2)window.GameV2.openHub();
+     }else{
+       document.getElementById('frenchScreen').classList.add('hidden');
+       renderFrenchPlay();
+     }
+     window.ScholarUX.touchSubject(subject);
+     return;
    }
+   const pane=document.getElementById(`generic${tab[0].toUpperCase()+tab.slice(1)}Pane`);
+   pane.classList.remove('hidden');
+   if(tab==='learn')window.MasterY8.renderLearn(subject);
+   else if(tab==='practice')window.MasterY8.renderPractice(subject);
+   else if(tab==='progress')window.MasterY8.renderProgress(subject);
+   window.ScholarUX.touchSubject(subject);
  }
- window.ScholarUX.touchSubject(subject);
-}
-function renderTab(tab){
+}function renderTab(tab){
  current.tab=tab;hideAllHosts();
  document.querySelectorAll('[data-subject-tab]').forEach(b=>b.classList.toggle('active',b.dataset.subjectTab===tab));
  const {subject,track}=current;
@@ -188,11 +189,10 @@ function renderTab(tab){
 }
 function continueToday(subject,track){
  if(track==='current'){renderTab('learn');return}
- const d=due(subject);
- renderTab('practice');
- if(!d)return;
- if(subject==='latin')setTimeout(()=>window.LatinModule.startPractice('Mixed',7,true),0);
- if(subject==='french')window.FrenchModule.ensureData().then(ok=>{if(ok)setTimeout(()=>window.FrenchModule.startQuiz('all',7,true),0)});
+ const d=due(subject);renderTab('practice');
+ if(subject==='latin'||subject==='french'){
+   setTimeout(()=>window.MasterY8.startPractice(subject,d?'due':'mixed',d?7:15,'all'),0);return;
+ }
  if(subject==='biology'){
    const bd=Number(window.BiologyY8?.dueCount?.())||0;
    setTimeout(()=>window.BiologyY8.startPractice(bd?'due':'mixed',bd?7:15,'all'),0);

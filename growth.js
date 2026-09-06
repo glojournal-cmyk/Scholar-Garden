@@ -18,6 +18,10 @@ const RULES=Object.freeze({
   boss_complete:25,
   vocab_mastered:10,
   writing_complete:20,
+  extra_training_complete:12,
+  weak_area_complete:8,
+  topic_mastery_first:25,
+  retention_confirmed:10,
   reveal:0,
   assisted_build:1,
   clue_correct:1
@@ -27,7 +31,8 @@ function fresh(){
     version:2,xp:0,level:1,medals:{},collectibles:{},
     wardrobe:{hair:'starter',outfit:'starter',accessory:null},
     garden:{stage:1,equipped:[]},claims:{},counts:{},history:[],studyDates:{},
-    subjectTotals:{latin:0,french:0}
+    subjectTotals:{latin:0,french:0,biology:0,chemistry:0,physics:0},
+    milestones:{}
   };
 }
 function load(){
@@ -44,7 +49,8 @@ function load(){
       counts:{...b.counts,...(v.counts||{})},
       history:Array.isArray(v.history)?v.history:[],
       studyDates:{...b.studyDates,...(v.studyDates||{})},
-      subjectTotals:{...b.subjectTotals,...(v.subjectTotals||{})}
+      subjectTotals:{...b.subjectTotals,...(v.subjectTotals||{})},
+      milestones:{...b.milestones,...(v.milestones||{})}
     };
   }catch(e){return fresh()}
 }
@@ -57,7 +63,7 @@ function levelFromXP(total){
   return {level,into:left,next:need(level)}
 }
 function multiplier(type,count){
-  const oneShot=['daily_complete','formal_due_review_correct','vocab_review_2d','vocab_review_7d','boss_complete','vocab_mastered','writing_complete'];
+  const oneShot=['daily_complete','formal_due_review_correct','vocab_review_2d','vocab_review_7d','boss_complete','vocab_mastered','writing_complete','topic_mastery_first','retention_confirmed'];
   if(oneShot.includes(type))return count===0?1:0;
   if(count===0)return 1;
   if(count===1)return .2;
@@ -94,7 +100,7 @@ function award(event){
   s.counts[key]=count+1;
   if(amount){
     s.xp=(s.xp||0)+amount;
-    if(event.subject==='latin'||event.subject==='french')s.subjectTotals[event.subject]=(s.subjectTotals[event.subject]||0)+amount;
+    if(['latin','french','biology','chemistry','physics'].includes(event.subject))s.subjectTotals[event.subject]=(s.subjectTotals[event.subject]||0)+amount;
     s.studyDates[day()]=true;
     s.history.push({at:new Date().toISOString(),day:day(),subject:event.subject||'shared',type:event.type,itemId:event.itemId||null,xp:amount});
     if(s.history.length>500)s.history=s.history.slice(-500);
@@ -109,7 +115,7 @@ function snapshot(){
   const s=load(),l=levelFromXP(s.xp||0);
   return {...l,total:s.xp||0,medalCount:Object.keys(s.medals||{}).length,
     collectibleCount:Object.keys(s.collectibles||{}).length,studyDays:Object.keys(s.studyDates||{}).length,
-    gardenStage:s.garden?.stage||1,subjectTotals:s.subjectTotals||{latin:0,french:0},state:s};
+    gardenStage:s.garden?.stage||1,subjectTotals:s.subjectTotals||{latin:0,french:0,biology:0,chemistry:0,physics:0},state:s};
 }
 window.LuxGrowth=Object.freeze({KEY,RULES,load,save,award,snapshot,levelFromXP});
 })();

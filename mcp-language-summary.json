@@ -2,7 +2,6 @@
   "latin": {
     "questions": 2492,
     "concepts": 778,
-    "runtimeTopics": 65,
     "statuses": {
       "enabled": 2492
     },
@@ -18,7 +17,6 @@
   "french": {
     "questions": 5585,
     "concepts": 1913,
-    "runtimeTopics": 32,
     "statuses": {
       "enabled": 4555,
       "disabled": 859,
@@ -33,8 +31,5 @@
       "listen_type": 617,
       "word_tiles": 516
     }
-  },
-  "biology": {
-    "questions": 989
   }
 }

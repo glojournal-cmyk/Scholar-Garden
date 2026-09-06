@@ -1,11 +1,11 @@
-const V='scholars-garden-v0-3-1-home-games-20260906';
+const V='scholars-garden-v0-3-2-home-recomposition-masterpack-20260906';
 const CORE=`${V}-core`,RUN=`${V}-runtime`;
 const FILES=[
- './','./index.html','./styles.css?v=0.3.1','./latin-games.css?v=0.3.1','./manifest.webmanifest',
- './latin-question-bank.js?v=0.3.1','./growth.js?v=0.3.1','./latin-module.js?v=0.3.1',
- './french-module.js?v=0.3.1','./latin-games.js?v=0.3.1','./science-notes.js?v=0.3.1','./biology-y8.js?v=0.3.1',
+ './','./index.html','./styles.css?v=0.3.2','./latin-games.css?v=0.3.2','./manifest.webmanifest',
+ './latin-question-bank.js?v=0.3.2','./growth.js?v=0.3.2','./latin-module.js?v=0.3.2',
+ './french-module.js?v=0.3.2','./latin-games.js?v=0.3.2','./science-notes.js?v=0.3.2','./biology-y8.js?v=0.3.2','./language-y8.js?v=0.3.2','./mcp-reference-marker.mjs','./mcp-runtime-index.json','./mcp-concept-index.json','./mcp-origin-map.json','./mcp-language-summary.json',
  './bio-y8-question-bank.json','./bio-y8-answer-bank.json','./bio-y8-concept-bank.json','./bio-y8-keyword-bank.json','./bio-y8-notes-by-topic.json','./bio-y8-diagram-specs.json',
- './daily-plan.js?v=0.3.1','./subject-hub.js?v=0.3.1','./scholar.js?v=0.3.1','./app.js?v=0.3.1'
+ './daily-plan.js?v=0.3.2','./subject-hub.js?v=0.3.2','./scholar.js?v=0.3.2','./app.js?v=0.3.2'
 ];
 self.addEventListener('install',event=>{
  event.waitUntil(caches.open(CORE).then(cache=>cache.addAll(FILES)));
@@ -22,7 +22,8 @@ self.addEventListener('fetch',event=>{
  const u=new URL(event.request.url);
  const image=event.request.destination==='image'||/\.(webp|png|jpe?g|svg)$/i.test(u.pathname);
  const frenchData=/\/French-Revision\/(question-bank|vocab-bank|writing-bank|notes-by-section|reference-marker)\.(json|js)$/i.test(u.pathname);
- if(image||frenchData){
+ const masterPackData=/\/(?:mcp-la-|mcp-fr-|mcp-latin-|mcp-french-|mcp-).+\.json$/i.test(u.pathname);
+ if(image||frenchData||masterPackData){
   event.respondWith(caches.open(RUN).then(async cache=>{
    const hit=await cache.match(event.request);
    try{

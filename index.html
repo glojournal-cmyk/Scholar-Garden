@@ -7,8 +7,8 @@
 <meta name="description" content="Lux et Labor — The Scholar's Garden">
 <title>Lux et Labor — The Scholar’s Garden</title>
 <link rel="manifest" href="./manifest.webmanifest">
-<link rel="stylesheet" href="./styles.css?v=0.3.1">
-<link rel="stylesheet" href="./latin-games.css?v=0.3.1">
+<link rel="stylesheet" href="./styles.css?v=0.3.4">
+<link rel="stylesheet" href="./latin-games.css?v=0.3.4">
 </head>
 <body>
 <div class="app-shell">
@@ -29,49 +29,87 @@
 
 <main class="main-stage">
 <section class="route-screen" data-route-screen="home" id="homeScreen">
- <header class="home-greeting">
-   <div class="greeting-copy"><p class="eyebrow">TODAY</p><h1 id="homeGreeting">Good afternoon</h1><p id="homeDate"></p></div>
-   <aside class="scholar-identity" aria-label="Scholar identity">
-     <div class="scholar-portrait-placeholder" aria-hidden="true"><span>S</span></div>
-     <div class="scholar-identity-copy">
-       <small>SCHOLAR</small><strong>Level <span data-growth="level">1</span></strong>
-       <div class="scholar-xp-line"><span><b data-growth="xp">0</b> / <b data-growth="next">100</b> XP</span></div>
-       <div class="progress-track"><i data-growth-bar></i></div>
+ <section class="raising-hero">
+   <aside class="scholar-base-scene" id="scholarScene" aria-label="Current Scholar">
+     <div class="base-scene-backdrop" aria-hidden="true"></div>
+     <div class="base-scene-head">
+       <div><p class="eyebrow">MY SCHOLAR</p><h1>Scholar Level <span data-growth="level">1</span></h1></div>
+       <button class="scene-link" data-global-route="scholar">Wardrobe</button>
+     </div>
+
+     <div class="base-character-stage" id="scholarArtSlot" data-art-slot="master-scholar">
+       <div class="home-avatar-layer" data-home-avatar-layer="back-hair"></div>
+       <div class="home-avatar-layer home-avatar-body" data-home-avatar-layer="base-character"><span class="scene-sigil">S</span></div>
+       <div class="home-avatar-layer" data-home-avatar-layer="outfit"></div>
+       <div class="home-avatar-layer" data-home-avatar-layer="front-hair"></div>
+       <div class="home-avatar-layer" data-home-avatar-layer="accessory"></div>
+       <div class="home-avatar-layer" data-home-avatar-layer="hand-item"></div>
+       <div class="character-art-label">Stable layered character slot</div>
+     </div>
+
+     <div class="base-scene-hud">
+       <div class="scene-xp">
+         <div><small>SCHOLAR XP</small><span><b data-growth="xp">0</b> / <b data-growth="next">100</b></span></div>
+         <div class="progress-track"><i data-growth-bar></i></div>
+       </div>
+       <div class="scene-loadout" id="sceneLoadout">
+         <span>Hair · Starter</span><span>Outfit · Starter</span><span>Accessory · None</span>
+       </div>
+     </div>
+
+     <div class="scene-world-row">
+       <div class="scene-growth-card">
+         <small>WORLD GROWTH</small>
+         <strong id="homeGrowthStage">Garden Stage 1</strong>
+         <span id="homeGrowthHint">Your Scholar world is beginning to grow.</span>
+         <div class="scene-unlocks" id="sceneUnlockedDecor"></div>
+       </div>
+       <div class="scene-reward-card" id="nextRewardCard">
+         <div class="reward-art-slot large" id="nextRewardArt" data-art-slot="next-reward" aria-label="Reward artwork placeholder"></div>
+         <div class="reward-copy">
+           <small>NEXT UNLOCK</small>
+           <h3 id="nextRewardName">Ink Pot</h3>
+           <p id="nextRewardCopy">40 XP to unlock</p>
+           <div class="progress-track"><i id="nextRewardBar"></i></div>
+           <span class="reward-destination">For your Scholar world</span>
+         </div>
+       </div>
      </div>
    </aside>
- </header>
 
- <div class="week-strip" id="weekStrip" aria-label="Seven-day learning status"></div>
+   <section class="quest-log-panel">
+     <header class="quest-log-head">
+       <div><p class="eyebrow">TODAY</p><h2 id="homeGreeting">Good afternoon</h2><p id="homeDate"></p></div>
+       <span class="quest-log-label">QUEST LOG</span>
+     </header>
 
- <section class="today-section">
-   <div class="section-title"><div><p class="eyebrow">TODAY</p><h2>Your study path</h2></div></div>
-   <article class="main-quest card-soft" id="mainQuest"></article>
-   <div class="secondary-task-grid" id="secondaryTasks"></div>
+     <div class="week-strip quest-week" id="weekStrip" aria-label="Seven-day learning status"></div>
+
+     <article class="main-quest quest-log-main" id="mainQuest"></article>
+     <div class="secondary-task-grid quest-side-list" id="secondaryTasks"></div>
+
+     <section class="home-progress quest-progress">
+       <div><small>TODAY'S PROGRESS</small><strong id="todayProgressText">0 / 3 tasks complete</strong></div>
+       <div class="progress-track"><i id="todayProgressBar"></i></div>
+     </section>
+   </section>
  </section>
 
- <section class="home-progress card-soft">
-   <div><small>TODAY'S PROGRESS</small><strong id="todayProgressText">0 / 3 tasks complete</strong></div>
-   <div class="progress-track"><i id="todayProgressBar"></i></div>
+ <section class="subject-training-section home-zone">
+   <div class="section-title">
+     <div><p class="eyebrow">SUBJECTS / TRAINING</p><h2>Train whenever you want</h2></div>
+     <span>Daily quests guide you. Free training is always open.</span>
+   </div>
+   <div class="subject-training-grid" id="subjectTrainingGrid"></div>
  </section>
 
- <section class="quick-play-section">
+ <section class="quick-play-section home-zone">
    <div class="section-title">
      <div><p class="eyebrow">QUICK PLAY</p><h2>Short learning games</h2></div>
      <button class="text-button" id="seeAllGames">See all games</button>
    </div>
    <div class="quick-play-grid" id="quickPlayGrid"></div>
    <div class="all-games-drawer hidden" id="allGamesDrawer"></div>
- </section>
-
- <section class="reward-preview card-soft" id="nextRewardCard">
-   <div class="reward-art-slot" id="nextRewardArt" aria-label="Reward artwork placeholder"></div>
-   <div class="reward-copy"><small>NEXT REWARD</small><h3 id="nextRewardName">Ink Pot</h3><p id="nextRewardCopy">40 XP to unlock</p></div>
-   <div class="reward-xp"><strong><span data-growth="xp">0</span> XP</strong><div class="progress-track"><i id="nextRewardBar"></i></div></div>
- </section>
-
- <section class="continue-section">
-   <div class="section-title"><div><p class="eyebrow">CONTINUE LEARNING</p><h2>Pick up where you left off</h2></div></div>
-   <div class="continue-grid" id="continueCards"></div>
  </section>
 </section>
 
@@ -232,17 +270,18 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="./latin-question-bank.js?v=0.3.1"></script>
-<script src="./growth.js?v=0.3.1"></script>
-<script src="./latin-module.js?v=0.3.1"></script>
-<script src="./french-module.js?v=0.3.1"></script>
-<script src="./latin-games.js?v=0.3.1"></script>
-<script src="./science-notes.js?v=0.3.1"></script>
-<script src="./biology-y8.js?v=0.3.1"></script>
-<script src="./daily-plan.js?v=0.3.1"></script>
-<script src="./subject-hub.js?v=0.3.1"></script>
-<script src="./scholar.js?v=0.3.1"></script>
-<script src="./app.js?v=0.3.1"></script>
-<footer class="build-footer">Lux et Labor · Scholar’s Garden · V0.3.1 Home Polish + Games</footer>
+<script src="./latin-question-bank.js?v=0.3.4"></script>
+<script src="./growth.js?v=0.3.4"></script>
+<script src="./latin-module.js?v=0.3.4"></script>
+<script src="./french-module.js?v=0.3.4"></script>
+<script src="./latin-games.js?v=0.3.4"></script>
+<script src="./science-notes.js?v=0.3.4"></script>
+<script src="./biology-y8.js?v=0.3.4"></script>
+<script src="./language-y8.js?v=0.3.4"></script>
+<script src="./daily-plan.js?v=0.3.4"></script>
+<script src="./subject-hub.js?v=0.3.4"></script>
+<script src="./scholar.js?v=0.3.4"></script>
+<script src="./app.js?v=0.3.4"></script>
+<footer class="build-footer">Lux et Labor · Scholar’s Garden · V0.3.4 Raising Game + Free Training</footer>
 </body>
 </html>

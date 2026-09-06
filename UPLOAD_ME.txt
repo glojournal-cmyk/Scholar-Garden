@@ -1,16 +1,21 @@
-SCHOLAR'S GARDEN — V0.3.1 HOME POLISH + GAMES + MASTER CONTENT PACK
+SCHOLAR'S GARDEN — V0.3.4 GITHUB-SAFE PACKAGE
 
-Upload every file in this ZIP directly to the ROOT of the Scholar-Garden GitHub repository.
-Keep the package flat exactly as supplied.
+This repack is specifically for GitHub browser upload.
 
-After deploy:
-1. Confirm footer shows V0.3.1 Home Polish + Games.
-2. Home: check Main Quest, secondary tasks, Quick Play, calendar and Next Reward.
-3. Quick Play: open Verbum Match and French Spelling Sprint.
-4. Study -> Latin Foundation: test Learn / Practise / Play / Progress.
-5. Study -> French Foundation: test Learn / Practise / Play / Progress.
-6. Study -> Biology Foundation: test Learn, Mixed Practice, Due Review and Progress.
-7. Biology Play must honestly say no separate game engine is connected.
-8. Study -> Biology/Chemistry/Physics Current Year 9: Learn remains available; unsupported Practice stays unavailable.
-9. Refresh and confirm existing Latin/French/Scholar state persists.
-10. Test offline after one successful online load.
+Package facts:
+- 71 flat-root files
+- largest individual file: mcp-french-runtime-3.json (3.57 MiB)
+- Latin runtime split into 2 chunks
+- French runtime split into 4 chunks
+- duplicate full editorial banks removed from DEPLOY package only
+- runtime academic content remains complete through the structured chunk bundles
+
+Upload:
+1. Extract this ZIP.
+2. GitHub -> Scholar-Garden repo -> Add file -> Upload files.
+3. Drag all extracted files, not the ZIP itself.
+4. Commit.
+5. Wait for Pages redeploy.
+6. Hard-refresh the live site.
+
+If GitHub still reports "file too large" with THIS package, stop retrying and use GitHub Desktop/command line because the issue is no longer file size in this package.

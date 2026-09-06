@@ -1,43 +1,44 @@
-# Scholar's Garden V0.3.1 — Home Polish + Games + Master Content Pack
+# Scholar's Garden V0.3.2 — Implementation Report
 
-## Completed in this continuation
-- Preserved the V0.3 UX Reset architecture: Home / Study / Garden / Scholar.
-- Polished Home hierarchy with one Main Quest, secondary tasks, calm calendar states, Quick Play, reward-art slot and clearer Continue Learning cards.
-- Restored/promoted real mini-games without adding a top-level Games destination.
-- Preserved the Latin Games V2 JS/CSS byte-for-byte.
-- Kept French spelling gameplay and added only Scholar-XP completion feedback; formal mastery remains separate.
-- Integrated the structured Year 8 Biology Master Content Pack under Foundation Review.
+V0.3.2 combines the requested Home game-feel recomposition with completion of Master_Content_Pack_V1 Foundation integration for Latin and French.
 
-## Master_Content_Pack_V1 integrated exactly
-- 989 questions
-- 989 answers
-- 455 concepts
-- 267 keywords
-- 37 topic notes
-- 14 diagram specifications
+## Source integrity
+The original Master Content Pack editorial JSON remains byte-identical in the packaged `mcp-*` copies. The app uses flat-root runtime topic shards for iPad/GitHub Pages performance rather than parsing the full French/Latin banks on first paint.
 
-The source JSON files are copied byte-for-byte under `bio-y8-*` filenames. The rename avoids collision with the existing French `question-bank.json` bridge.
+## Hero structure
+Desktop/tablet:
+- left: compact Today context + Main Quest + secondary tasks + one Today progress indicator
+- right: Scholar Scene + stable art slot + Scholar XP + Garden stage + Next Reward
 
-## Biology Foundation engine
-- Learn: structured notes by topic.
-- Practise: Due Review / Biology Boost / Mixed / focused production practice.
-- Progress: concept stages and topic secure percentage.
-- Play: intentionally unavailable until a genuine Biology game engine exists.
-- Marking supports automatic routes where the pack provides deterministic answers and manual checklist/self-review where the pack explicitly requires mark points or cannot be safely auto-marked.
-- Review recovery follows 2-day then 7-day after a wrong answer.
-- Secure mastery requires production/application evidence plus the later consolidation recall; recognition-only evidence cannot create secure mastery.
+Mobile:
+- greeting/date
+- compact week strip
+- Scholar Scene
+- Main Quest
+- secondary tasks
+- Quick Play
+- Continue Learning
 
-## State safety
-Existing keys preserved:
-- `latinSummerV8State`
-- `monJardinFrancais.progress.v2`
-- `luxScholarGardenV1`
-- `scholarGardenUxV03`
+## Future-art placeholders
+Still awaiting final art:
+- Master Scholar transparent character
+- reaction poses
+- Ink Pot and later reward objects
+- room/garden decorative objects
+These use stable containers and do not require a layout rewrite when assets arrive.
 
-New additive Biology key:
-- `biologyY8MasteryV1`
+## Known limitations
+- Final character/reward art is intentionally not produced.
+- French listen/type questions remain preserved but excluded from ordinary sessions until reliable audio is available.
+- Biology diagram specifications remain source-preserved; final anchored artwork is still needed for true diagram interaction.
+- No fresh physical iPad Safari E2E claim is made by the deterministic checks.
 
-No existing key is renamed, deleted or reset.
 
-## Character art
-Not started. Existing WebP assets remain unchanged.
+## GitHub upload packaging fix
+The previous V0.3.2 package contained 97 separate Latin/French runtime topic shard files.
+V0.3.4 consolidates those into two lazy-loaded subject bundles:
+- `mcp-latin-runtime-bundle.json`
+- `mcp-french-runtime-bundle.json`
+
+Academic content is unchanged; only packaging/loading granularity changed.
+This reduces the flat-root upload package to fewer than 100 files while keeping each individual file below 25 MB.

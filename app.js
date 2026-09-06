@@ -50,8 +50,9 @@ function greeting(){
 }
 function reviewDateSet(){
  const dates=new Set();
- try{(window.LatinModule?.reviewDates?.()||[]).forEach(x=>dates.add(x))}catch{}
- try{(window.FrenchModule?.reviewDates?.()||[]).forEach(x=>dates.add(x))}catch{}
+ try{(window.MasterY8?.reviewDates?.('latin')||[]).forEach(x=>dates.add(x))}catch{}
+ try{(window.MasterY8?.reviewDates?.('french')||[]).forEach(x=>dates.add(x))}catch{}
+ try{(window.BiologyY8?.reviewDates?.()||[]).forEach(x=>dates.add(x))}catch{}
  return dates;
 }
 function renderWeek(){
@@ -139,33 +140,33 @@ async function startTask(t){
  if(t.kind==='latin-game'){return startQuickGame('latin',t.gameId||'verbum')}
  if(t.kind==='french-game'){return startQuickGame('french',t.gameId||'atelier-spelling')}
  if(t.kind==='latin-due'){
-   goSubject('latin','foundation','practice');setTimeout(()=>window.LatinModule.startPractice('Mixed',7,true),80);return;
+   goSubject('latin','foundation','practice');setTimeout(()=>window.MasterY8.startPractice('latin','due',7,'all'),80);return;
  }
  if(t.kind==='french-due'){
    goSubject('french','foundation','practice');
-   if(await window.FrenchModule.ensureData())setTimeout(()=>window.FrenchModule.startQuiz('all',7,true),80);return;
+   if(await window.MasterY8.ensure('french'))setTimeout(()=>window.MasterY8.startPractice('french','due',7,'all'),80);return;
  }
  if(t.kind==='biology-due'){
    goSubject('biology','foundation','practice');
    if(await window.BiologyY8.ensureData())setTimeout(()=>window.BiologyY8.startPractice('due',7,'all'),80);return;
  }
  if(t.kind==='latin-weak'){
-   goSubject('latin','foundation','practice');setTimeout(()=>window.LatinModule.startWeakPractice(7),80);return;
+   goSubject('latin','foundation','practice');setTimeout(()=>window.MasterY8.startPractice('latin','weak',7,'all'),80);return;
  }
  if(t.kind==='french-weak'){
    goSubject('french','foundation','practice');
-   if(await window.FrenchModule.ensureData())setTimeout(()=>window.FrenchModule.startWeakPractice(7),80);return;
+   if(await window.MasterY8.ensure('french'))setTimeout(()=>window.MasterY8.startPractice('french','weak',7,'all'),80);return;
  }
  if(t.kind==='biology-weak'){
    goSubject('biology','foundation','practice');
    if(await window.BiologyY8.ensureData())setTimeout(()=>window.BiologyY8.startPractice('weak',7,'all'),80);return;
  }
  if(t.kind==='latin-practice'){
-   goSubject('latin','foundation','practice');setTimeout(()=>window.LatinModule.startPractice('Mixed',15,false),80);return;
+   goSubject('latin','foundation','practice');setTimeout(()=>window.MasterY8.startPractice('latin','mixed',15,'all'),80);return;
  }
  if(t.kind==='french-practice'){
    goSubject('french','foundation','practice');
-   if(await window.FrenchModule.ensureData())setTimeout(()=>window.FrenchModule.startQuiz('all',15,false),80);
+   if(await window.MasterY8.ensure('french'))setTimeout(()=>window.MasterY8.startPractice('french','mixed',15,'all'),80);
  }
 }
 function nextReward(g){
@@ -184,6 +185,11 @@ function renderReward(animate=false){
  document.getElementById('nextRewardArt').dataset.rewardName=r.name.toLowerCase().replace(/\s+/g,'-');
  const pct=r.need?Math.min(100,Math.round(g.total/r.need*100)):100;
  document.getElementById('nextRewardBar').style.width=`${pct}%`;
+ document.getElementById('homeGrowthStage').textContent=`Garden Stage ${g.gardenStage}`;
+ document.getElementById('homeGrowthHint').textContent=
+   g.gardenStage===1?'Your Scholar world is beginning to grow.':
+   g.gardenStage===2?'Study is adding the first visible details.':
+   g.gardenStage===3?'Your Garden is becoming established.':'Your Scholar world is flourishing.';
  if(lastCollectibleCount===null)lastCollectibleCount=g.collectibleCount;
  if(animate&&g.collectibleCount>lastCollectibleCount){
    card.classList.remove('just-unlocked');void card.offsetWidth;card.classList.add('just-unlocked');
@@ -194,8 +200,9 @@ function renderReward(animate=false){
 function renderQuickPlay(){
  const root=document.getElementById('quickPlayGrid'),drawer=document.getElementById('allGamesDrawer');
  const recommended=[
-  {subject:'latin',id:'verbum',icon:'V',name:'Verbum Match',copy:'Quick vocabulary and grammar connections',time:'~3 min'},
-  {subject:'french',id:'atelier-spelling',icon:'F',name:'Spelling Sprint',copy:'Exact French recall with accents',time:'~3 min'}
+  {subject:'latin',id:'verbum',icon:'V',name:'Verbum Match',copy:'Vocabulary and grammar connections',time:'~3 min'},
+  {subject:'french',id:'atelier-spelling',icon:'F',name:'Spelling Sprint',copy:'Exact French recall with accents',time:'~3 min'},
+  {subject:'latin',id:'mosaic',icon:'M',name:'Sentence Mosaic',copy:'Build valid Latin sentences',time:'~4 min'}
  ];
  root.innerHTML=recommended.map(g=>`<article class="quick-play-card" data-subject="${g.subject}">
    <div class="quick-play-icon">${g.icon}</div><div><small>${g.subject.toUpperCase()}</small><strong>${g.name}</strong><em>${g.copy} · ${g.time}</em></div>
@@ -212,21 +219,54 @@ function renderQuickPlay(){
  drawer.innerHTML=`<div class="all-games-grid">${all.map(g=>`<button class="all-game-button" data-all-game="${g[1]}" data-game-subject="${g[0]}"><strong>${g[2]}</strong><small>${g[0][0].toUpperCase()+g[0].slice(1)} · ${g[3]}</small></button>`).join('')}</div>`;
  drawer.querySelectorAll('[data-all-game]').forEach(b=>b.onclick=()=>startQuickGame(b.dataset.gameSubject,b.dataset.allGame));
 }
-function renderContinue(){
- const root=document.getElementById('continueCards'),todayPlan=window.DailyPlan.plan();
- const latinDue=Number(window.LatinModule?.dueCount?.())||0;
- const frenchDue=Number(window.FrenchModule?.dueCount?.())||0;
- const bioTask=todayPlan.find(t=>t.subject==='biology'&&t.topicId);
- const bioTopic=bioTask?window.ScholarScience?.topic('biology',bioTask.topicId):window.ScholarScience?.get('biology')?.topics?.[0];
+function renderSubjectTraining(){
+ const root=document.getElementById('subjectTrainingGrid');if(!root)return;
+ const latinDue=Number(window.MasterY8?.dueCount?.('latin'))||0,latinWeak=Number(window.MasterY8?.weakCount?.('latin'))||0;
+ const frenchDue=Number(window.MasterY8?.dueCount?.('french'))||0,frenchWeak=Number(window.MasterY8?.weakCount?.('french'))||0;
+ const bioDue=Number(window.BiologyY8?.dueCount?.())||0,bioWeak=Number(window.BiologyY8?.weakCount?.())||0;
+ const latinMaster=window.MasterY8?.masterySummary?.('latin')||{},frenchMaster=window.MasterY8?.masterySummary?.('french')||{},bioMaster=window.BiologyY8?.masterySummary?.()||{};
  const cards=[
-  {subject:'latin',track:'foundation',label:'Latin',micro:'FOUNDATION REVIEW',detail:latinDue?`${latinDue} review${latinDue===1?'':'s'} due`:'Ready for focused practice',cta:'Continue Latin'},
-  {subject:'french',track:'foundation',label:'French',micro:'FOUNDATION REVIEW',detail:frenchDue?`${frenchDue} review${frenchDue===1?'':'s'} due`:'Ready for focused practice',cta:'Continue French'},
-  {subject:'biology',track:'current',label:'Biology',micro:'CURRENT · YEAR 9',detail:bioTopic?`Current topic: ${bioTopic.id} · ${bioTopic.title}`:'Continue Year 9 Learn',cta:'Continue Biology'}
+  {subject:'latin',track:'foundation',label:'Latin',micro:'YEAR 8 FOUNDATION',detail:'Structured mastery, review and free topic training.',stats:[`${latinMaster.secure||0} secure`,`${latinDue} due`,`${latinWeak} boost`],cta:'Train Latin'},
+  {subject:'french',track:'foundation',label:'French',micro:'YEAR 8 FOUNDATION',detail:'Structured mastery, accents, review and free training.',stats:[`${frenchMaster.secure||0} secure`,`${frenchDue} due`,`${frenchWeak} boost`],cta:'Train French'},
+  {subject:'biology',track:'foundation',label:'Biology',micro:'YEAR 8 FOUNDATION + Y9 LEARN',detail:'Foundation questions are trainable; Year 9 verified Learn stays available.',stats:[`${bioMaster.secure||0} secure`,`${bioDue} due`,`${bioWeak} boost`],cta:'Train Biology'},
+  {subject:'chemistry',track:'current',label:'Chemistry',micro:'CURRENT · YEAR 9',detail:'Verified Year 9 Learn notes. Practice waits for a verified bank.',stats:['Learn available'],cta:'Continue Chemistry'},
+  {subject:'physics',track:'current',label:'Physics',micro:'CURRENT · YEAR 9',detail:'Verified Year 9 Learn notes. Practice waits for a verified bank.',stats:['Learn available'],cta:'Continue Physics'}
  ];
- root.innerHTML=cards.map(c=>`<button class="continue-card" data-subject="${c.subject}" data-cont-subject="${c.subject}" data-cont-track="${c.track}">
-   <div class="subject-mini-icon">${c.label[0]}</div><span>${c.micro}</span><b>${c.label}</b><small>${c.detail}</small><u class="continue-cta">${c.cta} →</u>
-  </button>`).join('');
- root.querySelectorAll('[data-cont-subject]').forEach(b=>b.onclick=()=>goSubject(b.dataset.contSubject,b.dataset.contTrack));
+ root.innerHTML=cards.map(c=>`<article class="training-access-card" data-subject="${c.subject}">
+  <div class="training-access-top"><div class="training-access-icon">${c.label[0]}</div><small>${c.micro}</small></div>
+  <h3>${c.label}</h3><p>${c.detail}</p>
+  <div class="training-access-stats">${c.stats.map(s=>`<span>${s}</span>`).join('')}</div>
+  <button class="primary" data-train-subject="${c.subject}" data-train-track="${c.track}">${c.cta}</button>
+ </article>`).join('');
+ root.querySelectorAll('[data-train-subject]').forEach(b=>b.onclick=()=>{
+   const subject=b.dataset.trainSubject,track=b.dataset.trainTrack;
+   goSubject(subject,track,track==='foundation'?'practice':'learn');
+ });
+}
+function prettyWardrobe(v,fallback='None'){
+ if(v===null||v===undefined||v==='none')return fallback;
+ return String(v).replace(/[-_]/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
+}
+function renderScholarScene(){
+ const s=window.LuxGrowth.load(),w=s.wardrobe||{},loadout=document.getElementById('sceneLoadout');
+ if(loadout)loadout.innerHTML=[
+   `Hair · ${prettyWardrobe(w.hair,'Starter')}`,
+   `Outfit · ${prettyWardrobe(w.outfit,'Starter')}`,
+   `Accessory · ${prettyWardrobe(w.accessory)}`,
+   `Item · ${prettyWardrobe(w.hand||w.handItem)}`
+ ].map(x=>`<span>${x}</span>`).join('');
+ const decor=document.getElementById('sceneUnlockedDecor');
+ if(decor){
+   const items=Object.keys(s.collectibles||{}).slice(-3).reverse();
+   decor.innerHTML=(items.length?items:['Next item waiting']).map(id=>`<span>${id==='Next item waiting'?id:id.replace(/-/g,' ').replace(/\b\w/g,c=>c.toUpperCase())}</span>`).join('');
+ }
+ const stage=document.getElementById('scholarArtSlot');
+ if(stage){
+   stage.dataset.hair=w.hair||'starter';
+   stage.dataset.outfit=w.outfit||'starter';
+   stage.dataset.accessory=w.accessory||'none';
+   stage.dataset.hand=w.hand||w.handItem||'none';
+ }
 }
 function learnerGreeting(){
  let name='';
@@ -236,7 +276,7 @@ function learnerGreeting(){
 function renderHome(){
  document.getElementById('homeGreeting').textContent=learnerGreeting();
  document.getElementById('homeDate').textContent=new Intl.DateTimeFormat('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(new Date());
- growth();renderWeek();renderToday();renderQuickPlay();renderReward();renderContinue();
+ growth();renderScholarScene();renderWeek();renderToday();renderReward();renderSubjectTraining();renderQuickPlay();
 }
 function gardenStageBounds(stage){return ({1:[0,400],2:[400,1000],3:[1000,2200],4:[2200,3200]})[stage]||[0,400]}
 function renderGarden(){
@@ -266,8 +306,10 @@ function render(){
 async function init(){
  window.LuxApp={go,goSubject,toast,render,renderHome};
  window.LatinModule.init();window.FrenchModule.init();
- const frenchReady=window.FrenchModule.ensureData();
+ const frenchLegacyReady=window.FrenchModule.ensureData();
  const biologyReady=window.BiologyY8.ensureData();
+ const latinMasterReady=window.MasterY8.ensure('latin');
+ const frenchMasterReady=window.MasterY8.ensure('french');
  document.querySelectorAll('[data-global-route]').forEach(b=>b.onclick=()=>go(b.dataset.globalRoute));
  document.querySelector('[data-brand-home]')?.addEventListener('click',()=>go('home'));
  document.getElementById('gardenExplore').onclick=()=>document.getElementById('gardenExplorePanel').classList.toggle('hidden');
@@ -287,9 +329,9 @@ async function init(){
   if(routeInfo().screen==='garden')renderGarden();
 });
  document.addEventListener('lux:plan-change',()=>{if(routeInfo().screen==='home')renderHome()});
- await Promise.race([Promise.allSettled([frenchReady,biologyReady]),new Promise(resolve=>setTimeout(resolve,2400))]);
+ await Promise.race([Promise.allSettled([frenchLegacyReady,biologyReady,latinMasterReady,frenchMasterReady]),new Promise(resolve=>setTimeout(resolve,2600))]);
  render();
- if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=0.3.1').catch(()=>{});
+ if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=0.3.4').catch(()=>{});
 }
 document.readyState==='loading'?document.addEventListener('DOMContentLoaded',init):init();
 })();

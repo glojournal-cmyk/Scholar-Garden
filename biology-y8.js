@@ -24,6 +24,7 @@ function fresh(){
    answered:0,
    correct:0,
    manualReviewed:0,
+   milestones:{},
    createdAt:new Date().toISOString()
  };
 }
@@ -31,7 +32,7 @@ function load(){
  try{
    const x=JSON.parse(localStorage.getItem(KEY)||'null');
    return x&&typeof x==='object'
-    ?{...fresh(),...x,attempts:x.attempts||{},concepts:x.concepts||{},history:Array.isArray(x.history)?x.history:[]}
+    ?{...fresh(),...x,attempts:x.attempts||{},concepts:x.concepts||{},history:Array.isArray(x.history)?x.history:[],milestones:x.milestones||{}}
     :fresh();
  }catch{return fresh()}
 }
@@ -157,21 +158,37 @@ function scheduleAfterCorrect(q,cs){
    cs.nextDue=null;
  }
 }
+function stageRank(s){return ({new:0,learning:1,consolidating:2,secure:3})[s]??0}
 function record(q,correct,meta={}){
- const cs=conceptState(q.conceptId);
+ const cs=conceptState(q.conceptId),beforeStage=cs.stage;
  cs.attempts++;cs.lastAt=new Date().toISOString();cs.lastCorrect=!!correct;
  cs.score=(Number(cs.score)||0)+(correct?Number(q.gameplay?.masteryWeight||1):0);
  const qForSchedule={...q,_isDueReview:!!meta.isDueReview};
  if(correct)scheduleAfterCorrect(qForSchedule,cs);else scheduleAfterWrong(qForSchedule,cs);
  state.attempts[q.id]={tries:(state.attempts[q.id]?.tries||0)+1,lastAt:new Date().toISOString(),lastCorrect:!!correct,manual:!!meta.manual};
  state.answered++;if(correct)state.correct++;if(meta.manual)state.manualReviewed++;
- state.history.push({at:new Date().toISOString(),day:today(),questionId:q.id,conceptId:q.conceptId,correct:!!correct,format:q.format,manual:!!meta.manual});
+ state.history.push({at:new Date().toISOString(),day:today(),questionId:q.id,conceptId:q.conceptId,topicId:q.topicId,correct:!!correct,format:q.format,manual:!!meta.manual});
  if(state.history.length>1000)state.history=state.history.slice(-1000);
  save();
- if(correct)window.LuxGrowth?.award?.({subject:'biology',type:meta.isDueReview?'formal_due_review_correct':'practice_first_correct',itemId:q.id});
- document.dispatchEvent(new CustomEvent('bio:y8-progress'));
+ const transition={beforeStage,afterStage:cs.stage,becameSecure:beforeStage!=='secure'&&cs.stage==='secure',strengthened:stageRank(cs.stage)>stageRank(beforeStage)};
+ if(correct){
+   const xpType=meta.isDueReview?'formal_due_review_correct':beforeStage==='secure'?'practice_repeat_correct':'practice_first_correct';
+   window.LuxGrowth?.award?.({subject:'biology',type:xpType,itemId:q.id});
+ }
+ if(transition.becameSecure)window.LuxGrowth?.award?.({subject:'biology',type:'retention_confirmed',itemId:`biology:${q.conceptId}`,windowKey:'ever'});
+ document.dispatchEvent(new CustomEvent('bio:y8-progress',{detail:{transition,conceptId:q.conceptId,topicId:q.topicId}}));
+ return transition;
 }
-
+function metric(topicId='all'){
+ if(topicId&&topicId!=='all'){const p=topicProgress(topicId);return {kind:'topic',topicId,value:p.pct,secure:p.secure,total:p.total}}
+ const m=masterySummary();return {kind:'subject',value:m.secure,secure:m.secure,total:m.total}
+}
+function maybeTopicMilestone(topicId,before,after){
+ if(!topicId||topicId==='all'||before.value>=85||after.value<85)return 0;
+ const key=`topic85:${topicId}`;if(state.milestones[key])return 0;
+ state.milestones[key]={earnedAt:new Date().toISOString(),value:after.value};save();
+ return window.LuxGrowth?.award?.({subject:'biology',type:'topic_mastery_first',itemId:`biology:${topicId}`,windowKey:'ever'})?.awarded||0;
+}
 function splitItems(v){return norm(v).split(/\s*(?:,|;|\/|\band\b|\n)\s*/).filter(Boolean)}
 function markAutomatic(q,input,selected){
  const a=q.answer||{};
@@ -232,7 +249,7 @@ function sessionPool(mode='mixed',topicId='all'){
  if(mode==='due')return dueQuestions().filter(q=>topicId==='all'||q.topicId===topicId);
  if(mode==='weak')return weakQuestions().filter(q=>topicId==='all'||q.topicId===topicId);
  if(mode==='quick')p=p.filter(q=>q.gameplay?.eligibleModes?.includes('quick-quiz')||q.gameplay?.eligibleModes?.includes('warm-up'));
- if(mode==='production')p=p.filter(q=>q.gameplay?.recognition===false);
+ if(mode==='production'||mode==='extra')p=p.filter(q=>q.gameplay?.recognition===false);
  return p;
 }
 function choose(mode,count,topicId='all'){
@@ -244,7 +261,12 @@ async function startPractice(mode='mixed',count=10,topicId='all'){
  if(!(await ensureData()))return window.LuxApp.toast('Biology Foundation tools are unavailable.');
  const qs=choose(mode,count,topicId);
  if(!qs.length)return window.LuxApp.toast(mode==='due'?'No Biology reviews are due right now.':'No matching Biology questions are available.');
- session={questions:qs,index:0,score:0,manual:0,mode,topicId,isDueReview:mode==='due'};state.sessions++;save();
+ session={
+   questions:qs,index:0,score:0,manual:0,mode,topicId,isDueReview:mode==='due',
+   xpBefore:window.LuxGrowth?.snapshot?.().total||0,
+   beforeMastery:metric(topicId),
+   strengthened:new Set(),retained:new Set()
+ };state.sessions++;save();
  window.SubjectHub?.open?.('biology','foundation','practice');
  setTimeout(()=>{document.getElementById('genericPracticePane')?.classList.remove('hidden');renderQuestion()},0);
 }
@@ -282,8 +304,10 @@ function check(q){
  }else renderManualGeneric(q,input);
 }
 function finishMarked(q,correct,manual=false,detail={}){
- record(q,correct,{manual,isDueReview:!!session?.isDueReview});
+ const transition=record(q,correct,{manual,isDueReview:!!session?.isDueReview});
  if(correct)session.score++;if(manual)session.manual++;
+ if(transition?.strengthened)session.strengthened.add(q.conceptId);
+ if(transition?.becameSecure)session.retained.add(q.conceptId);
  const root=document.getElementById('bioFeedback'),fb=q.feedback||{};
  root.innerHTML=`<div class="feedback ${correct?'good':'bad'}"><h3>${correct?'Correct / met.':'Review this concept.'}</h3>
  ${detail.input?`<p><b>Your answer:</b> ${esc(detail.input)}</p>`:''}
@@ -298,28 +322,55 @@ function finishMarked(q,correct,manual=false,detail={}){
 function next(){if(++session.index<session.questions.length)renderQuestion();else finishSession()}
 function finishSession(){
  const pct=Math.round(session.score/Math.max(1,session.questions.length)*100),pane=document.getElementById('genericPracticePane');
- pane.innerHTML=`<div class="result-card card"><p class="eyebrow">BIOLOGY FOUNDATION</p><h2>Session complete</h2><div class="big-score">${pct}%</div>
- <p>${session.score}/${session.questions.length} met · ${session.manual} self-reviewed</p>
- <div class="quiz-actions"><button class="primary" id="bioAgain">Another session</button><button class="secondary" id="bioHome">Biology overview</button></div></div>`;
+ const after=metric(session.topicId);
+ let sessionBonus=0;
+ if(session.mode==='extra'&&session.score>0)sessionBonus+=window.LuxGrowth?.award?.({subject:'biology',type:'extra_training_complete',itemId:`biology:${session.topicId}`,windowKey:today()})?.awarded||0;
+ if(session.mode==='weak'&&session.score>0)sessionBonus+=window.LuxGrowth?.award?.({subject:'biology',type:'weak_area_complete',itemId:`biology:${session.topicId||'mixed'}`,windowKey:today()})?.awarded||0;
+ const milestoneXP=maybeTopicMilestone(session.topicId,session.beforeMastery,after);
+ const xpNow=window.LuxGrowth?.snapshot?.().total||session.xpBefore,gained=Math.max(0,xpNow-session.xpBefore);
+ const changed=after.value!==session.beforeMastery.value;
+ const masteryLine=after.kind==='topic'?`${session.beforeMastery.value}% ${changed?'→':'—'} ${after.value}%`:`${session.beforeMastery.secure} ${changed?'→':'—'} ${after.secure} secure concepts`;
+ pane.innerHTML=`<div class="result-card card training-result"><p class="eyebrow">BIOLOGY FOUNDATION</p><h2>Session complete</h2>
+ <div class="training-result-grid">
+  <div><small>MASTERY</small><strong>${masteryLine}</strong><span>${changed?'Academic evidence strengthened this area.':'No formal mastery change yet.'}</span></div>
+  <div><small>SCHOLAR XP</small><strong>+${gained} XP</strong><span>${sessionBonus?`Includes ${sessionBonus} training bonus.`:'From valid learning evidence.'}</span></div>
+  <div><small>CONCEPTS STRENGTHENED</small><strong>${session.strengthened.size}</strong><span>${session.retained.size?`${session.retained.size} retention confirmation${session.retained.size===1?'':'s'}.`:'Later review may still be needed.'}</span></div>
+ </div>
+ ${milestoneXP?`<div class="milestone-banner"><b>TOPIC MASTERY MILESTONE</b><span>+${milestoneXP} Scholar XP · first time only</span></div>`:''}
+ ${!changed?'<p class="review-note">Good practice. A later review may be needed before this can become secure.</p>':''}
+ <div class="quiz-actions"><button class="primary" id="bioAgain">Continue Training</button><button class="secondary" id="bioHome">Back to Biology</button><button class="secondary" id="bioAppHome">Home</button></div></div>`;
  document.getElementById('bioAgain').onclick=()=>startPractice(session.mode,session.questions.length,session.topicId);
  document.getElementById('bioHome').onclick=()=>renderFoundationHome();
+ document.getElementById('bioAppHome').onclick=()=>window.LuxApp?.go?.('home');
 }
-
 function renderFoundationHome(){
  const pane=document.getElementById('genericPracticePane');if(!pane)return;
  if(!ready){pane.innerHTML=`<div class="unavailable-pane"><h2>Preparing Biology Foundation Review…</h2></div>`;return}
- const d=dueCount(),w=weakCount();
- pane.innerHTML=`<div class="section-title"><div><p class="eyebrow">YEAR 8 FOUNDATION REVIEW</p><h2>Biology Practice</h2></div><span>${d} due · ${w} to revisit</span></div>
- <div class="practice-options">
+ const d=dueCount(),w=weakCount(),ts=topics();
+ const recent=state.history.slice().reverse().find(h=>h.topicId)?.topicId;
+ const current=ts.find(t=>t.id===recent)||ts[0],cp=current?topicProgress(current.id):null;
+ pane.innerHTML=`<div class="section-title"><div><p class="eyebrow">FREE TRAINING</p><h2>Biology Training Hall</h2></div><span>${d} due · ${w} to revisit</span></div>
+ ${current?`<article class="training-focus card-soft">
+  <div><p class="eyebrow">CURRENT FOCUS</p><h3>${esc(current.title)}</h3><p>${cp.pct}% secure · ${Math.max(0,cp.total-cp.secure)} concepts still building</p></div>
+  <div class="training-focus-actions"><button class="primary" data-bio-current-extra="${esc(current.id)}">Extra Practice</button><button class="secondary" data-bio-current-learn="${esc(current.id)}">Continue Topic</button></div>
+ </article>`:''}
+ <div class="practice-options training-modes">
   <button class="practice-choice" data-bio-mode="due"><b>Due Review</b><small>${d?`${d} concept${d===1?'':'s'} due`:'Nothing due right now'}</small></button>
-  <button class="practice-choice" data-bio-mode="weak"><b>Biology Boost</b><small>Target concepts that need more confidence</small></button>
-  <button class="practice-choice" data-bio-mode="mixed"><b>Mixed Practice</b><small>Balanced Year 8 consolidation</small></button>
+  <button class="practice-choice" data-bio-mode="weak"><b>Review Weak Areas</b><small>${w?`${w} concept${w===1?'':'s'} need confidence`:'No weak queue right now'}</small></button>
+  <button class="practice-choice" data-bio-mode="mixed"><b>Mixed Training</b><small>15-question structured consolidation</small></button>
  </div>
- <div class="bio-topic-practice">${topics().map(t=>{const pr=topicProgress(t.id);return `<button class="note-topic" data-bio-topic="${esc(t.id)}"><p class="eyebrow">${pr.pct}% SECURE</p><h3>${esc(t.title)}</h3><p>Focused topic practice</p></button>`}).join('')}</div>`;
+ <div class="section-title training-topic-title"><div><p class="eyebrow">CHOOSE A TOPIC</p><h2>Extra Practice</h2></div><span>${ts.length} topics</span></div>
+ <div class="bio-topic-practice training-topic-grid">${ts.map(t=>{const pr=topicProgress(t.id);return `<article class="note-topic training-topic-card">
+   <div><p class="eyebrow">${pr.pct}% SECURE</p><h3>${esc(t.title)}</h3><p>${pr.secure}/${pr.total} concepts secure</p></div>
+   <div class="topic-training-actions"><button class="secondary" data-bio-topic-learn="${esc(t.id)}">Learn</button><button class="primary" data-bio-topic-extra="${esc(t.id)}">Extra Practice</button></div>
+  </article>`}).join('')}</div>`;
  pane.querySelector('[data-bio-mode="due"]').onclick=()=>startPractice('due',7,'all');
  pane.querySelector('[data-bio-mode="weak"]').onclick=()=>startPractice('weak',7,'all');
  pane.querySelector('[data-bio-mode="mixed"]').onclick=()=>startPractice('mixed',15,'all');
- pane.querySelectorAll('[data-bio-topic]').forEach(b=>b.onclick=()=>startPractice('production',10,b.dataset.bioTopic));
+ pane.querySelector('[data-bio-current-extra]')?.addEventListener('click',e=>startPractice('extra',10,e.currentTarget.dataset.bioCurrentExtra));
+ pane.querySelector('[data-bio-current-learn]')?.addEventListener('click',e=>renderNote(e.currentTarget.dataset.bioCurrentLearn));
+ pane.querySelectorAll('[data-bio-topic-extra]').forEach(b=>b.onclick=()=>startPractice('extra',10,b.dataset.bioTopicExtra));
+ pane.querySelectorAll('[data-bio-topic-learn]').forEach(b=>b.onclick=()=>renderNote(b.dataset.bioTopicLearn));
 }
 function renderLearn(){
  const pane=document.getElementById('genericLearnPane');if(!pane)return;
