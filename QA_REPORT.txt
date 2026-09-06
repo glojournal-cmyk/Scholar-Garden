@@ -1,0 +1,45 @@
+LUX ET LABOR — THE SCHOLAR'S GARDEN
+V0.2.0 FULL MIGRATION QA
+
+Latin bank: {'q': 1056, 'b': 24, 'n': 24}
+Local WebP assets: 13
+Missing HTML refs: []
+Missing SW refs: []
+
+- JS syntax growth.js: PASS
+- JS syntax latin-module.js: PASS
+- JS syntax french-module.js: PASS
+- JS syntax latin-games.js: PASS
+- JS syntax app.js: PASS
+- JS syntax sw.js: PASS
+- JS syntax latin-question-bank.js: PASS
+- No duplicate HTML IDs: PASS
+- Flat root: no ./js or ./assets references: PASS
+- All local HTML refs exist: PASS
+- Latin questions = 1,056: PASS
+- Latin blocks preserved = 24: PASS
+- Latin notes preserved = 24: PASS
+- Latin old summer route removed from Games: PASS
+- Latin Games V2 present: PASS
+- Latin formal state key preserved: PASS
+- French formal state key preserved: PASS
+- Shared state separate: PASS
+- French audited source paths present: PASS
+- French spelling game present: PASS
+- Bio/Chem locked: PASS
+- 13 supplied images packaged: PASS
+- Images not bulk precached: PASS
+- French data runtime cache rule: PASS
+- Version visible: PASS
+- No old framework-only status copy: PASS
+- Service worker core refs exist: PASS
+
+RUNTIME LIMITS / HONESTY
+- Static deterministic checks above were executed in the build environment.
+- French's 1,502-question/617-vocab JSON is loaded from the existing live French-Revision repo unless the same JSON files are later copied into Scholar-Garden root.
+- Physical iPad Safari/audio testing still requires the deployed site.
+- No claim is made that the new avatar/chibi/medal artwork exists yet; CSS slots are ready for it.
+
+CAUSE OF V0.1 BUTTON FAILURE
+- The GitHub repository shows V0.1 files flattened at root while V0.1 index.html expected nested js/ and assets/ paths.
+- V0.2 is deliberately flat-root to prevent that upload failure mode.

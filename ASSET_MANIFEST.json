@@ -1,7 +1,7 @@
 [
   {
     "source": "ChatGPT Image Sep 6, 2026, 10_46_51 AM (1).png",
-    "file": "assets/garden/garden_01.webp",
+    "file": "garden_01.webp",
     "sourceSize": [
       1691,
       930
@@ -10,7 +10,7 @@
   },
   {
     "source": "ChatGPT Image Sep 6, 2026, 10_46_51 AM (2).png",
-    "file": "assets/garden/garden_02.webp",
+    "file": "garden_02.webp",
     "sourceSize": [
       1691,
       930
@@ -19,7 +19,7 @@
   },
   {
     "source": "ChatGPT Image Sep 6, 2026, 10_46_51 AM (3).png",
-    "file": "assets/room/room_01.webp",
+    "file": "room_01.webp",
     "sourceSize": [
       1536,
       1024
@@ -28,7 +28,7 @@
   },
   {
     "source": "ChatGPT Image Sep 6, 2026, 10_46_52 AM (6).png",
-    "file": "assets/subjects/subject_01.webp",
+    "file": "subject_01.webp",
     "sourceSize": [
       1254,
       1254
@@ -37,7 +37,7 @@
   },
   {
     "source": "ChatGPT Image Sep 6, 2026, 10_46_52 AM (7).png",
-    "file": "assets/subjects/subject_02.webp",
+    "file": "subject_02.webp",
     "sourceSize": [
       1254,
       1254
@@ -46,7 +46,7 @@
   },
   {
     "source": "ChatGPT Image Sep 6, 2026, 10_46_52 AM (4).png",
-    "file": "assets/heroes/hero_01.webp",
+    "file": "hero_01.webp",
     "sourceSize": [
       1896,
       829
@@ -55,7 +55,7 @@
   },
   {
     "source": "ChatGPT Image Sep 6, 2026, 10_46_52 AM (5).png",
-    "file": "assets/heroes/hero_02.webp",
+    "file": "hero_02.webp",
     "sourceSize": [
       1896,
       829
@@ -64,7 +64,7 @@
   },
   {
     "source": "ChatGPT Image Sep 6, 2026, 10_47_32 AM (1).png",
-    "file": "assets/heroes/hero_03.webp",
+    "file": "hero_03.webp",
     "sourceSize": [
       1983,
       793
@@ -73,7 +73,7 @@
   },
   {
     "source": "ChatGPT Image Sep 6, 2026, 10_47_32 AM (2).png",
-    "file": "assets/heroes/hero_04.webp",
+    "file": "hero_04.webp",
     "sourceSize": [
       1983,
       793
@@ -82,7 +82,7 @@
   },
   {
     "source": "ChatGPT Image Sep 6, 2026, 10_47_32 AM (3).png",
-    "file": "assets/heroes/hero_05.webp",
+    "file": "hero_05.webp",
     "sourceSize": [
       1983,
       793
@@ -91,7 +91,7 @@
   },
   {
     "source": "ChatGPT Image Sep 6, 2026, 10_47_32 AM (4).png",
-    "file": "assets/heroes/hero_06.webp",
+    "file": "hero_06.webp",
     "sourceSize": [
       1983,
       793
@@ -100,7 +100,7 @@
   },
   {
     "source": "ChatGPT Image Sep 6, 2026, 10_47_33 AM (5).png",
-    "file": "assets/heroes/hero_07.webp",
+    "file": "hero_07.webp",
     "sourceSize": [
       1983,
       793
@@ -109,7 +109,7 @@
   },
   {
     "source": "ChatGPT Image Sep 6, 2026, 10_47_33 AM (6).png",
-    "file": "assets/heroes/hero_08.webp",
+    "file": "hero_08.webp",
     "sourceSize": [
       1983,
       793
