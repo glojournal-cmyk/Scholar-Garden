@@ -14,12 +14,6 @@ const MEDALS=[
  ['french-scholar','French Scholar','Grow through French learning.'],
  ['polyglot','Polyglot Scholar','Build strength across both languages.']
 ];
-const STARTER={
- hair:[['starter','Starter']],
- outfit:[['starter','Starter']],
- accessory:[['none','None']],
- hand:[['none','None']]
-};
 function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function state(){return window.LuxGrowth.load()}
 function save(s){window.LuxGrowth.save(s)}
@@ -31,28 +25,66 @@ function ensureWardrobe(s){
  if(!('hand'in s.wardrobe))s.wardrobe.hand=null;
  return s;
 }
+function normalizeWardrobeState(){
+ const s=ensureWardrobe(state());
+ if(s.wardrobe.outfit==='starter'){
+   s.wardrobe.outfit='school-uniform';
+   save(s);
+ }
+ return s;
+}
+function renderAvatarCanvas(s){
+ const img=document.getElementById('wardrobeScholarImage'),canvas=document.getElementById('avatarCanvas');
+ if(!img||!canvas)return;
+ const selected=window.ScholarAssets?.selectedOutfit?.()||window.ScholarAssets?.manifest?.outfits?.[0];
+ if(selected){
+   img.src=selected.asset;
+   img.alt=`Scholar wearing ${selected.name}`;
+   canvas.classList.add('has-scholar-art');
+ }
+}
 function renderWardrobe(){
- const s=ensureWardrobe(state()),root=document.getElementById('wardrobeControls');if(!root)return;
- const groups=[
-  ['hair','Hair',STARTER.hair],
-  ['outfit','Outfit',STARTER.outfit],
-  ['accessory','Accessories',STARTER.accessory],
-  ['hand','Hand item / study item',STARTER.hand]
- ];
- root.innerHTML=groups.map(([key,label,opts])=>`<section class="wardrobe-group"><h3>${label}</h3><div class="wardrobe-options">${
-  opts.map(([id,name])=>`<button data-wardrobe-key="${key}" data-wardrobe-value="${id}" class="${String(s.wardrobe[key]??'none')===id?'selected':''}">${name}</button>`).join('')
- }</div></section>`).join('');
- root.querySelectorAll('[data-wardrobe-key]').forEach(b=>b.onclick=()=>{
-  const fresh=ensureWardrobe(state()),key=b.dataset.wardrobeKey,val=b.dataset.wardrobeValue;
-  fresh.wardrobe[key]=(val==='none'?null:val);save(fresh);renderWardrobe();
+ const s=normalizeWardrobeState(),root=document.getElementById('wardrobeControls');if(!root)return;
+ const g=window.LuxGrowth.snapshot(),items=window.ScholarAssets?.manifest?.outfits||[];
+ const equipped=window.ScholarAssets?.normalizeOutfitId?.(s.wardrobe.outfit)||'school-uniform';
+ renderAvatarCanvas(s);
+ root.innerHTML=`<div class="wardrobe-gallery">${items.map(item=>{
+   const unlocked=window.ScholarAssets.outfitUnlocked(item,g),selected=item.id===equipped;
+   const requirement=window.ScholarAssets.unlockRequirement(item);
+   return `<article class="wardrobe-preview-card ${unlocked?'unlocked':'locked'} ${selected?'selected':''}">
+     <div class="wardrobe-art-wrap">
+       <img src="${esc(item.asset)}" alt="${esc(item.name)}" loading="lazy" decoding="async">
+       ${unlocked?'':`<span class="wardrobe-lock">Locked</span>`}
+       ${selected?'<span class="wardrobe-selected">Equipped</span>':''}
+     </div>
+     <div class="wardrobe-card-copy">
+       <h3>${esc(item.name)}</h3>
+       <p>${unlocked?(selected?'Currently equipped.':'Unlocked through study.'):`Unlock: ${esc(requirement)}`}</p>
+       <button class="${selected?'secondary':'primary'}" data-equip-outfit="${esc(item.id)}" ${unlocked&&!selected?'':'disabled'}>${selected?'Equipped':unlocked?'Equip':'Locked'}</button>
+     </div>
+   </article>`;
+ }).join('')}</div>`;
+ root.querySelectorAll('[data-equip-outfit]').forEach(b=>b.onclick=()=>{
+   const item=items.find(x=>x.id===b.dataset.equipOutfit);
+   const latest=window.LuxGrowth.snapshot();
+   if(!item||!window.ScholarAssets.outfitUnlocked(item,latest))return;
+   const fresh=ensureWardrobe(state());
+   fresh.wardrobe.outfit=item.id;
+   save(fresh);
+   renderWardrobe();
+   document.dispatchEvent(new CustomEvent('scholar:wardrobe-change',{detail:{outfit:item.id}}));
  });
 }
 function renderCollection(){
  const s=state(),filter=document.querySelector('[data-collection-filter].active')?.dataset.collectionFilter||'All';
  const root=document.getElementById('collectionGrid');if(!root)return;
  root.innerHTML=BLUEPRINT.filter(x=>filter==='All'||x[1]===filter).map(x=>{
-  const earned=!!s.collectibles?.[x[0]];
-  return `<article class="collect-card ${earned?'earned':''}"><div class="collect-art">${earned?'✓':'◆'}</div><small>${esc(x[1])}</small><h3>${esc(x[2])}</h3><p>${earned?'Earned through study.':`Next step: ${esc(x[3])}`}</p></article>`;
+  const earned=!!s.collectibles?.[x[0]],art=window.ScholarAssets?.rewardAsset?.(x[0]);
+  return `<article class="collect-card ${earned?'earned':''}">
+    <div class="collect-art ${art?'has-reward-art':''}">${art?`<img class="reward-interaction-art" src="${esc(art)}" alt="${esc(x[2])} reward interaction" loading="lazy" decoding="async">`:(earned?'✓':'◆')}</div>
+    <small>${esc(x[1])}</small><h3>${esc(x[2])}</h3>
+    <p>${earned?'Earned through study.':`Next step: ${esc(x[3])}`}</p>
+  </article>`;
  }).join('');
 }
 function renderAchievements(){
@@ -71,6 +103,6 @@ function bind(){
   document.querySelectorAll('[data-collection-filter]').forEach(x=>x.classList.toggle('active',x===b));renderCollection();
  });
 }
-window.ScholarView=Object.freeze({openTab,renderWardrobe,renderCollection,renderAchievements,BLUEPRINT});
+window.ScholarView=Object.freeze({openTab,renderWardrobe,renderAvatarCanvas,renderCollection,renderAchievements,BLUEPRINT});
 window.addEventListener('DOMContentLoaded',bind,{once:true});
 })();

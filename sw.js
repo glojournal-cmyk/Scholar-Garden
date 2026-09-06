@@ -1,14 +1,15 @@
-const V='scholars-garden-v0-3-4-3-topic-learn-fix-20260906';
+const V='scholars-garden-v0-3-4-4-scholar-assets-20260906';
 const CORE=`${V}-core`,RUN=`${V}-runtime`;
 const FILES=[
- './','./index.html','./styles.css?v=0.3.4.3','./latin-games.css?v=0.3.4.3','./manifest.webmanifest',
- './latin-question-bank.js?v=0.3.4.3','./growth.js?v=0.3.4.3','./latin-module.js?v=0.3.4.3',
- './french-module.js?v=0.3.4.3','./latin-games.js?v=0.3.4.3','./science-notes.js?v=0.3.4.3',
- './biology-y8.js?v=0.3.4.3','./language-y8.js?v=0.3.4.3','./mcp-reference-marker.mjs',
+ './','./index.html','./styles.css?v=0.3.4.4','./scholar-assets.css?v=0.3.4.4','./latin-games.css?v=0.3.4.4','./manifest.webmanifest',
+ './latin-question-bank.js?v=0.3.4.4','./growth.js?v=0.3.4.4','./latin-module.js?v=0.3.4.4',
+ './french-module.js?v=0.3.4.4','./latin-games.js?v=0.3.4.4','./science-notes.js?v=0.3.4.4',
+ './biology-y8.js?v=0.3.4.4','./language-y8.js?v=0.3.4.4','./mcp-reference-marker.mjs',
  './mcp-runtime-index.json','./mcp-concept-index.json','./mcp-origin-map.json','./mcp-language-summary.json',
  './bio-y8-question-bank.json','./bio-y8-answer-bank.json','./bio-y8-concept-bank.json',
  './bio-y8-keyword-bank.json','./bio-y8-notes-by-topic.json','./bio-y8-diagram-specs.json',
- './daily-plan.js?v=0.3.4.3','./subject-hub.js?v=0.3.4.3','./scholar.js?v=0.3.4.3','./app.js?v=0.3.4.3'
+ './daily-plan.js?v=0.3.4.4','./scholar-assets.js?v=0.3.4.4','./subject-hub.js?v=0.3.4.4','./scholar.js?v=0.3.4.4','./app.js?v=0.3.4.4',
+ './assets/scholar/home/scholar_idle.png'
 ];
 
 self.addEventListener('install',event=>{

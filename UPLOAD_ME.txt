@@ -1,40 +1,42 @@
-SCHOLAR'S GARDEN — V0.3.4.3 TOPIC LEARN FIX
+SCHOLAR'S GARDEN — V0.3.4.4 SCHOLAR ASSET INTEGRATION
 
-Upload every extracted file to the ROOT of the Scholar-Garden repository.
+Expected footer:
+V0.3.4.4 Scholar Asset Integration
 
-Expected public footer:
-V0.3.4.3 Topic Learn Fix
+Because this release contains the 52 original Scholar PNGs, the full repository has more than 100 files.
+For GitHub browser upload, use the two supplied batches:
 
-Priority public acceptance:
+BATCH 1 — CODE
+Lux_et_Labor_Scholars_Garden_V0_3_4_4_Code_Batch.zip
 
-Latin Foundation Training Hall:
-- Current Focus -> Continue Topic
-- every topic card -> Learn
-Especially verify:
-  Accusative forms
-  Adjective agreement
-  Case and grammar role
-  Case functions
-  Case-role introduction
-  Choose the complete translation
-  Choose the exact Latin
-  Choose the set-text translation
+BATCH 2 — SCHOLAR ASSETS
+Lux_et_Labor_Scholars_Garden_V0_3_4_4_Scholar_Assets_Batch.zip
 
-French Foundation Training Hall:
-- Current Focus -> Continue Topic
-- every visible topic card -> Learn
+Commit both batches before accepting the public build.
 
-Biology Foundation Training Hall:
-- Current Focus -> Continue Topic
-- every visible topic card -> Learn
+Priority public QA:
+HOME
+- fresh learner / tasks remaining / due review / all tasks complete
+- no placeholder S
+- Quest buttons remain clickable
 
-For each:
-1. click once
-2. Practice pane disappears
-3. Learn tab becomes active
-4. requested teaching note is visible
-5. Back to all topics works
-6. Practise this topic works
-7. browser Back returns to a coherent Subject Hub route
+WARDROBE
+- 10 outfits visible
+- lock requirements correct
+- unlocked outfit equips and persists
+- Home immediately reflects equipped non-school outfit
+- legacy starter behaves as school-uniform
 
-Do not accept the release if the footer is not V0.3.4.3.
+REWARDS
+- Ink Pot exact art
+- Study Books exact art
+- Ivy Pot exact art
+- unsupported rewards have no false image mapping
+
+REGRESSION
+- Learn
+- Extra Practice
+- Latin mini-games
+- French spelling
+- XP persistence
+- Mastery persistence

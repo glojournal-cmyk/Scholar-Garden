@@ -7,8 +7,10 @@
 <meta name="description" content="Lux et Labor — The Scholar's Garden">
 <title>Lux et Labor — The Scholar’s Garden</title>
 <link rel="manifest" href="./manifest.webmanifest">
-<link rel="stylesheet" href="./styles.css?v=0.3.4.3">
-<link rel="stylesheet" href="./latin-games.css?v=0.3.4.3">
+<link rel="stylesheet" href="./styles.css?v=0.3.4.4">
+<link rel="stylesheet" href="./scholar-assets.css?v=0.3.4.4">
+<link rel="stylesheet" href="./latin-games.css?v=0.3.4.4">
+<link rel="preload" as="image" href="./assets/scholar/home/scholar_idle.png">
 </head>
 <body>
 <div class="app-shell">
@@ -38,6 +40,7 @@
      </div>
 
      <div class="base-character-stage" id="scholarArtSlot" data-art-slot="master-scholar">
+       <img id="homeScholarImage" class="scholar-character-art home-scholar-art" src="./assets/scholar/home/scholar_idle.png" alt="Scholar" fetchpriority="high" decoding="async">
        <div class="home-avatar-layer" data-home-avatar-layer="back-hair"></div>
        <div class="home-avatar-layer home-avatar-body" data-home-avatar-layer="base-character"><span class="scene-sigil">S</span></div>
        <div class="home-avatar-layer" data-home-avatar-layer="outfit"></div>
@@ -136,6 +139,7 @@
      <p id="subjectSubtitle">Build fluency through short, focused sessions.</p>
    </div>
    <div class="subject-summary">
+     <img id="subjectScholarPose" class="subject-scholar-pose hidden" alt="" loading="lazy" decoding="async">
      <span id="subjectMastery">Learning in progress</span>
      <span id="subjectDue">0 due</span>
      <button class="primary" id="subjectContinue">Continue today</button>
@@ -233,6 +237,7 @@
    <div class="scholar-layout">
      <article class="avatar-stage card-soft" aria-label="Avatar preview area">
        <div class="avatar-canvas" id="avatarCanvas" data-avatar-canvas="560x760">
+         <img id="wardrobeScholarImage" class="scholar-character-art wardrobe-scholar-art" src="./assets/scholar/outfits/outfit_school_uniform.png" alt="Equipped Scholar outfit" loading="lazy" decoding="async">
          <div class="avatar-layer layer-backhair" data-avatar-layer="back-hair"></div>
          <div class="avatar-layer layer-body" data-avatar-layer="base-body"><span>Scholar</span></div>
          <div class="avatar-layer layer-outfit" data-avatar-layer="outfit"></div>
@@ -241,7 +246,7 @@
          <div class="avatar-layer layer-accessory" data-avatar-layer="accessory"></div>
          <div class="avatar-layer layer-hand" data-avatar-layer="hand-item"></div>
        </div>
-       <p class="avatar-note">Starter silhouette. More Scholar styles will be added later.</p>
+       <p class="avatar-note">Full-render Scholar appearances. Locked styles unlock through study.</p>
      </article>
      <aside class="wardrobe-panel">
        <p class="eyebrow">WARDROBE</p><h2>Build your look</h2>
@@ -270,18 +275,19 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="./latin-question-bank.js?v=0.3.4.3"></script>
-<script src="./growth.js?v=0.3.4.3"></script>
-<script src="./latin-module.js?v=0.3.4.3"></script>
-<script src="./french-module.js?v=0.3.4.3"></script>
-<script src="./latin-games.js?v=0.3.4.3"></script>
-<script src="./science-notes.js?v=0.3.4.3"></script>
-<script src="./biology-y8.js?v=0.3.4.3"></script>
-<script src="./language-y8.js?v=0.3.4.3"></script>
-<script src="./daily-plan.js?v=0.3.4.3"></script>
-<script src="./subject-hub.js?v=0.3.4.3"></script>
-<script src="./scholar.js?v=0.3.4.3"></script>
-<script src="./app.js?v=0.3.4.3"></script>
-<footer class="build-footer">Lux et Labor · Scholar’s Garden · V0.3.4.3 Topic Learn Fix</footer>
+<script src="./latin-question-bank.js?v=0.3.4.4"></script>
+<script src="./growth.js?v=0.3.4.4"></script>
+<script src="./latin-module.js?v=0.3.4.4"></script>
+<script src="./french-module.js?v=0.3.4.4"></script>
+<script src="./latin-games.js?v=0.3.4.4"></script>
+<script src="./science-notes.js?v=0.3.4.4"></script>
+<script src="./biology-y8.js?v=0.3.4.4"></script>
+<script src="./language-y8.js?v=0.3.4.4"></script>
+<script src="./daily-plan.js?v=0.3.4.4"></script>
+<script src="./scholar-assets.js?v=0.3.4.4"></script>
+<script src="./subject-hub.js?v=0.3.4.4"></script>
+<script src="./scholar.js?v=0.3.4.4"></script>
+<script src="./app.js?v=0.3.4.4"></script>
+<footer class="build-footer">Lux et Labor · Scholar’s Garden · V0.3.4.4 Scholar Asset Integration</footer>
 </body>
 </html>

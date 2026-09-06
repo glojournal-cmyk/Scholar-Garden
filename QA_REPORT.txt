@@ -1,43 +1,68 @@
 LUX ET LABOR — THE SCHOLAR'S GARDEN
-V0.3.4.3 TOPIC LEARN FIX
+V0.3.4.4 SCHOLAR ASSET INTEGRATION QA
 
-Candidate QA: 76 / 76 PASS
+Result: 54/54 PASS
+Scholar PNG originals: 52
+Total Scholar PNG size: 65.18 MiB
+Largest individual repository file: mcp-french-runtime-3.json (3.57 MiB)
 
-TARGETED TOPIC LEARN
-PASS Latin: all 65 visible Foundation Training Hall topic Learn routes show the requested note
-PASS French: all 30 enabled/visible Foundation Training Hall topic Learn routes show the requested note
-PASS Biology: all 37 Foundation Training Hall topic Learn routes show the requested note
+Checks:
+- PASS — JS syntax — scholar-assets.js
+- PASS — JS syntax — language-y8.js
+- PASS — JS syntax — french-module.js
+- PASS — JS syntax — latin-games.js
+- PASS — JS syntax — biology-y8.js
+- PASS — JS syntax — latin-module.js
+- PASS — JS syntax — science-notes.js
+- PASS — JS syntax — app.js
+- PASS — JS syntax — latin-question-bank.js
+- PASS — JS syntax — growth.js
+- PASS — JS syntax — subject-hub.js
+- PASS — JS syntax — scholar.js
+- PASS — JS syntax — daily-plan.js
+- PASS — JS syntax — sw.js
+- PASS — Asset manifest contains exactly 52 supplied PNGs
+- PASS — All 52 PNGs preserve original pack SHA-256
+- PASS — Exactly 52 Scholar PNG originals present
+- PASS — Wardrobe source map has exactly 10 outfits
+- PASS — Reward exact mappings are only Ink Pot / Study Books / Ivy Pot
+- PASS — Home mapping preserves idle/ready/thinking/success
+- PASS — Academic engines/data protected byte-for-byte
+- PASS — Scholar learner state key preserved
+- PASS — Latin learner state key preserved
+- PASS — French learner state key preserved
+- PASS — Release is consistently V0.3.4.4
+- PASS — Scholar helper loads after DailyPlan and before Scholar/App
+- PASS — Home real Scholar image inserted
+- PASS — Wardrobe full-render image inserted
+- PASS — Old Home placeholder is hidden by asset CSS
+- PASS — Old avatar layers hidden while full-render art is active
+- PASS — Only default Home Scholar art is core-preloaded
+- PASS — Wardrobe outfit images are lazy-loaded
+- PASS — Subject pose images are lazy-loaded
+- PASS — Home semantic resolver uses DailyPlan
+- PASS — Non-school outfit takes Home precedence
+- PASS — Legacy starter maps to school-uniform
+- PASS — Wardrobe uses existing LuxGrowth state only
+- PASS — Wardrobe has no fake hair/accessory chooser
+- PASS — All 10 outfits rendered from ScholarAssets manifest
+- PASS — Locked outfits cannot equip
+- PASS — Wardrobe equip dispatches Home refresh event
+- PASS — Home rerenders on growth and plan change
+- PASS — Reward preview uses exact mapping only
+- PASS — Collection reward detail uses exact mapping only
+- PASS — Unsupported reward art remains unmapped
+- PASS — Latin Learn pose mapped
+- PASS — French Learn pose mapped
+- PASS — Biology Learn pose mapped
+- PASS — Due-review feedback pose mapped
+- PASS — Progress/mastery pose mapped
+- PASS — Extra/play determined pose mapped
+- PASS — SubjectHub applies pose without changing renderers
+- PASS — All local HTML asset references exist
+- PASS — No individual file exceeds 25 MiB
 
-For every tested topic:
-PASS Practice -> Learn route
-PASS Practice pane hidden
-PASS Learn pane visible
-PASS Learn tab active
-PASS requested note content visible
-PASS note scroll hook reached
-
-REPRESENTATIVE NOTE ACTIONS
-PASS Latin Back to all topics
-PASS Latin Practise this topic
-PASS French Back to all topics
-PASS French Practise this topic
-PASS Biology Back to all topics
-PASS Biology Practise this topic
-
-REGRESSION
-PASS Latin/French/Biology mixed Practice
-PASS Latin/French/Biology Extra Practice
-PASS Latin/French Foundation tab cycles
-PASS Biology/Chemistry/Physics Y9 Learn
-PASS all four Latin GameV2 Level 1 render checks
-
-VERSION/CACHE
-PASS release = 0.3.4.3 everywhere
-PASS old Scholar Garden SW caches removed on activation
-PASS learner localStorage untouched
-PASS JS/MJS/JSON/CSS exact-resource cache policy retained
-
-PUBLIC MANUAL QA
-NOT CLAIMED.
-This environment cannot complete a real interactive GitHub Pages/iPad browser session.
-Public acceptance must occur after deployment.
+Manual browser limitation:
+- A Chromium launch was attempted but the container terminates Chromium before usable navigation.
+- No physical iPad Safari or public GitHub Pages manual acceptance is claimed.
+- Academic engines/data were protected by byte-for-byte comparison against V0.3.4.3.

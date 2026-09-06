@@ -183,18 +183,21 @@ async function startTask(t){
 }
 function nextReward(g){
  const s=g.state,candidates=[
-  ['Ink Pot',40,!!s.collectibles?.['ink-pot']],['Study Books',250,!!s.collectibles?.['study-books']],
-  ['Golden Lexicon',1500,!!s.collectibles?.['golden-lexicon']]
+  ['ink-pot','Ink Pot',40,!!s.collectibles?.['ink-pot']],['study-books','Study Books',250,!!s.collectibles?.['study-books']],
+  ['golden-lexicon','Golden Lexicon',1500,!!s.collectibles?.['golden-lexicon']]
  ];
- const next=candidates.find(x=>!x[2])||['Flourishing Garden',Math.max(g.total+100,g.total),false];
- return {name:next[0],need:next[1],left:Math.max(0,next[1]-g.total)};
+ const next=candidates.find(x=>!x[3])||[null,'Flourishing Garden',Math.max(g.total+100,g.total),false];
+ return {id:next[0],name:next[1],need:next[2],left:Math.max(0,next[2]-g.total)};
 }
-let lastCollectibleCount=null;
+let lastCollectibleCount=null,lastCollectibleIds=new Set();
 function renderReward(animate=false){
- const g=growth(),r=nextReward(g),card=document.getElementById('nextRewardCard');
+ const g=growth(),r=nextReward(g),card=document.getElementById('nextRewardCard'),artRoot=document.getElementById('nextRewardArt');
  document.getElementById('nextRewardName').textContent=r.name;
  document.getElementById('nextRewardCopy').textContent=r.left?`${r.left} XP to unlock`:'Unlocked through study';
- document.getElementById('nextRewardArt').dataset.rewardName=r.name.toLowerCase().replace(/\s+/g,'-');
+ artRoot.dataset.rewardName=r.id||'unmapped';
+ const art=r.id?window.ScholarAssets?.rewardAsset?.(r.id):null;
+ artRoot.classList.toggle('has-reward-art',!!art);
+ artRoot.innerHTML=art?`<img class="reward-interaction-art" src="${art}" alt="${r.name} reward preview" loading="lazy" decoding="async">`:'';
  const pct=r.need?Math.min(100,Math.round(g.total/r.need*100)):100;
  document.getElementById('nextRewardBar').style.width=`${pct}%`;
  document.getElementById('homeGrowthStage').textContent=`Garden Stage ${g.gardenStage}`;
@@ -208,6 +211,23 @@ function renderReward(animate=false){
    setTimeout(()=>card.classList.remove('just-unlocked'),900);
  }
  lastCollectibleCount=g.collectibleCount;
+ lastCollectibleIds=new Set(Object.keys(g.state.collectibles||{}));
+}
+function flashScholarRewardUnlock(rewardId){
+ const outfit=window.ScholarAssets?.selectedOutfit?.();
+ const homeImg=document.getElementById('homeScholarImage');
+ if(homeImg&&outfit?.id==='school-uniform'){
+   const reaction=window.ScholarAssets?.homeReactionAsset?.('rewardUnlock');
+   if(reaction)homeImg.src=reaction;
+ }
+ const art=window.ScholarAssets?.rewardAsset?.(rewardId),artRoot=document.getElementById('nextRewardArt');
+ if(art&&artRoot){
+   artRoot.classList.add('has-reward-art','reward-unlock-preview');
+   artRoot.innerHTML=`<img class="reward-interaction-art" src="${art}" alt="Unlocked reward" decoding="async">`;
+ }
+ setTimeout(()=>{
+   if(routeInfo().screen==='home'){renderScholarScene();renderReward();}
+ },1400);
 }
 function renderQuickPlay(){
  const root=document.getElementById('quickPlayGrid'),drawer=document.getElementById('allGamesDrawer');
@@ -254,24 +274,24 @@ function prettyWardrobe(v,fallback='None'){
  return String(v).replace(/[-_]/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
 }
 function renderScholarScene(){
- const s=window.LuxGrowth.load(),w=s.wardrobe||{},loadout=document.getElementById('sceneLoadout');
- if(loadout)loadout.innerHTML=[
-   `Hair · ${prettyWardrobe(w.hair,'Starter')}`,
-   `Outfit · ${prettyWardrobe(w.outfit,'Starter')}`,
-   `Accessory · ${prettyWardrobe(w.accessory)}`,
-   `Item · ${prettyWardrobe(w.hand||w.handItem)}`
+ const s=window.LuxGrowth.load(),stage=document.getElementById('scholarArtSlot'),img=document.getElementById('homeScholarImage');
+ const selected=window.ScholarAssets?.selectedOutfit?.();
+ if(stage&&img&&selected){
+   const asset=window.ScholarAssets.homeAsset();
+   if(img.getAttribute('src')!==asset)img.src=asset;
+   img.alt=`Scholar · ${selected.name}`;
+   stage.classList.add('has-scholar-art');
+   stage.dataset.outfit=selected.id;
+ }
+ const loadout=document.getElementById('sceneLoadout');
+ if(loadout&&selected)loadout.innerHTML=[
+   `Outfit · ${selected.name}`,
+   selected.id==='school-uniform'?`Pose · ${window.ScholarAssets.baseHomeState()}`:'Full-render appearance'
  ].map(x=>`<span>${x}</span>`).join('');
  const decor=document.getElementById('sceneUnlockedDecor');
  if(decor){
    const items=Object.keys(s.collectibles||{}).slice(-3).reverse();
    decor.innerHTML=(items.length?items:['Next item waiting']).map(id=>`<span>${id==='Next item waiting'?id:id.replace(/-/g,' ').replace(/\b\w/g,c=>c.toUpperCase())}</span>`).join('');
- }
- const stage=document.getElementById('scholarArtSlot');
- if(stage){
-   stage.dataset.hair=w.hair||'starter';
-   stage.dataset.outfit=w.outfit||'starter';
-   stage.dataset.accessory=w.accessory||'none';
-   stage.dataset.hand=w.hand||w.handItem||'none';
  }
 }
 function learnerGreeting(){
@@ -405,6 +425,8 @@ async function init(){
  const biologyReady=window.BiologyY8.ensureData();
  const latinMasterReady=window.MasterY8.ensure('latin');
  const frenchMasterReady=window.MasterY8.ensure('french');
+ window.ScholarAssets?.preloadCurrentHome?.();
+ renderScholarScene();
  document.addEventListener('click',handleActionClick);
  let routeRenderQueued=false;
  const queueRouteRender=source=>{
@@ -418,22 +440,28 @@ async function init(){
  window.addEventListener('hashchange',()=>queueRouteRender('hash'));
  window.addEventListener('popstate',()=>queueRouteRender('history'));
  document.addEventListener('lux:growth',()=>{
-  const before=lastCollectibleCount,after=window.LuxGrowth.snapshot().collectibleCount;
+  const beforeCount=lastCollectibleCount,beforeIds=new Set(lastCollectibleIds),snap=window.LuxGrowth.snapshot();
+  const newReward=Object.keys(snap.state.collectibles||{}).find(id=>!beforeIds.has(id))||null;
   growth();
   if(routeInfo().screen==='home'){
     renderHome();
-    if(before!==null&&after>before){
+    if(beforeCount!==null&&snap.collectibleCount>beforeCount){
       const card=document.getElementById('nextRewardCard');
       card.classList.remove('just-unlocked');void card.offsetWidth;card.classList.add('just-unlocked');
       setTimeout(()=>card.classList.remove('just-unlocked'),900);
+      if(newReward)flashScholarRewardUnlock(newReward);
     }
   }
   if(routeInfo().screen==='garden')renderGarden();
 });
+ document.addEventListener('scholar:wardrobe-change',()=>{
+   renderScholarScene();
+   if(routeInfo().screen==='home')renderHome();
+ });
  document.addEventListener('lux:plan-change',()=>{if(routeInfo().screen==='home')renderHome()});
  await Promise.race([Promise.allSettled([frenchLegacyReady,biologyReady,latinMasterReady,frenchMasterReady]),new Promise(resolve=>setTimeout(resolve,2600))]);
  await render();
- if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=0.3.4.3',{updateViaCache:'none'}).then(reg=>reg.update()).catch(err=>console.warn('[PWA] service worker update failed',err));
+ if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=0.3.4.4',{updateViaCache:'none'}).then(reg=>reg.update()).catch(err=>console.warn('[PWA] service worker update failed',err));
 }
 document.readyState==='loading'?document.addEventListener('DOMContentLoaded',init):init();
 })();

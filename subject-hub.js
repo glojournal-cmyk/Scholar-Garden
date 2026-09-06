@@ -95,6 +95,14 @@ function configureTabs(subject,track){
  }
 )}
 
+function renderSubjectScholarPose(subject,track,tab=current.tab){
+ const img=document.getElementById('subjectScholarPose');if(!img||!window.ScholarAssets)return;
+ const src=window.ScholarAssets.subjectPose(subject,tab);
+ if(src&&img.getAttribute('src')!==src)img.src=src;
+ img.alt=`Scholar studying ${LABEL[subject]}`;
+ img.classList.toggle('hidden',!src);
+}
+
 function setHeader(subject,track){
  document.getElementById('subjectIcon').textContent=ICON[subject]||'?';
  document.getElementById('subjectTitle').textContent=LABEL[subject]||subject;
@@ -114,6 +122,7 @@ function setHeader(subject,track){
  c.disabled=!available;c.textContent=available?'Continue today':'Not available yet';
  c.dataset.subjectContinue=subject;c.dataset.subjectTrack=track;
  configureTabs(subject,track);
+ renderSubjectScholarPose(subject,track,current.tab);
 }
 function hideAllHosts(){
  document.getElementById('latinScreen').classList.add('hidden');
@@ -228,6 +237,7 @@ async function renderTab(tab){
  current.tab=tab;
  hideAllHosts();
  document.querySelectorAll('[data-subject-tab]').forEach(b=>b.classList.toggle('active',b.dataset.subjectTab===tab));
+ renderSubjectScholarPose(subject,track,tab);
 
  const pane=document.getElementById(`generic${tab[0].toUpperCase()+tab.slice(1)}Pane`);
  if(pane){
