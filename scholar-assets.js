@@ -2,69 +2,69 @@
 'use strict';
 
 const A=Object.freeze({
-  master:'assets/scholar/master/scholar_master_uniform.png',
+  master:'scholar_master_uniform.png',
   home:Object.freeze({
-    idle:'assets/scholar/home/scholar_idle.png',
-    ready:'assets/scholar/home/scholar_ready.png',
-    thinking:'assets/scholar/home/scholar_thinking.png',
-    success:'assets/scholar/home/scholar_success.png',
-    welcome:'assets/scholar/home/scholar_welcome.png',
-    rewardUnlock:'assets/scholar/home/scholar_reward_unlock.png',
-    reading:'assets/scholar/home/scholar_reading_notes.png',
-    unfinished:'assets/scholar/home/scholar_unfinished.png',
-    confident:'assets/scholar/home/scholar_confident.png',
-    resting:'assets/scholar/home/scholar_resting.png'
+    idle:'scholar_idle.png',
+    ready:'scholar_ready.png',
+    thinking:'scholar_thinking.png',
+    success:'scholar_success.png',
+    welcome:'scholar_welcome.png',
+    rewardUnlock:'scholar_reward_unlock.png',
+    reading:'scholar_reading_notes.png',
+    unfinished:'scholar_unfinished.png',
+    confident:'scholar_confident.png',
+    resting:'scholar_resting.png'
   }),
   outfits:Object.freeze([
-    {id:'school-uniform',name:'Tiffin School Uniform',asset:'assets/scholar/outfits/outfit_school_uniform.png',unlock:{type:'always'}},
-    {id:'winter-scholar',name:'Winter Scholar',asset:'assets/scholar/outfits/outfit_winter_scholar.png',unlock:{type:'studyDays',value:3}},
-    {id:'summer-scholar',name:'Summer Scholar',asset:'assets/scholar/outfits/outfit_summer_scholar.png',unlock:{type:'studyDays',value:7}},
-    {id:'casual-study',name:'Casual Study',asset:'assets/scholar/outfits/outfit_casual_study.png',unlock:{type:'scholarXP',value:100}},
-    {id:'library-scholar',name:'Library Scholar',asset:'assets/scholar/outfits/outfit_library_scholar.png',unlock:{type:'scholarXP',value:250}},
-    {id:'latin-scholar',name:'Latin Scholar',asset:'assets/scholar/outfits/outfit_latin_scholar.png',unlock:{type:'subjectXP',subject:'latin',value:250}},
-    {id:'french-scholar',name:'French Scholar',asset:'assets/scholar/outfits/outfit_french_scholar.png',unlock:{type:'subjectXP',subject:'french',value:250}},
-    {id:'reward-cardigan',name:'Scholar Reward Cardigan',asset:'assets/scholar/outfits/outfit_reward_cardigan.png',unlock:{type:'scholarXP',value:400}},
-    {id:'achievement',name:'Achievement Outfit',asset:'assets/scholar/outfits/outfit_achievement.png',unlock:{type:'dualSubjectXP',subjects:['latin','french'],valueEach:300}},
-    {id:'prestige',name:'Prestige Scholar',asset:'assets/scholar/outfits/outfit_prestige.png',unlock:{type:'scholarXP',value:1500}}
+    {id:'school-uniform',name:'Tiffin School Uniform',asset:'outfit_school_uniform.png',unlock:{type:'always'}},
+    {id:'winter-scholar',name:'Winter Scholar',asset:'outfit_winter_scholar.png',unlock:{type:'studyDays',value:3}},
+    {id:'summer-scholar',name:'Summer Scholar',asset:'outfit_summer_scholar.png',unlock:{type:'studyDays',value:7}},
+    {id:'casual-study',name:'Casual Study',asset:'outfit_casual_study.png',unlock:{type:'scholarXP',value:100}},
+    {id:'library-scholar',name:'Library Scholar',asset:'outfit_library_scholar.png',unlock:{type:'scholarXP',value:250}},
+    {id:'latin-scholar',name:'Latin Scholar',asset:'outfit_latin_scholar.png',unlock:{type:'subjectXP',subject:'latin',value:250}},
+    {id:'french-scholar',name:'French Scholar',asset:'outfit_french_scholar.png',unlock:{type:'subjectXP',subject:'french',value:250}},
+    {id:'reward-cardigan',name:'Scholar Reward Cardigan',asset:'outfit_reward_cardigan.png',unlock:{type:'scholarXP',value:400}},
+    {id:'achievement',name:'Achievement Outfit',asset:'outfit_achievement.png',unlock:{type:'dualSubjectXP',subjects:['latin','french'],valueEach:300}},
+    {id:'prestige',name:'Prestige Scholar',asset:'outfit_prestige.png',unlock:{type:'scholarXP',value:1500}}
   ]),
   study:Object.freeze({
-    latinLearn:'assets/scholar/study/study_latin_textbook.png',
-    frenchLearn:'assets/scholar/study/study_french_notebook.png',
-    biologyLearn:'assets/scholar/study/study_biology_book.png',
-    writing:'assets/scholar/study/study_writing_notebook.png',
-    vocabReview:'assets/scholar/study/study_flashcards.png',
-    dailyPlan:'assets/scholar/study/study_planner.png',
-    worksheet:'assets/scholar/study/study_worksheet.png',
-    readyGeneral:'assets/scholar/study/study_pen_and_book.png',
-    bookStack:'assets/scholar/study/study_book_stack.png',
-    pointing:'assets/scholar/study/study_pointing.png'
+    latinLearn:'study_latin_textbook.png',
+    frenchLearn:'study_french_notebook.png',
+    biologyLearn:'study_biology_book.png',
+    writing:'study_writing_notebook.png',
+    vocabReview:'study_flashcards.png',
+    dailyPlan:'study_planner.png',
+    worksheet:'study_worksheet.png',
+    readyGeneral:'study_pen_and_book.png',
+    bookStack:'study_book_stack.png',
+    pointing:'study_pointing.png'
   }),
   emotions:Object.freeze({
-    neutral:'assets/scholar/emotions/emotion_neutral.png',
-    happy:'assets/scholar/emotions/emotion_happy.png',
-    excited:'assets/scholar/emotions/emotion_excited.png',
-    proud:'assets/scholar/emotions/emotion_proud.png',
-    thoughtful:'assets/scholar/emotions/emotion_thoughtful.png',
-    worried:'assets/scholar/emotions/emotion_worried.png',
-    sleepy:'assets/scholar/emotions/emotion_sleepy.png',
-    determined:'assets/scholar/emotions/emotion_determined.png',
-    shyPleased:'assets/scholar/emotions/emotion_shy_pleased.png',
-    curious:'assets/scholar/emotions/emotion_curious.png'
+    neutral:'emotion_neutral.png',
+    happy:'emotion_happy.png',
+    excited:'emotion_excited.png',
+    proud:'emotion_proud.png',
+    thoughtful:'emotion_thoughtful.png',
+    worried:'emotion_worried.png',
+    sleepy:'emotion_sleepy.png',
+    determined:'emotion_determined.png',
+    shyPleased:'emotion_shy_pleased.png',
+    curious:'emotion_curious.png'
   }),
   rewards:Object.freeze({
     exactVisualMappings:Object.freeze({
-      'ink-pot':{interactionAsset:'assets/scholar/reward-interactions/reward_interaction_ink_pot.png',use:['unlock celebration','reward detail']},
-      'study-books':{interactionAsset:'assets/scholar/reward-interactions/reward_interaction_book_stack.png',use:['unlock celebration','reward detail']},
-      'ivy-pot':{interactionAsset:'assets/scholar/reward-interactions/reward_interaction_plant.png',use:['unlock celebration','reward detail']}
+      'ink-pot':{interactionAsset:'reward_interaction_ink_pot.png',use:['unlock celebration','reward detail']},
+      'study-books':{interactionAsset:'reward_interaction_book_stack.png',use:['unlock celebration','reward detail']},
+      'ivy-pot':{interactionAsset:'reward_interaction_plant.png',use:['unlock celebration','reward detail']}
     }),
     generalCelebrationAssets:Object.freeze({
-      ribbon:'assets/scholar/reward-interactions/reward_interaction_ribbon.png',
-      medal:'assets/scholar/reward-interactions/reward_interaction_medal.png',
-      laurel:'assets/scholar/reward-interactions/reward_interaction_laurel.png',
-      letter:'assets/scholar/reward-interactions/reward_interaction_letter.png',
-      mastery:'assets/scholar/reward-interactions/reward_interaction_proud_book.png',
-      prestige:'assets/scholar/reward-interactions/reward_interaction_classical_ornament.png',
-      quill:'assets/scholar/reward-interactions/reward_interaction_quill.png'
+      ribbon:'reward_interaction_ribbon.png',
+      medal:'reward_interaction_medal.png',
+      laurel:'reward_interaction_laurel.png',
+      letter:'reward_interaction_letter.png',
+      mastery:'reward_interaction_proud_book.png',
+      prestige:'reward_interaction_classical_ornament.png',
+      quill:'reward_interaction_quill.png'
     }),
     missingStandaloneItemArt:Object.freeze(['desk-lamp','bronze-stylus','wax-tablet','fountain-pen','lavender-vase','scholars-globe','golden-lexicon'])
   })
