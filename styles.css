@@ -130,3 +130,67 @@ button:disabled{opacity:.45;cursor:not-allowed}
  .subject-hub-header{padding:18px}.subject-summary{grid-template-columns:1fr 1fr;width:100%}.garden-overlay{padding:34px 22px}.garden-world{min-height:610px}.garden-world:after{background:linear-gradient(0deg,rgba(20,30,43,.72),rgba(20,30,43,.22))}
 }
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
+
+/* =========================================================
+   V0.3.1 HOME POLISH + GAMES RESTORATION
+   ========================================================= */
+.home-greeting{align-items:center;padding-bottom:10px}
+.greeting-copy h1{font-size:clamp(30px,3.2vw,44px)}
+.scholar-identity{display:grid;grid-template-columns:58px minmax(160px,220px);gap:12px;align-items:center;padding:10px 12px;border-radius:18px;background:rgba(255,253,248,.92);box-shadow:var(--shadow)}
+.scholar-portrait-placeholder{width:58px;height:58px;border-radius:18px;display:grid;place-items:center;background:linear-gradient(145deg,#e8e2d6,#dfe5d8);border:1px solid var(--line2);overflow:hidden}
+.scholar-portrait-placeholder span{font:700 22px var(--serif);color:#788171}
+.scholar-identity-copy small,.scholar-identity-copy strong{display:block}.scholar-identity-copy small{font-size:9px;letter-spacing:.12em;color:var(--muted)}.scholar-identity-copy strong{font:650 18px var(--serif);margin:2px 0 5px}.scholar-xp-line{font-size:9px;color:var(--muted);margin-bottom:5px}
+
+.week-strip{margin-top:4px;margin-bottom:18px;padding:6px;gap:4px;background:rgba(255,253,248,.5)}
+.week-day{min-height:52px}.week-day.review-due{position:relative}.week-day.review-due:after{content:"";position:absolute;right:8px;top:8px;width:6px;height:6px;border-radius:50%;background:var(--gold)}
+.week-day.future{opacity:.62}.week-day.no-study{opacity:.78}
+
+.main-quest{position:relative;display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center;min-height:180px;padding:24px;background:linear-gradient(135deg,#fffdf8,#f0eadc);overflow:hidden}
+.main-quest:before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:linear-gradient(var(--gold),#826c42)}
+.main-quest .quest-kicker{display:flex;gap:7px;align-items:center;flex-wrap:wrap}.main-quest .quest-kicker span{font-size:9px;font-weight:850;letter-spacing:.1em}.main-quest .quest-kicker .reason{padding:5px 8px;border-radius:99px;background:#ebe4d6;color:#755f3b}
+.main-quest h3{font:650 clamp(28px,3vw,38px)/1.05 var(--serif);margin:14px 0 7px}.main-quest p{margin:0;color:var(--muted);font-size:11px}.main-quest .quest-meta{display:flex;gap:14px;margin-top:14px;font-size:10px;color:#757e8a}
+.main-quest .primary{min-width:126px}.main-quest.complete{background:#eef3e8}
+.secondary-task-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:10px}
+.secondary-task{min-height:126px;padding:16px;background:var(--surface);border-radius:17px;box-shadow:var(--shadow);display:grid;grid-template-columns:1fr auto;gap:10px;align-items:end}
+.secondary-task h3{font:650 19px var(--serif);margin:8px 0 4px}.secondary-task p{font-size:10px;color:var(--muted);margin:0}.secondary-task small{font-size:9px;color:#7f776b}.secondary-task .secondary{align-self:end}
+
+.home-progress{margin-top:10px}
+.quick-play-section{margin-top:26px}
+.quick-play-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.quick-play-card{display:grid;grid-template-columns:58px 1fr auto;gap:13px;align-items:center;padding:16px;border-radius:18px;background:var(--surface);box-shadow:var(--shadow)}
+.quick-play-icon{width:58px;height:58px;border-radius:16px;display:grid;place-items:center;background:#ebe5d9;font:700 20px var(--serif);color:#667262}
+.quick-play-card[data-subject="french"] .quick-play-icon{background:#ebe6ef;color:#6c5d78}.quick-play-card small,.quick-play-card strong,.quick-play-card em{display:block}.quick-play-card small{font-size:9px;letter-spacing:.12em;color:#786e5e}.quick-play-card strong{font:650 21px var(--serif);margin:3px 0}.quick-play-card em{font-style:normal;font-size:10px;color:var(--muted)}.quick-play-card .primary{min-width:78px}
+.text-button{border:0;background:transparent;color:var(--navy);font-weight:800;font-size:10px;cursor:pointer;padding:8px}
+.all-games-drawer{margin-top:10px;padding:14px;border-radius:18px;background:#efe9dd}.all-games-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.all-game-button{min-height:86px;text-align:left;border:1px solid var(--line2);background:#fffdf8;border-radius:13px;padding:12px;cursor:pointer}.all-game-button strong,.all-game-button small{display:block}.all-game-button strong{font:650 16px var(--serif)}.all-game-button small{margin-top:4px;color:var(--muted);font-size:9px}
+
+.reward-preview{grid-template-columns:86px 1fr 220px;margin-top:24px}
+.reward-art-slot{width:86px;height:86px;border-radius:20px;background:linear-gradient(145deg,#ece4d5,#f5f0e5);border:1px solid var(--line2);position:relative;overflow:hidden}
+.reward-art-slot:before{content:"";position:absolute;left:50%;top:50%;width:36px;height:36px;transform:translate(-50%,-50%);border-radius:8px 8px 13px 13px;border:2px solid rgba(23,36,58,.18)}
+.reward-preview.just-unlocked{animation:rewardGlow .8s ease both}
+@keyframes rewardGlow{0%{box-shadow:0 10px 32px rgba(36,43,54,.07)}45%{box-shadow:0 12px 38px rgba(178,138,59,.28)}100%{box-shadow:0 10px 32px rgba(36,43,54,.07)}}
+.reward-copy h3{font-size:22px}.reward-xp #nextRewardBar{width:0}
+
+.continue-card{position:relative;padding-top:18px;border-top:3px solid transparent}.continue-card[data-subject="latin"]{border-top-color:#9c8555}.continue-card[data-subject="french"]{border-top-color:#9685a5}.continue-card[data-subject="biology"]{border-top-color:#7e9876}.continue-card .subject-mini-icon{width:31px;height:31px;border-radius:10px;display:grid;place-items:center;background:#ede7dc;font:700 13px var(--serif);margin-bottom:8px}.continue-card .continue-cta{display:inline-flex;margin-top:11px;font-size:10px;font-weight:800}
+
+.play-promo{margin-bottom:14px;padding:18px 20px;border-radius:18px;background:linear-gradient(135deg,#f0eadb,#ebe8ef);display:flex;justify-content:space-between;gap:18px;align-items:center}.play-promo h2{font:650 26px var(--serif);margin:2px 0 5px}.play-promo p{margin:0;color:var(--muted);font-size:10px}
+.french-play-grid{display:grid;grid-template-columns:minmax(0,430px);gap:10px}.french-game-card{display:grid;grid-template-columns:100px 1fr;overflow:hidden;border-radius:18px;background:var(--surface);box-shadow:var(--shadow)}.french-game-card img{width:100%;height:100%;min-height:160px;object-fit:cover}.french-game-card>div{padding:18px}.french-game-card h3{font:650 24px var(--serif);margin:6px 0}.french-game-card p{font-size:10px;color:var(--muted)}
+
+@media(max-width:900px){
+ .scholar-identity{grid-template-columns:48px 1fr}.scholar-portrait-placeholder{width:48px;height:48px;border-radius:15px}
+ .main-quest{grid-template-columns:1fr}.main-quest .primary{width:100%}
+ .quick-play-grid{grid-template-columns:1fr}.all-games-grid{grid-template-columns:repeat(2,1fr)}
+ .reward-preview{grid-template-columns:74px 1fr}.reward-art-slot{width:74px;height:74px}.reward-xp{grid-column:1/-1;text-align:left}
+}
+@media(max-width:620px){
+ .home-greeting{align-items:flex-start}.scholar-identity{max-width:210px}.scholar-identity-copy .progress-track{height:6px}
+ .secondary-task-grid{grid-template-columns:1fr}.quick-play-card{grid-template-columns:48px 1fr}.quick-play-icon{width:48px;height:48px}.quick-play-card .primary{grid-column:2;width:100%}
+ .all-games-grid{grid-template-columns:1fr}.reward-preview{grid-template-columns:66px 1fr}.reward-art-slot{width:66px;height:66px}
+}
+
+.bio-topic-practice{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:14px}
+.bio-topic-practice .note-topic{border:0;text-align:left;cursor:pointer}
+.bio-answer-large{min-height:150px;resize:vertical}
+.bio-mark-points{display:grid;gap:7px;margin:13px 0}
+.bio-mark-points label{display:flex;gap:8px;align-items:flex-start;padding:9px 10px;border-radius:10px;background:#fff}
+@media(max-width:700px){.bio-topic-practice{grid-template-columns:1fr}}

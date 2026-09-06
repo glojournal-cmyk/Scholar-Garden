@@ -252,5 +252,6 @@ function todayStats(){
  const k=today(),rows=(state.attempts||[]).filter(a=>String(a.date||'').slice(0,10)===k);
  return {answers:rows.length,correct:rows.filter(a=>a.ok).length,translation:rows.filter(a=>a.category==='Translation').length,due:dueQuestions().length,weak:weakQuestions().length};
 }
-window.LatinModule={init,show:latinView,startPractice,renderHome,renderProgress,dueCount:()=>dueQuestions().length,weakCount:()=>weakQuestions().length,state:()=>state,todayStats,startWeakPractice};
+function reviewDates(){return Object.values(state.reviews||{}).map(r=>r?.due).filter(Boolean)}
+window.LatinModule={init,show:latinView,startPractice,renderHome,renderProgress,dueCount:()=>dueQuestions().length,weakCount:()=>weakQuestions().length,state:()=>state,todayStats,startWeakPractice,reviewDates};
 })();

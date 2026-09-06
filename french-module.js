@@ -190,7 +190,7 @@ function checkSpell(){
    fb.innerHTML=`<div class="feedback bad"><h3>Look, then write it again later.</h3><div class="model-answer"><b>Correct spelling</b><br>${esc(v.french)}</div><p>This word has entered the spelling review queue.</p><button class="primary" id="spellNext">Continue</button></div>`;document.getElementById('spellNext').onclick=nextSpell;
  }
 }
-function nextSpell(){if(++spellSession.index<spellSession.items.length)renderSpellItem();else{const pct=Math.round(spellSession.score/spellSession.items.length*100);document.getElementById('frenchSpellingBox').innerHTML=`<div class="result-card"><p class="eyebrow">SPELLING SESSION COMPLETE</p><h2>Atelier complete</h2><div class="big-score">${pct}%</div><button class="primary" id="spellAgain">Play again</button></div>`;document.getElementById('spellAgain').onclick=startSpelling}}
+function nextSpell(){if(++spellSession.index<spellSession.items.length)renderSpellItem();else{const pct=Math.round(spellSession.score/spellSession.items.length*100);window.LuxGrowth?.award({subject:'french',type:'game_learning_complete',itemId:`atelier-spelling:${today()}`});document.getElementById('frenchSpellingBox').innerHTML=`<div class="result-card"><p class="eyebrow">SPELLING SESSION COMPLETE</p><h2>Atelier complete</h2><div class="big-score">${pct}%</div><button class="primary" id="spellAgain">Play again</button></div>`;document.getElementById('spellAgain').onclick=startSpelling}}
 function init(){
  document.querySelectorAll('#frenchScreen [data-french-view]').forEach(b=>b.onclick=()=>{frenchView(b.dataset.frenchView);ensureData()});
  document.getElementById('frenchStartPractice').onclick=async()=>{if(await ensureData())startQuiz(document.getElementById('frenchTopic').value,Number(document.getElementById('frenchCount').value),false)};
@@ -212,5 +212,6 @@ function todayStats(){
  return {answers:rows.filter(x=>x.kind==='question').length,correct:rows.filter(x=>x.kind==='question'&&x.correct).length,writing:rows.filter(x=>x.kind==='writing').length,spelling:rows.filter(x=>x.kind==='spelling').length,due:dataReady?dueCount():0,loaded:dataReady};
 }
 function weakCount(){return Object.values(progress.attempts||{}).filter(x=>x.status==='wrong').length}
-window.FrenchModule={init,ensureData,show:frenchView,startQuiz,startSpelling,dueCount:()=>dataReady?dueCount():0,weakCount,todayStats,startWeakPractice,renderProgress};
+function reviewDates(){return Object.values(progress.attempts||{}).filter(a=>a?.status==='wrong'&&a.dueAt).map(a=>{const d=new Date(a.dueAt);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`})}
+window.FrenchModule={init,ensureData,show:frenchView,startQuiz,startSpelling,dueCount:()=>dataReady?dueCount():0,weakCount,todayStats,startWeakPractice,reviewDates,renderProgress};
 })();

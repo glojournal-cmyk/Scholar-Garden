@@ -1,70 +1,93 @@
-Lux et Labor — The Scholar's Garden
-V0.3.0 UX Reset — deterministic QA
+LUX ET LABOR — THE SCHOLAR'S GARDEN
+V0.3.1 FINAL DETERMINISTIC QA
 
-Result: 54/54 checks PASS
+Result: 52/52 PASS
 
-Automated/static checks:
-- PASS — JS syntax — growth.js
-- PASS — JS syntax — latin-module.js
-- PASS — JS syntax — french-module.js
-- PASS — JS syntax — latin-games.js
-- PASS — JS syntax — science-notes.js
-- PASS — JS syntax — daily-plan.js
-- PASS — JS syntax — subject-hub.js
-- PASS — JS syntax — scholar.js
-- PASS — JS syntax — app.js
-- PASS — JS syntax — sw.js
-- PASS — JS syntax — latin-question-bank.js
-- PASS — No duplicate HTML IDs
-- PASS — Exactly four global navigation items
-- PASS — Collection is inside Scholar, not global navigation
-- PASS — Home seven-day strip exists
-- PASS — Home Today list exists
-- PASS — Home planner capped at 3
-- PASS — Home daily minimum exists
-- PASS — Home progress + reward + continue exist
-- PASS — Study has Current Year 9 + Foundation Review
-- PASS — Unified Subject Hub has five tabs
-- PASS — Scholar has Wardrobe / Collection / Achievements
-- PASS — Biology B1–B16 Learn topics present
-- PASS — Chemistry C1–C17 Learn topics present
-- PASS — Physics P1–P18 Learn topics present
-- PASS — Year 9 Science practice stays unavailable
-- PASS — Extension notes have separate visual treatment
-- PASS — Latin persisted key preserved
-- PASS — French persisted key preserved
-- PASS — Shared Scholar persisted key preserved
-- PASS — UX reset uses additive separate key
-- PASS — Latin 2-day → 7-day review logic retained
-- PASS — French accent-sensitive spelling retained
-- PASS — French specialised marker retained
-- PASS — Latin game engine byte-identical to V0.2
-- PASS — Latin game CSS byte-identical to V0.2
-- PASS — Latin question bank byte-identical to V0.2
-- PASS — Growth engine byte-identical to V0.2
-- PASS — Latin academic bank count unchanged (1056 / 24 / 24)
-- PASS — Existing image assets unchanged; no character art produced
-- PASS — Learner HTML removes raw bank/developer wording
-- PASS — Legacy redirects retained
-- PASS — Daily planner priority: due → weak → current learning
-- PASS — Daily planner uses 7-question quick + 15-question standard
-- PASS — Shared daily completion XP uses existing growth event
-- PASS — Avatar layer order locked
-- PASS — Avatar viewport locked at 560×760 logical canvas
-- PASS — All local HTML references exist
-- PASS — Service worker cache version bumped
-- PASS — New UX modules in offline core
-- PASS — Heavy artwork excluded from core precache
-- PASS — Flat-root deployment retained
-- PASS — Planner runtime test prioritises both due queues
-- PASS — Existing Scholar state survives load unchanged
+Master Content Pack:
+{
+  "questions": 989,
+  "answers": 989,
+  "concepts": 455,
+  "keywords": 267,
+  "notes": 37,
+  "diagramSpecs": 14,
+  "formats": {
+    "calculation": 11,
+    "diagram_label": 14,
+    "extended_response": 1,
+    "mark_points": 316,
+    "matching": 88,
+    "mc_single": 270,
+    "practical_design": 1,
+    "sequence": 6,
+    "sorting": 4,
+    "typed_exact": 267,
+    "typed_short": 4,
+    "unordered_set": 7
+  },
+  "contentTier": {
+    "confirmed_learned": 989
+  },
+  "status": {
+    "enabled": 989
+  }
+}
 
-Source-safe limitation:
-- Master_Content_Pack_V1 was not available as an accessible structured file during this implementation.
-- Therefore Year 8 Biology Foundation Practice/Review is deliberately unavailable rather than reconstructed from booklet PDFs.
-- No Year 9 Science practice bank was generated.
+Checks:
+- PASS — JS syntax growth.js
+- PASS — JS syntax latin-module.js
+- PASS — JS syntax french-module.js
+- PASS — JS syntax latin-games.js
+- PASS — JS syntax science-notes.js
+- PASS — JS syntax biology-y8.js
+- PASS — JS syntax daily-plan.js
+- PASS — JS syntax subject-hub.js
+- PASS — JS syntax scholar.js
+- PASS — JS syntax app.js
+- PASS — JS syntax sw.js
+- PASS — JS syntax latin-question-bank.js
+- PASS — No duplicate IDs
+- PASS — 4 global nav items
+- PASS — 4 subject hub tabs
+- PASS — Home main quest + quick play + reward art
+- PASS — Pack preserved bio-y8-question-bank.json
+- PASS — Pack preserved bio-y8-answer-bank.json
+- PASS — Pack preserved bio-y8-concept-bank.json
+- PASS — Pack preserved bio-y8-keyword-bank.json
+- PASS — Pack preserved bio-y8-notes-by-topic.json
+- PASS — Pack preserved bio-y8-diagram-specs.json
+- PASS — Pack counts exact
+- PASS — All question concept IDs resolve
+- PASS — Answer bank IDs exactly match questions
+- PASS — All Master Pack question records remain enabled
+- PASS — Review rules 2/7/21 preserved
+- PASS — Recognition-only cannot secure source rule
+- PASS — Biology separate state key
+- PASS — Biology explicit 2->7 recovery
+- PASS — Biology secure requires delayed review
+- PASS — Biology secure requires production
+- PASS — Biology manual mark-point route
+- PASS — Biology Play does not fake games
+- PASS — Latin Games JS unchanged
+- PASS — Latin Games CSS unchanged
+- PASS — Latin bank unchanged
+- PASS — Growth engine unchanged
+- PASS — Latin state key unchanged
+- PASS — French state key unchanged
+- PASS — Scholar state key unchanged
+- PASS — Planner has Biology due/weak
+- PASS — Planner still due before weak
+- PASS — Planner can include real game task
+- PASS — Quick Play launches real Latin game
+- PASS — Quick Play launches real French spelling
+- PASS — Calendar review marker uses real review dates
+- PASS — Reward unlock animation supported
+- PASS — SW v0.3.1
+- PASS — Biology pack offline core
+- PASS — All local refs exist
+- PASS — No character-art production
 
-Runtime-testing limitation:
-- Chromium headless was attempted against a local server but terminated in this environment before page navigation.
-- This report therefore does NOT claim a fresh physical iPad Safari or full browser end-to-end pass.
-- Post-deploy iPad interaction/offline checks remain required.
+Testing limitation:
+- Static/data/state/integrity checks above were executed.
+- No claim is made here of fresh physical iPad Safari or full browser E2E testing.
+- Diagram-label content is preserved, but without final coordinate artwork those items use an explicit self-check route rather than fabricated hotspots.

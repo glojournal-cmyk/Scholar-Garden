@@ -1,18 +1,16 @@
-SCHOLAR'S GARDEN — V0.3.0 UX RESET
+SCHOLAR'S GARDEN — V0.3.1 HOME POLISH + GAMES + MASTER CONTENT PACK
 
 Upload every file in this ZIP directly to the ROOT of the Scholar-Garden GitHub repository.
-This release intentionally remains flat-root for safe GitHub web upload.
+Keep the package flat exactly as supplied.
 
-After GitHub Pages redeploy:
-1. Confirm footer says: V0.3.0 UX Reset
-2. Confirm global navigation contains exactly Home / Study / Garden / Scholar.
-3. Home: confirm the next Today task is visible immediately and starts with one tap.
-4. Study: open Latin and French Foundation Review; test Practice, Review, Play and Progress.
-5. Study: open Biology, Chemistry and Physics Current Year 9; confirm Learn works and Practice says unavailable.
-6. Garden: confirm stage/XP/next unlock load from existing Scholar state.
-7. Scholar: confirm Wardrobe / Collection / Achievements, then refresh and confirm state remains.
-8. Test old hashes #latin, #french, #collection and #profile.
-9. On iPad Safari, confirm bottom navigation, no horizontal overflow and 44px+ touch targets.
-10. After first online load, test refresh/offline shell.
-
-Important: Year 8 Biology Foundation Practice remains intentionally unavailable until Master_Content_Pack_V1 is supplied.
+After deploy:
+1. Confirm footer shows V0.3.1 Home Polish + Games.
+2. Home: check Main Quest, secondary tasks, Quick Play, calendar and Next Reward.
+3. Quick Play: open Verbum Match and French Spelling Sprint.
+4. Study -> Latin Foundation: test Learn / Practise / Play / Progress.
+5. Study -> French Foundation: test Learn / Practise / Play / Progress.
+6. Study -> Biology Foundation: test Learn, Mixed Practice, Due Review and Progress.
+7. Biology Play must honestly say no separate game engine is connected.
+8. Study -> Biology/Chemistry/Physics Current Year 9: Learn remains available; unsupported Practice stays unavailable.
+9. Refresh and confirm existing Latin/French/Scholar state persists.
+10. Test offline after one successful online load.

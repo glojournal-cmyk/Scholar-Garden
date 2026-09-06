@@ -1,0 +1,28 @@
+{
+  "questions": 989,
+  "answers": 989,
+  "concepts": 455,
+  "keywords": 267,
+  "notes": 37,
+  "diagramSpecs": 14,
+  "formats": {
+    "calculation": 11,
+    "diagram_label": 14,
+    "extended_response": 1,
+    "mark_points": 316,
+    "matching": 88,
+    "mc_single": 270,
+    "practical_design": 1,
+    "sequence": 6,
+    "sorting": 4,
+    "typed_exact": 267,
+    "typed_short": 4,
+    "unordered_set": 7
+  },
+  "contentTier": {
+    "confirmed_learned": 989
+  },
+  "status": {
+    "enabled": 989
+  }
+}

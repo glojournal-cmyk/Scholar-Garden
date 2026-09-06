@@ -7,8 +7,8 @@
 <meta name="description" content="Lux et Labor — The Scholar's Garden">
 <title>Lux et Labor — The Scholar’s Garden</title>
 <link rel="manifest" href="./manifest.webmanifest">
-<link rel="stylesheet" href="./styles.css?v=0.3.0-reset">
-<link rel="stylesheet" href="./latin-games.css?v=0.3.0-reset">
+<link rel="stylesheet" href="./styles.css?v=0.3.1">
+<link rel="stylesheet" href="./latin-games.css?v=0.3.1">
 </head>
 <body>
 <div class="app-shell">
@@ -30,27 +30,43 @@
 <main class="main-stage">
 <section class="route-screen" data-route-screen="home" id="homeScreen">
  <header class="home-greeting">
-   <div><p class="eyebrow">TODAY</p><h1 id="homeGreeting">Good morning</h1><p id="homeDate"></p></div>
-   <div class="home-level"><small>Scholar Level</small><strong data-growth="level">1</strong></div>
+   <div class="greeting-copy"><p class="eyebrow">TODAY</p><h1 id="homeGreeting">Good afternoon</h1><p id="homeDate"></p></div>
+   <aside class="scholar-identity" aria-label="Scholar identity">
+     <div class="scholar-portrait-placeholder" aria-hidden="true"><span>S</span></div>
+     <div class="scholar-identity-copy">
+       <small>SCHOLAR</small><strong>Level <span data-growth="level">1</span></strong>
+       <div class="scholar-xp-line"><span><b data-growth="xp">0</b> / <b data-growth="next">100</b> XP</span></div>
+       <div class="progress-track"><i data-growth-bar></i></div>
+     </div>
+   </aside>
  </header>
- <div class="week-strip" id="weekStrip" aria-label="Seven-day study completion"></div>
+
+ <div class="week-strip" id="weekStrip" aria-label="Seven-day learning status"></div>
 
  <section class="today-section">
-   <div class="section-title"><div><p class="eyebrow">YOUR NEXT STEPS</p><h2>Today</h2></div><span id="todayTaskCount">0 / 0 complete</span></div>
-   <div class="today-list" id="todayList"></div>
+   <div class="section-title"><div><p class="eyebrow">TODAY</p><h2>Your study path</h2></div></div>
+   <article class="main-quest card-soft" id="mainQuest"></article>
+   <div class="secondary-task-grid" id="secondaryTasks"></div>
  </section>
-
- <p class="daily-minimum" id="dailyMinimum">Minimum today: complete the due review.</p>
 
  <section class="home-progress card-soft">
    <div><small>TODAY'S PROGRESS</small><strong id="todayProgressText">0 / 3 tasks complete</strong></div>
    <div class="progress-track"><i id="todayProgressBar"></i></div>
  </section>
 
- <section class="reward-preview card-soft">
-   <div class="reward-symbol" aria-hidden="true">✦</div>
-   <div><small>NEXT REWARD</small><h3 id="nextRewardName">Ink Pot</h3><p id="nextRewardCopy">Keep learning to unlock your next Garden item.</p></div>
-   <div class="reward-xp"><strong><span data-growth="xp">0</span> XP</strong><div class="progress-track"><i data-growth-bar></i></div></div>
+ <section class="quick-play-section">
+   <div class="section-title">
+     <div><p class="eyebrow">QUICK PLAY</p><h2>Short learning games</h2></div>
+     <button class="text-button" id="seeAllGames">See all games</button>
+   </div>
+   <div class="quick-play-grid" id="quickPlayGrid"></div>
+   <div class="all-games-drawer hidden" id="allGamesDrawer"></div>
+ </section>
+
+ <section class="reward-preview card-soft" id="nextRewardCard">
+   <div class="reward-art-slot" id="nextRewardArt" aria-label="Reward artwork placeholder"></div>
+   <div class="reward-copy"><small>NEXT REWARD</small><h3 id="nextRewardName">Ink Pot</h3><p id="nextRewardCopy">40 XP to unlock</p></div>
+   <div class="reward-xp"><strong><span data-growth="xp">0</span> XP</strong><div class="progress-track"><i id="nextRewardBar"></i></div></div>
  </section>
 
  <section class="continue-section">
@@ -90,8 +106,7 @@
 
  <nav class="subject-tabs unified-tabs" aria-label="Subject sections">
    <button data-subject-tab="learn">Learn</button>
-   <button data-subject-tab="practice">Practice</button>
-   <button data-subject-tab="review">Review</button>
+   <button data-subject-tab="practice">Practise</button>
    <button data-subject-tab="play">Play</button>
    <button data-subject-tab="progress">Progress</button>
  </nav>
@@ -217,16 +232,17 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="./latin-question-bank.js?v=0.3.0-reset"></script>
-<script src="./growth.js?v=0.3.0-reset"></script>
-<script src="./latin-module.js?v=0.3.0-reset"></script>
-<script src="./french-module.js?v=0.3.0-reset"></script>
-<script src="./latin-games.js?v=0.3.0-reset"></script>
-<script src="./science-notes.js?v=0.3.0-reset"></script>
-<script src="./daily-plan.js?v=0.3.0-reset"></script>
-<script src="./subject-hub.js?v=0.3.0-reset"></script>
-<script src="./scholar.js?v=0.3.0-reset"></script>
-<script src="./app.js?v=0.3.0-reset"></script>
-<footer class="build-footer">Lux et Labor · Scholar’s Garden · V0.3.0 UX Reset</footer>
+<script src="./latin-question-bank.js?v=0.3.1"></script>
+<script src="./growth.js?v=0.3.1"></script>
+<script src="./latin-module.js?v=0.3.1"></script>
+<script src="./french-module.js?v=0.3.1"></script>
+<script src="./latin-games.js?v=0.3.1"></script>
+<script src="./science-notes.js?v=0.3.1"></script>
+<script src="./biology-y8.js?v=0.3.1"></script>
+<script src="./daily-plan.js?v=0.3.1"></script>
+<script src="./subject-hub.js?v=0.3.1"></script>
+<script src="./scholar.js?v=0.3.1"></script>
+<script src="./app.js?v=0.3.1"></script>
+<footer class="build-footer">Lux et Labor · Scholar’s Garden · V0.3.1 Home Polish + Games</footer>
 </body>
 </html>

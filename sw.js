@@ -1,10 +1,11 @@
-const V='scholars-garden-v0-3-ux-reset-20260906';
+const V='scholars-garden-v0-3-1-home-games-20260906';
 const CORE=`${V}-core`,RUN=`${V}-runtime`;
 const FILES=[
- './','./index.html','./styles.css?v=0.3.0-reset','./latin-games.css?v=0.3.0-reset','./manifest.webmanifest',
- './latin-question-bank.js?v=0.3.0-reset','./growth.js?v=0.3.0-reset','./latin-module.js?v=0.3.0-reset',
- './french-module.js?v=0.3.0-reset','./latin-games.js?v=0.3.0-reset','./science-notes.js?v=0.3.0-reset',
- './daily-plan.js?v=0.3.0-reset','./subject-hub.js?v=0.3.0-reset','./scholar.js?v=0.3.0-reset','./app.js?v=0.3.0-reset'
+ './','./index.html','./styles.css?v=0.3.1','./latin-games.css?v=0.3.1','./manifest.webmanifest',
+ './latin-question-bank.js?v=0.3.1','./growth.js?v=0.3.1','./latin-module.js?v=0.3.1',
+ './french-module.js?v=0.3.1','./latin-games.js?v=0.3.1','./science-notes.js?v=0.3.1','./biology-y8.js?v=0.3.1',
+ './bio-y8-question-bank.json','./bio-y8-answer-bank.json','./bio-y8-concept-bank.json','./bio-y8-keyword-bank.json','./bio-y8-notes-by-topic.json','./bio-y8-diagram-specs.json',
+ './daily-plan.js?v=0.3.1','./subject-hub.js?v=0.3.1','./scholar.js?v=0.3.1','./app.js?v=0.3.1'
 ];
 self.addEventListener('install',event=>{
  event.waitUntil(caches.open(CORE).then(cache=>cache.addAll(FILES)));

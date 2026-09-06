@@ -47,10 +47,12 @@ function unavailableCurrent(subject){
 }
 function foundationCard(subject){
  if(subject==='biology'){
+   const d=Number(window.BiologyY8?.dueCount?.())||0,w=Number(window.BiologyY8?.weakCount?.())||0;
    return `<article class="study-card">
     <div class="subject-orb">${ICON[subject]}</div><h3>Biology</h3>
-    <p>Year 8 Foundation Review uses the approved structured content pack.</p>
-    <div class="unavailable-note">Foundation Biology practice is not available yet.</div>
+    <p>Year 8 Foundation Review from the structured Master Content Pack.</p>
+    <div class="study-status"><span>${d} due</span>${w?`<span>${w} to revisit</span>`:'<span>On track</span>'}</div>
+    <div class="card-action"><small>Learn · Practise · Progress</small><button class="primary" data-open-subject="${subject}" data-track="foundation">Continue</button></div>
    </article>`;
  }
  const d=due(subject),w=weak(subject);
@@ -77,14 +79,15 @@ function setHeader(subject,track){
  pill.className=`route-pill ${track==='current'?'current':'foundation'}`;
  document.getElementById('subjectSubtitle').textContent=
    track==='current'?'Learn the current course in a clear topic sequence.':'Consolidate prior learning with spaced review and focused practice.';
- const d=track==='foundation'?due(subject):0;
+ const d=track==='foundation'?(subject==='biology'?(Number(window.BiologyY8?.dueCount?.())||0):due(subject)):0;
  document.getElementById('subjectDue').textContent=track==='foundation'&&['latin','french'].includes(subject)?`${d} due`:'Current learning';
  document.getElementById('subjectMastery').textContent=
    track==='foundation'&&subject==='latin'?latinMastery():
    track==='foundation'&&subject==='french'?frenchMastery():
+   track==='foundation'&&subject==='biology'?((window.BiologyY8?.masterySummary?.().secure||0)+' secure concepts'):
    track==='current'&&window.ScholarScience?.get(subject)?'Learn available':'Not available yet';
  const c=document.getElementById('subjectContinue');
- const available=(track==='foundation'&&['latin','french'].includes(subject))||(track==='current'&&!!window.ScholarScience?.get(subject));
+ const available=(track==='foundation'&&['latin','french','biology'].includes(subject))||(track==='current'&&!!window.ScholarScience?.get(subject));
  c.disabled=!available;c.textContent=available?'Continue today':'Not available yet';
  c.onclick=available?()=>continueToday(subject,track):null;
 }
@@ -134,34 +137,37 @@ function renderScienceOther(subject,tab){
  pane.innerHTML=unavailable(`${LABEL[subject]} ${tab}`,copy);
 }
 function renderFoundationBio(tab){
- const pane=document.getElementById(`generic${tab[0].toUpperCase()+tab.slice(1)}Pane`);
- pane.innerHTML=unavailable(`Biology Foundation Review`,
-  'Foundation Biology review is not available yet.');
+ if(tab==='learn'){window.BiologyY8?.renderLearn?.();return}
+ if(tab==='practice'){window.BiologyY8?.renderFoundationHome?.();return}
+ if(tab==='play'){window.BiologyY8?.renderPlay?.();return}
+ if(tab==='progress'){window.BiologyY8?.renderProgress?.();return}
+}
+function renderFrenchPlay(){
+ const pane=document.getElementById('genericPlayPane');pane.classList.remove('hidden');
+ pane.innerHTML=`<div class="play-promo"><div><p class="eyebrow">PLAY</p><h2>French learning games</h2><p>Games earn Scholar XP without replacing formal academic evidence.</p></div></div>
+ <div class="french-play-grid">
+  <article class="french-game-card">
+   <img src="hero_08.webp" alt="">
+   <div><p class="eyebrow">SPELLING</p><h3>Atelier d’Orthographe</h3><p>Exact learned spelling with accents. Wrong words return later rather than immediately.</p><button class="primary" id="openFrenchSpellingGame">Play</button></div>
+  </article>
+ </div>`;
+ document.getElementById('openFrenchSpellingGame').onclick=async()=>{
+   if(await window.FrenchModule.ensureData()){pane.classList.add('hidden');document.getElementById('frenchScreen').classList.remove('hidden');window.FrenchModule.show('frenchSpelling');}
+ };
 }
 function renderFoundationEngine(subject,tab){
  if(subject==='latin'){
    document.getElementById('latinScreen').classList.remove('hidden');
    const map={learn:'latinNotes',practice:'latinHome',play:'gamesHub',progress:'latinProgress'};
-   if(tab==='review'){
-     document.getElementById('latinScreen').classList.add('hidden');
-     const p=document.getElementById('genericReviewPane');p.classList.remove('hidden');
-     const d=due('latin'),w=weak('latin');
-     p.innerHTML=`<div class="unavailable-pane"><p class="eyebrow">SPACED REVIEW</p><h2>${d?`${d} Latin review${d===1?'':'s'} due`:'Nothing due right now'}</h2><p>${w} item${w===1?'':'s'} remain in the review system. Due recall follows the existing 2-day → 7-day schedule.</p><button class="primary" id="latinDueStart" ${d?'':'disabled'}>Start due review</button></div>`;
-     if(d)document.getElementById('latinDueStart').onclick=()=>{document.getElementById('genericReviewPane').classList.add('hidden');document.getElementById('latinScreen').classList.remove('hidden');window.LatinModule.startPractice('Mixed',7,true)};
-   }else{
-     if(tab==='play'&&window.GameV2)window.GameV2.openHub();else window.LatinModule.show(map[tab]||'latinHome');
-   }
+   if(tab==='play'&&window.GameV2)window.GameV2.openHub();else window.LatinModule.show(map[tab]||'latinHome');
  }
  if(subject==='french'){
-   document.getElementById('frenchScreen').classList.remove('hidden');
-   const map={learn:'frenchVocab',practice:'frenchHome',play:'frenchSpelling',progress:'frenchProgress'};
-   if(tab==='review'){
+   if(tab==='play'){
      document.getElementById('frenchScreen').classList.add('hidden');
-     const p=document.getElementById('genericReviewPane');p.classList.remove('hidden');
-     const d=due('french'),w=weak('french');
-     p.innerHTML=`<div class="unavailable-pane"><p class="eyebrow">SPACED REVIEW</p><h2>${d?`${d} French review${d===1?'':'s'} due`:'Nothing due right now'}</h2><p>${w} item${w===1?'':'s'} currently need consolidation.</p><button class="primary" id="frenchDueStart" ${d?'':'disabled'}>Start due review</button></div>`;
-     if(d)document.getElementById('frenchDueStart').onclick=async()=>{if(await window.FrenchModule.ensureData()){document.getElementById('genericReviewPane').classList.add('hidden');document.getElementById('frenchScreen').classList.remove('hidden');window.FrenchModule.startQuiz('all',7,true)}};
+     renderFrenchPlay();
    }else{
+     document.getElementById('frenchScreen').classList.remove('hidden');
+     const map={learn:'frenchVocab',practice:'frenchHome',progress:'frenchProgress'};
      window.FrenchModule.show(map[tab]||'frenchHome');window.FrenchModule.ensureData();
    }
  }
@@ -183,8 +189,14 @@ function renderTab(tab){
 function continueToday(subject,track){
  if(track==='current'){renderTab('learn');return}
  const d=due(subject);
- if(d){renderTab('review');return}
  renderTab('practice');
+ if(!d)return;
+ if(subject==='latin')setTimeout(()=>window.LatinModule.startPractice('Mixed',7,true),0);
+ if(subject==='french')window.FrenchModule.ensureData().then(ok=>{if(ok)setTimeout(()=>window.FrenchModule.startQuiz('all',7,true),0)});
+ if(subject==='biology'){
+   const bd=Number(window.BiologyY8?.dueCount?.())||0;
+   setTimeout(()=>window.BiologyY8.startPractice(bd?'due':'mixed',bd?7:15,'all'),0);
+ }
 }
 function open(subject,track='current',tab){
  current={subject,track,tab:tab||((track==='foundation')?'practice':'learn')};
@@ -196,7 +208,7 @@ function parseRoute(hash){
  let subject=raw[1]||'latin',track='current';
  if(subject.endsWith('-foundation')){subject=subject.replace(/-foundation$/,'');track='foundation'}
  else if(['latin','french'].includes(subject))track='foundation';
- const tab=['learn','practice','review','play','progress'].includes(raw[2])?raw[2]:undefined;
+ let tab=['learn','practice','play','progress'].includes(raw[2])?raw[2]:undefined;if(raw[2]==='review')tab='practice';
  return {subject,track,tab};
 }
 function bind(){
