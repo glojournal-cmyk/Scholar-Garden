@@ -117,7 +117,7 @@ function hideAllHosts(){
 function unavailable(title,copy){
  return `<div class="unavailable-pane"><p class="eyebrow">NOT AVAILABLE YET</p><h2>${esc(title)}</h2><p>${esc(copy)}</p></div>`;
 }
-function renderScienceLearn(subject){
+async function renderScienceLearn(subject){
  const pack=window.ScholarScience?.get(subject),pane=document.getElementById('genericLearnPane');
  if(!pack){pane.innerHTML=unavailable('Current learning','Verified current content is not connected yet.');return}
  const topics=pack.topics;
@@ -128,7 +128,7 @@ function renderScienceLearn(subject){
  </article>`).join('')}</div>`;
  pane.querySelectorAll('[data-open-science-topic]').forEach(b=>b.onclick=()=>showScienceTopic(subject,b.dataset.openScienceTopic));
 }
-function showScienceTopic(subject,id){
+async function showScienceTopic(subject,id){
  const t=window.ScholarScience?.topic(subject,id),pane=document.getElementById('genericLearnPane');if(!t)return;
  const done=window.ScholarUX?.isScienceRead?.(id);
  pane.innerHTML=`<button class="back-link" id="backTopicList">← All ${esc(LABEL[subject])} topics</button>
@@ -144,7 +144,7 @@ function showScienceTopic(subject,id){
  document.getElementById('markTopicRead').onclick=()=>{window.ScholarUX.markScience(id);window.LuxApp.toast('Notes marked reviewed for today.');showScienceTopic(subject,id)};
  window.ScholarUX.touchSubject(subject);
 }
-function renderScienceOther(subject,tab){
+async function renderScienceOther(subject,tab){
  const pane=document.getElementById(`generic${tab[0].toUpperCase()+tab.slice(1)}Pane`);
  const copy={
   practice:'Practice is not available yet. Use Learn for now.',
@@ -154,13 +154,15 @@ function renderScienceOther(subject,tab){
  }[tab];
  pane.innerHTML=unavailable(`${LABEL[subject]} ${tab}`,copy);
 }
-function renderFoundationBio(tab){
- if(tab==='learn'){window.BiologyY8?.renderLearn?.();return}
- if(tab==='practice'){window.BiologyY8?.renderFoundationHome?.();return}
- if(tab==='play'){window.BiologyY8?.renderPlay?.();return}
- if(tab==='progress'){window.BiologyY8?.renderProgress?.();return}
+async function renderFoundationBio(tab){
+ if(!(await window.BiologyY8?.ensureData?.()))throw new Error('Biology Foundation data unavailable');
+ if(tab==='learn'){window.BiologyY8.renderLearn();return true}
+ if(tab==='practice'){window.BiologyY8.renderFoundationHome();return true}
+ if(tab==='play'){window.BiologyY8.renderPlay();return true}
+ if(tab==='progress'){window.BiologyY8.renderProgress();return true}
+ throw new Error(`Unsupported Biology Foundation tab: ${tab}`);
 }
-function renderFrenchPlay(){
+async function renderFrenchPlay(){
  const pane=document.getElementById('genericPlayPane');pane.classList.remove('hidden');
  pane.innerHTML=`<div class="play-promo"><div><p class="eyebrow">PLAY</p><h2>French learning games</h2><p>Games earn Scholar XP without replacing formal academic evidence.</p></div></div>
  <div class="french-play-grid">
@@ -173,58 +175,84 @@ function renderFrenchPlay(){
    if(await window.FrenchModule.ensureData()){pane.classList.add('hidden');document.getElementById('frenchScreen').classList.remove('hidden');window.FrenchModule.show('frenchSpelling');}
  };
 }
-function renderFoundationEngine(subject,tab){
+async function renderFoundationEngine(subject,tab){
  if(subject==='latin'||subject==='french'){
    if(tab==='play'){
      if(subject==='latin'){
        document.getElementById('latinScreen').classList.remove('hidden');
-       if(window.GameV2)window.GameV2.openHub();
+       if(!window.GameV2?.openHub)throw new Error('Latin GameV2 engine unavailable');
+       window.GameV2.openHub();
      }else{
        document.getElementById('frenchScreen').classList.add('hidden');
-       renderFrenchPlay();
+       await renderFrenchPlay();
      }
      window.ScholarUX.touchSubject(subject);
-     return;
+     return true;
    }
    const pane=document.getElementById(`generic${tab[0].toUpperCase()+tab.slice(1)}Pane`);
    pane.classList.remove('hidden');
-   if(tab==='learn')window.MasterY8.renderLearn(subject);
-   else if(tab==='practice')window.MasterY8.renderPractice(subject);
-   else if(tab==='progress')window.MasterY8.renderProgress(subject);
+   if(tab==='learn')await window.MasterY8.renderLearn(subject);
+   else if(tab==='practice')await window.MasterY8.renderPractice(subject);
+   else if(tab==='progress')await window.MasterY8.renderProgress(subject);
+   else throw new Error(`Unsupported Foundation tab: ${tab}`);
    window.ScholarUX.touchSubject(subject);
+   return true;
  }
-}function renderTab(tab){
+ return false;
+}
+async function renderTab(tab){
  const allowed=['learn','practice','play','progress'];
- if(!allowed.includes(tab)){console.error('[SubjectHub] Unknown tab:',tab);window.LuxApp?.toast?.('That study section is unavailable.');return}
+ if(!allowed.includes(tab)){
+   console.error('[SubjectHub] Unknown tab:',tab);
+   window.LuxApp?.toast?.('That study section is unavailable.');
+   return false;
+ }
  const {subject,track}=current;
- if(!LABEL[subject]){console.error('[SubjectHub] Unknown subject:',subject);window.LuxApp?.toast?.('Unknown subject.');return}
+ if(!LABEL[subject]){
+   console.error('[SubjectHub] Unknown subject:',subject);
+   window.LuxApp?.toast?.('Unknown subject.');
+   return false;
+ }
  const tabButton=document.querySelector(`[data-subject-tab="${tab}"]`);
- if(tabButton?.disabled){window.LuxApp?.toast?.(tabButton.title||'This section is not available yet.');return}
+ if(tabButton?.disabled){
+   window.LuxApp?.toast?.(tabButton.title||'This section is not available yet.');
+   return false;
+ }
 
- current.tab=tab;hideAllHosts();
+ current.tab=tab;
+ hideAllHosts();
  document.querySelectorAll('[data-subject-tab]').forEach(b=>b.classList.toggle('active',b.dataset.subjectTab===tab));
 
  const pane=document.getElementById(`generic${tab[0].toUpperCase()+tab.slice(1)}Pane`);
- if(pane){pane.classList.remove('hidden');pane.innerHTML='<div class="loading-panel" role="status"><span class="loading-dot"></span><p>Loading learning tools…</p></div>'}
+ if(pane){
+   pane.classList.remove('hidden');
+   pane.innerHTML='<div class="loading-panel" role="status"><span class="loading-dot"></span><p>Loading learning tools…</p></div>';
+ }
 
  try{
    if(track==='current'){
-     if(tab==='learn')renderScienceLearn(subject);else renderScienceOther(subject,tab);
+     if(tab==='learn')await renderScienceLearn(subject);
+     else await renderScienceOther(subject,tab);
    }else if(subject==='biology'){
-     renderFoundationBio(tab);
+     await renderFoundationBio(tab);
    }else{
-     renderFoundationEngine(subject,tab);
+     await renderFoundationEngine(subject,tab);
    }
+   const canonical=`#subject/${subject}${track==='foundation'&&subject==='biology'?'-foundation':''}/${tab}`;
+   history.replaceState(null,'',canonical);
+   return true;
  }catch(err){
    console.error('[SubjectHub] render failed',subject,track,tab,err);
-   if(pane)pane.innerHTML=`<div class="load-error"><h2>Could not open this activity.</h2><p>Please retry. Your saved progress has not been changed.</p><button class="primary" data-retry-subject-tab="${tab}">Retry</button></div>`;
+   if(pane){
+     pane.classList.remove('hidden');
+     pane.innerHTML=`<div class="load-error"><h2>Could not open this activity.</h2><p>Please retry. Your saved progress has not been changed.</p><button class="primary" data-retry-subject-tab="${tab}">Retry</button></div>`;
+   }
+   return false;
  }
- const canonical=`#subject/${subject}${track==='foundation'&&subject==='biology'?'-foundation':''}/${tab}`;
- history.replaceState(null,'',canonical);
 }
-function continueToday(subject,track){
- if(track==='current'){renderTab('learn');return}
- const d=due(subject);renderTab('practice');
+async function continueToday(subject,track){
+ if(track==='current'){return await renderTab('learn')}
+ const d=due(subject);await renderTab('practice');
  if(subject==='latin'||subject==='french'){
    setTimeout(()=>window.MasterY8.startPractice(subject,d?'due':'mixed',d?7:15,'all'),0);return;
  }
@@ -233,11 +261,12 @@ function continueToday(subject,track){
    setTimeout(()=>window.BiologyY8.startPractice(bd?'due':'mixed',bd?7:15,'all'),0);
  }
 }
-function open(subject,track='current',tab){
+async function open(subject,track='current',tab){
  if(!LABEL[subject]){console.error('[SubjectHub] Unknown subject route:',subject);window.LuxApp?.toast?.('Unknown subject route.');return false}
  if(!['current','foundation'].includes(track)){console.error('[SubjectHub] Unknown track:',track);track='current'}
  current={subject,track,tab:tab||((track==='foundation')?'practice':'learn')};
- setHeader(subject,track);renderTab(current.tab);return true;
+ setHeader(subject,track);
+ return await renderTab(current.tab);
 }
 function parseRoute(hash){
  const raw=hash.replace(/^#/,'').split('/').filter(Boolean);

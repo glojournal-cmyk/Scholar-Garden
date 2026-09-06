@@ -1,129 +1,98 @@
-# Scholar's Garden V0.3.4.1 — Critical Functional Fix Change Audit
+# Scholar's Garden V0.3.4.2 — Learn + Game Runtime Fix
 
-## Root causes found
+## Exact root causes found
 
-### 1. Latin/French Practice crashed at runtime
-`language-y8.js` called `ordinaryEligible(...)`, but no such function existed in the deployed V0.3.4 code.
-That produced a `ReferenceError` as soon as Latin/French Practice attempted to build a question pool.
+1. **Release/service-worker mismatch**
+   - `index.html` requested `?v=0.3.4.1`
+   - the service worker precached `?v=0.3.4.1.1`
+   - older Scholar Garden caches could therefore mix markup, loaders and runtime files.
 
-Effect:
-- Latin Practice could open a shell but could not render questions.
-- French Practice could open a shell but could not render questions.
-- Latin/French Extra Practice also failed before question rendering.
+2. **Unsafe service-worker fallback**
+   - non-navigation fetch handling could fall back too broadly.
+   - V0.3.4.2 uses exact-resource fallback for JavaScript, modules, JSON and CSS. These resource types never fall back to `index.html`.
 
-Fix:
-- Removed the undefined call and routed eligibility through the existing `enabled(q)` gate.
-- That gate still excludes French `listen_type` from ordinary sessions while preserving the source records.
+3. **Async Subject Hub rendering was not awaited**
+   - `MasterY8.renderLearn`, `renderPractice`, `renderProgress` and Biology data paths could reject after the outer synchronous `try/catch` had already returned.
+   - This could leave an endless loading panel or make a click look dead.
 
-### 2. Extra Practice could resolve to an empty pool
-Some valid topics have recognition-only material and no production-format questions.
-V0.3.4 treated Extra Practice as production-only, so a visible Extra Practice CTA could lead to no exercise.
+4. **Duplicate Side Task binding**
+   - Side Tasks still had a direct `.onclick` while the central ActionRouter also handled the same control.
 
-Fix:
-- Extra Practice remains production-led when production questions exist.
-- When a supported topic has no production question, it falls back to valid enabled questions for that topic.
-- Recognition-only evidence still cannot directly make a concept secure.
+5. **Latin Games V2 was not actually modularised**
+   - the migrated `latin-games.js` still referenced legacy-scope variables/functions that no longer existed:
+     - `state`
+     - `save`
+     - `show`
+     - `setNavActive`
+     - `bank`
+     - `ensureAudio`
+     - `playTone`
+   - `state` failed during GameV2 initialization.
+   - after bridging that, deeper game-level testing exposed `show`, `bank`, then `ensureAudio`.
+   - V0.3.4.2 explicitly bridges these dependencies to `LatinModule`, `LATIN_BANK`, and safe local audio hooks.
 
-### 3. Service-worker/cache version mismatch
-The GitHub-safe V0.3.4 package had `index.html` requesting `?v=0.3.4`, but `sw.js` still used the V0.3.2 internal cache name and V0.3.2 precache URLs.
+6. **Quick Play race**
+   - Home Quick Play navigated to Play, waited an arbitrary 100 ms, then tried to call the game.
+   - V0.3.4.2 awaits the Subject Hub Play route and then starts the real engine immediately.
 
-This was especially risky after the runtime-bank repack:
-- old loader code could remain cached
-- old loader code expected removed bundle filenames
-- new markup + old JS could therefore produce apparently dead buttons/routes
+## Learn routes exercised in runtime harness
 
-Fix:
-- Internal SW cache bumped to `scholars-garden-v0-3-4-1-critical-functional-fix-20260906`
-- every core asset reference aligned to `?v=0.3.4.1`
-- install precache explicitly fetches with `cache: 'reload'`
-- navigation requests prefer a fresh `index.html`
-- registration uses `updateViaCache: 'none'` and calls `reg.update()`
-- learner localStorage/state is not cleared
+- Latin Year 8 Foundation → Learn: visible structured content rendered
+- French Year 8 Foundation → Learn: visible structured content rendered
+- Biology Year 8 Foundation → Learn: visible structured content rendered
+- Biology Year 9 → Learn: visible topic cards rendered
+- Chemistry Year 9 → Learn: visible topic cards rendered
+- Physics Year 9 → Learn: visible topic cards rendered
 
-### 4. High-level navigation was fragmented
-Navigation was split across per-render `onclick` assignment, Subject Hub bindings, hash routing and dynamic card binding.
-This increased the chance that DOM rewrites left a visually active control disconnected from the expected handler.
+Also exercised:
+- Latin: Learn → Practise → Play → Progress → Learn
+- French: Learn → Practise → Play → Progress → Learn
 
-Fix:
-One delegated high-level action router now handles:
-- global navigation
-- Home subject training
-- Study subject cards
-- Subject Continue
-- Subject tabs
-- Main Quest
-- Side Tasks
-- Quick Play
-- See-all game choices
-- retry actions
+## Practice routes exercised
 
-Activity-local answer controls remain inside their learning/game engines.
+- Latin Mixed Practice → real quiz rendered
+- French Mixed Practice → real quiz rendered
+- Biology Mixed Practice → real quiz rendered
+- Latin Extra Practice → real quiz rendered
+- French Extra Practice → real quiz rendered
+- Biology Extra Practice → real quiz rendered
 
-## Practice routes verified by runtime harness
+## Mini-games exercised
 
-The deterministic runtime harness loads the actual packaged JSON and calls the real Foundation practice engines with a minimal DOM shell.
+GameV2 initialization is now clean.
 
-PASS:
-- Latin Master Pack data loads
-- French Master Pack data loads
-- Biology Master Pack data loads
-- Latin mixed Practice starts and renders a real quiz card
-- French mixed Practice starts and renders a real quiz card
-- Biology mixed Practice starts and renders a real quiz card
-- Latin Extra Practice starts and renders a real quiz card
-- French Extra Practice starts and renders a real quiz card
-- Biology Extra Practice starts and renders a real quiz card
-
-## Home / routing wiring
-
-Verified in source/static QA:
-- Scholar scene present
-- Quest Log present
-- Subject Training present
-- Quick Play present
-- Main Quest and Side Task selectors are handled by the central action router
-- all Study subject-card selectors are handled by the central action router
-- Subject Hub has Learn / Practise / Play / Progress
-- supported Foundation Practice routes call the real engines
-- Year 9 Science Practice is intentionally disabled with `Practice bank not yet available`
-- Biology Foundation Play is intentionally disabled because no verified Biology game engine exists
-
-## Mini-games
-
-Preserved without changing the Latin game engine:
-- Verbum Match
+The harness opened:
 - Forma Forge
 - Sentence Mosaic
+- Verbum Match
 - Manuscript Mystery
 
-`latin-games.js` and `latin-games.css` remain byte-identical to the previous build.
-Home Quick Play still calls `GameV2.start(gameId)`.
-French Quick Play still calls the existing French spelling engine.
+It also entered Level 1 of every one of those four engines and confirmed game UI rendered.
 
-## Overlay/touch safety
+## Service worker changes
 
-Decorative Scholar/scene layers and pseudo-elements now use `pointer-events: none`.
-Interactive controls are explicitly placed above decorative layers.
+Release is now **0.3.4.2 everywhere**:
+- index asset queries
+- app/service-worker registration
+- service-worker cache namespace
+- service-worker precache URLs
+- footer/build label
 
-## Files changed in this fix
+Activation removes older `scholars-garden-*` caches only. It does not clear localStorage or learner state.
 
-- `app.js`
-- `subject-hub.js`
-- `language-y8.js`
-- `biology-y8.js`
-- `styles.css`
-- `sw.js`
-- `index.html`
-- reports/instructions/checksums
+Navigation may fall back to cached `index.html`.
+JavaScript / `.mjs` / JSON / CSS requests may only use:
+- a successful exact network response, or
+- an exact cached copy.
+They never receive `index.html` as a substitute.
 
-Verified question-bank source JSON, concept IDs and answer specifications were not regenerated.
+## Public deployment status
 
-## QA limits
+This is a deployment candidate, not a public-build acceptance.
+The public GitHub Pages site was still showing V0.3.4 while this package was produced.
+A public V0.3.4.2 click-through cannot be reported until this package is actually deployed.
 
-A Chromium browser launch was attempted in this execution environment.
-The environment blocked local browser navigation / terminated Chromium before a usable page session, so this report does NOT claim:
-- fresh physical iPad Safari QA
-- full real-browser click-through of every mini-game
-- deployed GitHub Pages end-to-end QA
+## Browser limitation
 
-Those checks must be completed after this package is deployed.
+A real Chromium launch against a local HTTP server was attempted.
+The execution environment terminates Chromium before usable navigation, so no physical-browser or iPad claim is made from this environment.

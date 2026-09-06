@@ -1,57 +1,63 @@
 LUX ET LABOR — THE SCHOLAR'S GARDEN
-V0.3.4.1 CRITICAL FUNCTIONAL FIX QA
+V0.3.4.2 LEARN + GAME RUNTIME FIX
 
-Deterministic/static/runtime-harness result: 65/65 PASS
+Candidate deterministic/runtime-harness result: 67/67 PASS
 
-Runtime practice harness:
-- PASS Latin structured data load
-- PASS French structured data load
-- PASS Biology structured data load
-- PASS Latin mixed Practice -> quiz rendered
-- PASS French mixed Practice -> quiz rendered
-- PASS Biology mixed Practice -> quiz rendered
-- PASS Latin Extra Practice -> quiz rendered
-- PASS French Extra Practice -> quiz rendered
-- PASS Biology Extra Practice -> quiz rendered
-- PASS no runtime-harness JS stderr errors
+Learn routes with visible content:
+PASS Latin Y8 Foundation -> Learn
+PASS French Y8 Foundation -> Learn
+PASS Biology Y8 Foundation -> Learn
+PASS Biology Y9 -> Learn
+PASS Chemistry Y9 -> Learn
+PASS Physics Y9 -> Learn
 
-Functional fixes:
-- PASS undefined ordinaryEligible ReferenceError removed
-- PASS empty Extra Practice topic fallback fixed
-- PASS centralized high-level delegated action router
-- PASS explicit loading states
-- PASS recoverable Retry states
-- PASS unsupported Y9 Science Practice intentionally disabled
-- PASS decorative scene layers cannot intercept taps
-- PASS all index assets versioned 0.3.4.1
-- PASS SW internal cache version bumped
-- PASS SW fresh-reload precache
-- PASS SW fresh navigation handling
-- PASS SW registration updateViaCache:none
+Tab cycles:
+PASS Latin Learn -> Practise -> Play -> Progress -> Learn
+PASS French Learn -> Practise -> Play -> Progress -> Learn
 
-Mini-game preservation:
-- PASS Latin GameV2 exposes start API
-- PASS Verbum Match route present
-- PASS Forma Forge route present
-- PASS Sentence Mosaic route present
-- PASS Manuscript Mystery route present
-- PASS Home Quick Play calls GameV2.start
-- PASS French Quick Play calls existing spelling engine
-- PASS Latin Games V2 JS/CSS unchanged from prior build
+Practice:
+PASS Latin Mixed Practice -> quiz rendered
+PASS French Mixed Practice -> quiz rendered
+PASS Biology Mixed Practice -> quiz rendered
+PASS Latin Extra Practice -> quiz rendered
+PASS French Extra Practice -> quiz rendered
+PASS Biology Extra Practice -> quiz rendered
 
-State/data preservation:
-- PASS latinSummerV8State key preserved
-- PASS monJardinFrancais.progress.v2 key preserved
-- PASS luxScholarGardenV1 key preserved
-- PASS MasterY8 concept/runtime mappings retained
-- PASS verified banks were not regenerated
+Latin mini-games:
+PASS GameV2 initializes without ReferenceError
+PASS Games hub opens
+PASS Forma Forge selector opens
+PASS Sentence Mosaic selector opens
+PASS Verbum Match selector opens
+PASS Manuscript Mystery selector opens
+PASS Forma Forge Level 1 renders
+PASS Sentence Mosaic Level 1 renders
+PASS Verbum Match Level 1 renders
+PASS Manuscript Mystery Level 1 renders
 
-Packaging:
-- 71 flat-root files
-- largest individual file: 3.57 MiB
-- GitHub browser-upload-safe target retained
+Version/cache:
+PASS index uses only 0.3.4.2
+PASS footer = V0.3.4.2 Learn + Game Runtime Fix
+PASS SW registration = 0.3.4.2
+PASS SW cache namespace = 0.3.4.2
+PASS no 0.3.4.1 / 0.3.4.1.1 asset refs remain
+PASS old Scholar Garden caches deleted on activation
+PASS JS/MJS/JSON/CSS never fall back to index.html
 
-Browser/manual QA limitation:
-- Chromium launch was attempted but this environment blocked local navigation / terminated Chromium.
-- No physical iPad Safari claim is made.
-- Full deployed click-through must be done after upload.
+Routing:
+PASS SubjectHub.renderTab is async
+PASS MasterY8 Learn is awaited
+PASS MasterY8 Practise is awaited
+PASS MasterY8 Progress is awaited
+PASS Biology data load is awaited
+PASS failed activity shows Could not open this activity + Retry
+PASS duplicate Side Task onclick removed
+PASS central ActionRouter owns Side Tasks
+PASS central ActionRouter owns GameV2 game cards
+PASS Quick Play waits for Play route
+PASS Quick Play no longer uses an arbitrary setTimeout race
+
+Important:
+PUBLIC BUILD MANUAL QA IS NOT YET COMPLETE.
+The public site must first be upgraded to V0.3.4.2.
+Do not mark this release accepted until the public footer shows V0.3.4.2 and the requested public click tests pass.

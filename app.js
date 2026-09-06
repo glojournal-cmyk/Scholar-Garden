@@ -37,13 +37,21 @@ function showScreen(name){
 }
 function go(dest){
  const hash=dest.startsWith('#')?dest:`#${dest}`;
- if(location.hash===hash)render();else location.hash=hash;
+ if(location.hash===hash)render().catch(err=>{console.error('[Router] render failed',err);toast('This page could not be opened.')});
+ else location.hash=hash;
 }
-function goSubject(subject,track='current',tab){
+async function goSubject(subject,track='current',tab){
  let slug=subject;
  if(track==='foundation'&&subject==='biology')slug='biology-foundation';
  const defaultTab=tab||(track==='foundation'?'practice':'learn');
- go(`#subject/${slug}/${defaultTab}`);
+ const hash=`#subject/${slug}/${defaultTab}`;
+ if(location.hash!==hash)history.pushState(null,'',hash);
+ showScreen('subject');
+ growth();
+ const ok=await window.SubjectHub.open(subject,track,defaultTab);
+ const ux=window.ScholarUX.load();ux.lastRoute=hash;window.ScholarUX.save(ux);
+ window.scrollTo({top:0,behavior:'auto'});
+ return ok;
 }
 function greeting(){
  const h=new Date().getHours();return h<12?'Good morning':h<18?'Good afternoon':'Good evening';
@@ -110,24 +118,29 @@ function renderToday(){
    <div><small>${window.DailyPlan.displaySubject(t.subject).toUpperCase()} · ${t.reason}</small><h3>${displayTaskTitle(t)}</h3><p>${taskProgressText(t)} · ~${t.minutes} min</p></div>
    <button class="secondary" data-start-secondary="${t.id}">${taskButtonLabel(t)}</button>
   </article>`).join('');
- secondaryRoot.querySelectorAll('[data-start-secondary]').forEach(b=>b.onclick=()=>startTask(s.tasks.find(t=>t.id===b.dataset.startSecondary)));
 }
 async function startQuickGame(subject,gameId){
  window.ScholarUX.touchSubject(subject);
  if(subject==='latin'){
-   goSubject('latin','foundation','play');
-   setTimeout(()=>window.GameV2?.start?.(gameId),100);
-   return;
+   const opened=await goSubject('latin','foundation','play');
+   if(!opened)throw new Error('Latin Play hub failed to open');
+   if(!window.GameV2?.start)throw new Error('Latin GameV2.start unavailable');
+   window.GameV2.start(gameId);
+   return true;
  }
  if(subject==='french'){
-   goSubject('french','foundation','play');
+   const opened=await goSubject('french','foundation','play');
+   if(!opened)throw new Error('French Play hub failed to open');
    const ok=await window.FrenchModule.ensureData();
-   if(ok)setTimeout(()=>{
-     document.getElementById('genericPlayPane')?.classList.add('hidden');
-     document.getElementById('frenchScreen')?.classList.remove('hidden');
-     window.FrenchModule.show('frenchSpelling');window.FrenchModule.startSpelling();
-   },100);
+   if(!ok)throw new Error('French data unavailable');
+   document.getElementById('genericPlayPane')?.classList.add('hidden');
+   document.getElementById('frenchScreen')?.classList.remove('hidden');
+   window.FrenchModule.show('frenchSpelling');
+   if(!window.FrenchModule.startSpelling)throw new Error('French spelling engine unavailable');
+   window.FrenchModule.startSpelling();
+   return true;
  }
+ throw new Error(`Unknown game subject: ${subject}`);
 }
 async function startTask(t){
  if(!t)return;
@@ -284,13 +297,13 @@ function renderGarden(){
  Object.keys(s.medals||{}).forEach(id=>events.push({id,title:id.replace(/-/g,' ').replace(/\b\w/g,c=>c.toUpperCase()),kind:'Achievement'}));
  document.getElementById('gardenRewards').innerHTML=(events.slice(-8).reverse().length?events.slice(-8).reverse():[{title:'Your first growth item is waiting',kind:'Keep studying'}]).map(e=>`<article class="collect-card earned"><div class="collect-art">✦</div><h3>${e.title}</h3><p>${e.kind}</p></article>`).join('');
 }
-function render(){
+async function render(){
  const info=routeInfo();
- if(info.redirect){history.replaceState(null,'','#home');return render()}
+ if(info.redirect){history.replaceState(null,'','#home');return await render()}
  showScreen(info.screen);
  if(info.screen==='home')renderHome();
  else if(info.screen==='study'){growth();window.SubjectHub.renderStudy()}
- else if(info.screen==='subject'&&info.subject){growth();window.SubjectHub.open(info.subject.subject,info.subject.track,info.subject.tab)}
+ else if(info.screen==='subject'&&info.subject){growth();await window.SubjectHub.open(info.subject.subject,info.subject.track,info.subject.tab)}
  else if(info.screen==='garden')renderGarden();
  else if(info.screen==='scholar'){growth();window.ScholarView.openTab(info.tab)}
  const ux=window.ScholarUX.load();ux.lastRoute=location.hash||'#home';window.ScholarUX.save(ux);
@@ -312,26 +325,26 @@ async function handleActionClick(event){
      event.preventDefault();go('home');return;
    }
    if(el.matches('[data-train-subject]')){
-     event.preventDefault();goSubject(el.dataset.trainSubject,el.dataset.trainTrack||'current',(el.dataset.trainTrack==='foundation'?'practice':'learn'));return;
+     event.preventDefault();await goSubject(el.dataset.trainSubject,el.dataset.trainTrack||'current',(el.dataset.trainTrack==='foundation'?'practice':'learn'));return;
    }
    if(el.matches('[data-open-subject]')){
-     event.preventDefault();goSubject(el.dataset.openSubject,el.dataset.track||'current');return;
+     event.preventDefault();await goSubject(el.dataset.openSubject,el.dataset.track||'current');return;
    }
    if(el.matches('[data-cont-subject]')){
-     event.preventDefault();goSubject(el.dataset.contSubject,el.dataset.contTrack||'current');return;
+     event.preventDefault();await goSubject(el.dataset.contSubject,el.dataset.contTrack||'current');return;
    }
    if(el.matches('[data-subject-continue]')){
      event.preventDefault();
      if(el.disabled){toast('This activity is not available yet.');return}
-     window.SubjectHub.continueToday(el.dataset.subjectContinue,el.dataset.subjectTrack||'current');return;
+     await window.SubjectHub.continueToday(el.dataset.subjectContinue,el.dataset.subjectTrack||'current');return;
    }
    if(el.matches('[data-subject-tab]')){
      event.preventDefault();
      if(el.disabled||el.getAttribute('aria-disabled')==='true'){toast(el.title||'This section is not available yet.');return}
-     window.SubjectHub.renderTab(el.dataset.subjectTab);return;
+     await window.SubjectHub.renderTab(el.dataset.subjectTab);return;
    }
    if(el.matches('[data-retry-subject-tab]')){
-     event.preventDefault();window.SubjectHub.renderTab(el.dataset.retrySubjectTab);return;
+     event.preventDefault();await window.SubjectHub.renderTab(el.dataset.retrySubjectTab);return;
    }
    if(el.matches('[data-start-main]')){
      event.preventDefault();const t=currentDailyTask(el.dataset.startMain);if(!t){console.error('[ActionRouter] Unknown Main Quest task',el.dataset.startMain);toast('This quest could not be opened.');return}await startTask(t);return;
@@ -344,6 +357,16 @@ async function handleActionClick(event){
    }
    if(el.matches('[data-all-game]')){
      event.preventDefault();await startQuickGame(el.dataset.gameSubject,el.dataset.allGame);return;
+   }
+   if(el.matches('[data-gamev2-start]')){
+     event.preventDefault();
+     if(!window.GameV2?.start)throw new Error('Latin GameV2 engine unavailable');
+     window.GameV2.start(el.dataset.gamev2Start);return;
+   }
+   if(el.matches('[data-gamev2-hub]')){
+     event.preventDefault();
+     if(!window.GameV2?.openHub)throw new Error('Latin GameV2 hub unavailable');
+     window.GameV2.openHub();return;
    }
    if(el.id==='seeAllGames'){
      event.preventDefault();document.getElementById('allGamesDrawer')?.classList.toggle('hidden');return;
@@ -383,7 +406,7 @@ async function init(){
  const latinMasterReady=window.MasterY8.ensure('latin');
  const frenchMasterReady=window.MasterY8.ensure('french');
  document.addEventListener('click',handleActionClick);
- window.addEventListener('hashchange',render);
+ window.addEventListener('hashchange',()=>render().catch(err=>{console.error('[Router] hash render failed',err);toast('This page could not be opened.')}));
  document.addEventListener('lux:growth',()=>{
   const before=lastCollectibleCount,after=window.LuxGrowth.snapshot().collectibleCount;
   growth();
@@ -399,8 +422,8 @@ async function init(){
 });
  document.addEventListener('lux:plan-change',()=>{if(routeInfo().screen==='home')renderHome()});
  await Promise.race([Promise.allSettled([frenchLegacyReady,biologyReady,latinMasterReady,frenchMasterReady]),new Promise(resolve=>setTimeout(resolve,2600))]);
- render();
- if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=0.3.4.1',{updateViaCache:'none'}).then(reg=>reg.update()).catch(err=>console.warn('[PWA] service worker update failed',err));
+ await render();
+ if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=0.3.4.2',{updateViaCache:'none'}).then(reg=>reg.update()).catch(err=>console.warn('[PWA] service worker update failed',err));
 }
 document.readyState==='loading'?document.addEventListener('DOMContentLoaded',init):init();
 })();

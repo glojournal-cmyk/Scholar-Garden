@@ -2,6 +2,15 @@
   'use strict';
 
   const VERSION = '10.1.0';
+  // V0.3.4.2 bridge: Games V2 was originally written against shared `state` / `save`.
+  // The modular app keeps that state inside LatinModule, so inject the preserved object explicitly.
+  const state = window.LatinModule?.state?.() || {};
+  const save = () => window.LatinModule?.save?.();
+  const show = view => window.LatinModule?.show?.(view);
+  const setNavActive = () => {};
+  const bank = Array.isArray(window.LATIN_BANK) ? window.LATIN_BANK : [];
+  const ensureAudio = () => {};
+  const playTone = () => {};
   const PLAN_YEAR = 2026;
   const GAME_ORDER = ['forma', 'mosaic', 'verbum', 'manuscript'];
 

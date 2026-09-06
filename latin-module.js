@@ -253,5 +253,5 @@ function todayStats(){
  return {answers:rows.length,correct:rows.filter(a=>a.ok).length,translation:rows.filter(a=>a.category==='Translation').length,due:dueQuestions().length,weak:weakQuestions().length};
 }
 function reviewDates(){return Object.values(state.reviews||{}).map(r=>r?.due).filter(Boolean)}
-window.LatinModule={init,show:latinView,startPractice,renderHome,renderProgress,dueCount:()=>dueQuestions().length,weakCount:()=>weakQuestions().length,state:()=>state,todayStats,startWeakPractice,reviewDates};
+window.LatinModule={init,show:latinView,startPractice,renderHome,renderProgress,dueCount:()=>dueQuestions().length,weakCount:()=>weakQuestions().length,state:()=>state,save,todayStats,startWeakPractice,reviewDates};
 })();

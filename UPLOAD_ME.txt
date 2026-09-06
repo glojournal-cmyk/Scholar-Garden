@@ -1,37 +1,40 @@
-SCHOLAR'S GARDEN — V0.3.4.1 CRITICAL FUNCTIONAL FIX
+SCHOLAR'S GARDEN — V0.3.4.2 LEARN + GAME RUNTIME FIX
 
-Use THIS package instead of the earlier V0.3.4 build.
+Upload this package over the Scholar-Garden repository root.
 
-Upload:
 1. Extract the ZIP.
 2. GitHub -> Scholar-Garden -> Add file -> Upload files.
-3. Drag every extracted file into the ROOT of the repository.
+3. Upload every extracted file to repo ROOT.
 4. Commit.
 5. Wait for GitHub Pages deployment.
-6. Open the live site.
-7. Hard refresh once.
+6. Open the public site and hard-refresh once.
+7. Confirm footer:
+   V0.3.4.2 Learn + Game Runtime Fix
 
-Important cache fix:
-- index assets now use ?v=0.3.4.1
-- service worker internal cache is also V0.3.4.1
-- learner progress/localStorage is NOT cleared
+PUBLIC ACCEPTANCE TEST — do not skip:
 
-Post-deploy priority click test:
-1. Home Main Quest
-2. every Side Task
-3. Train Latin -> Practise -> Mixed Training
-4. Train French -> Practise -> Mixed Training
-5. Train Biology -> Practise -> Mixed Training
-6. Latin Extra Practice
-7. French Extra Practice
-8. Biology Extra Practice
-9. Quick Play -> Verbum Match
-10. Quick Play -> Sentence Mosaic
-11. See all games -> Forma Forge
-12. See all games -> Manuscript Mystery
-13. French Spelling Sprint
-14. reload and confirm state persists
-15. test iPad/mobile widths
+Fresh/private browser:
+- Home -> Train Latin -> Learn
+- Home -> Train French -> Learn
+- Home -> Train Biology -> Learn
+- Study -> Biology Year 9 -> Learn
+- Study -> Chemistry -> Learn
+- Study -> Physics -> Learn
+For each: content must visibly appear, no endless loading, Back/tabs remain usable.
 
-Expected footer:
-V0.3.4.1 Critical Functional Fix
+Then:
+- Latin: Learn -> Practise -> Play -> Progress -> Learn
+- French: Learn -> Practise -> Play -> Progress -> Learn
+
+Mini-games:
+- Quick Play -> Verbum Match -> Level 1
+- Quick Play -> Sentence Mosaic -> Level 1
+- See all games -> Forma Forge -> Level 1
+- See all games -> Manuscript Mystery -> Level 1
+- French Spelling Sprint
+
+Upgrade/stale profile:
+- repeat the same tests without clearing learner localStorage.
+- verify progress/state remains.
+
+If the footer is not V0.3.4.2, do not test the old page.
