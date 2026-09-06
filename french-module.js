@@ -182,8 +182,8 @@ function firstDiff(a,b){let i=0;while(i<a.length&&i<b.length&&a[i]===b[i])i++;re
 function checkSpell(){
  const v=spellSession.items[spellSession.index],input=document.getElementById('spellAnswer').value.trim(),target=strictSpell(v.french),got=strictSpell(input),fb=document.getElementById('spellFeedback');if(!input)return window.LuxApp.toast('Type the word first.');
  const ok=got===target,rec=progress.spelling[v.id]||{tries:0,independentCorrect:0};rec.tries++;spellSession.attempts++;
- if(ok){spellSession.score++;rec.status='correct';rec.independentCorrect=(rec.independentCorrect||0)+1;rec.dueAt=null;progress.spelling[v.id]=rec;save();window.LuxGrowth?.award({subject:'french',type:'spelling_first_independent',itemId:v.id});fb.innerHTML=`<div class="feedback good"><h3>Correct spelling.</h3><div class="model-answer">${esc(v.french)}</div><button class="primary" id="spellNext">Next word</button></div>`;document.getElementById('spellNext').onclick=nextSpell;return}
- const i=firstDiff(got,target);rec.status='wrong';rec.dueAt=Date.now()+48*60*60*1000;progress.spelling[v.id]=rec;save();
+ if(ok){spellSession.score++;rec.status='correct';rec.independentCorrect=(rec.independentCorrect||0)+1;rec.dueAt=null;progress.spelling[v.id]=rec;addActivity({kind:'spelling',id:v.id,correct:true,independent:true});save();window.LuxGrowth?.award({subject:'french',type:'spelling_first_independent',itemId:v.id});fb.innerHTML=`<div class="feedback good"><h3>Correct spelling.</h3><div class="model-answer">${esc(v.french)}</div><button class="primary" id="spellNext">Next word</button></div>`;document.getElementById('spellNext').onclick=nextSpell;return}
+ const i=firstDiff(got,target);rec.status='wrong';rec.dueAt=Date.now()+48*60*60*1000;progress.spelling[v.id]=rec;addActivity({kind:'spelling',id:v.id,correct:false,independent:true});save();
  if(rec.tries%2===1){
    fb.innerHTML=`<div class="feedback bad"><h3>Repair once.</h3><p>First difference is around character ${i+1}. Check accents and exact letters.</p><p><b>Your spelling:</b> ${esc(input)}</p></div>`;
  }else{
@@ -199,5 +199,9 @@ function init(){
  document.getElementById('startFrenchSpelling').onclick=async()=>{if(await ensureData())startSpelling()};
  ensureData();
 }
-window.FrenchModule={init,ensureData,show:frenchView,startQuiz,dueCount:()=>dataReady?dueCount():0,renderProgress};
+function todayStats(){
+ const k=today(),rows=(progress.history||[]).filter(x=>x.day===k);
+ return {answers:rows.filter(x=>x.kind==='question').length,correct:rows.filter(x=>x.kind==='question'&&x.correct).length,writing:rows.filter(x=>x.kind==='writing').length,spelling:rows.filter(x=>x.kind==='spelling').length,due:dataReady?dueCount():0,loaded:dataReady};
+}
+window.FrenchModule={init,ensureData,show:frenchView,startQuiz,dueCount:()=>dataReady?dueCount():0,renderProgress,todayStats};
 })();

@@ -242,5 +242,9 @@ function init(){
  document.getElementById('latinNotesSearch').addEventListener('input',renderNotes);
  renderHome();renderVocab();renderProgress();renderNotes();
 }
-window.LatinModule={init,show:latinView,startPractice,renderHome,renderProgress,dueCount:()=>dueQuestions().length,state:()=>state};
+function todayStats(){
+ const k=today(),rows=(state.attempts||[]).filter(a=>String(a.date||'').slice(0,10)===k);
+ return {answers:rows.length,correct:rows.filter(a=>a.ok).length,translation:rows.filter(a=>a.category==='Translation').length,due:dueQuestions().length};
+}
+window.LatinModule={init,show:latinView,startPractice,renderHome,renderProgress,dueCount:()=>dueQuestions().length,state:()=>state,todayStats};
 })();

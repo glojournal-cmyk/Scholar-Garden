@@ -18,15 +18,16 @@ const RULES=Object.freeze({
   boss_complete:25,
   vocab_mastered:10,
   writing_complete:20,
+  daily_seal:35,
   reveal:0,
   assisted_build:1,
   clue_correct:1
 });
 function fresh(){
   return {
-    version:2,xp:0,level:1,medals:{},collectibles:{},
+    version:3,xp:0,level:1,medals:{},collectibles:{},
     wardrobe:{hair:'starter',outfit:'starter',accessory:null},
-    garden:{stage:1,equipped:[]},claims:{},counts:{},history:[],studyDates:{},
+    garden:{stage:1,equipped:[]},claims:{},counts:{},history:[],studyDates:{},activeSeconds:{},dailySeals:{},
     subjectTotals:{latin:0,french:0}
   };
 }
@@ -44,6 +45,8 @@ function load(){
       counts:{...b.counts,...(v.counts||{})},
       history:Array.isArray(v.history)?v.history:[],
       studyDates:{...b.studyDates,...(v.studyDates||{})},
+      activeSeconds:{...b.activeSeconds,...(v.activeSeconds||{})},
+      dailySeals:{...b.dailySeals,...(v.dailySeals||{})},
       subjectTotals:{...b.subjectTotals,...(v.subjectTotals||{})}
     };
   }catch(e){return fresh()}
@@ -105,11 +108,31 @@ function award(event){
   document.dispatchEvent(new CustomEvent('lux:growth',{detail:{amount,event}}));
   return {awarded:amount,reason:amount?'awarded':'repeat_decay',state:s};
 }
+
+function addActiveSeconds(seconds){
+  const s=load(),k=day();
+  s.activeSeconds[k]=(Number(s.activeSeconds[k])||0)+Math.max(0,Number(seconds)||0);
+  if(s.activeSeconds[k]>0)s.studyDates[k]=true;
+  save(s);
+  document.dispatchEvent(new CustomEvent('lux:active',{detail:{day:k,seconds:s.activeSeconds[k]}}));
+  return s.activeSeconds[k];
+}
+function activeSecondsFor(k=day()){const s=load();return Number(s.activeSeconds?.[k])||0}
+function claimDailySeal(k=day()){
+  const s=load();
+  if(s.dailySeals?.[k])return {awarded:0,already:true};
+  s.dailySeals[k]={earnedAt:new Date().toISOString()};
+  save(s);
+  const result=award({subject:'shared',type:'daily_seal',itemId:k,windowKey:k});
+  return {...result,already:false};
+}
+function dayStatus(k){const s=load();return {activeSeconds:Number(s.activeSeconds?.[k])||0,seal:!!s.dailySeals?.[k],study:!!s.studyDates?.[k]}}
+
 function snapshot(){
   const s=load(),l=levelFromXP(s.xp||0);
   return {...l,total:s.xp||0,medalCount:Object.keys(s.medals||{}).length,
     collectibleCount:Object.keys(s.collectibles||{}).length,studyDays:Object.keys(s.studyDates||{}).length,
     gardenStage:s.garden?.stage||1,subjectTotals:s.subjectTotals||{latin:0,french:0},state:s};
 }
-window.LuxGrowth=Object.freeze({KEY,RULES,load,save,award,snapshot,levelFromXP});
+window.LuxGrowth=Object.freeze({KEY,RULES,load,save,award,snapshot,levelFromXP,addActiveSeconds,activeSecondsFor,claimDailySeal,dayStatus,day});
 })();

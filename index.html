@@ -7,8 +7,8 @@
 <meta name="description" content="Lux et Labor — The Scholar's Garden">
 <title>Lux et Labor — The Scholar’s Garden</title>
 <link rel="manifest" href="./manifest.webmanifest">
-<link rel="stylesheet" href="./styles.css?v=0.2.0">
-<link rel="stylesheet" href="./latin-games.css?v=0.2.0">
+<link rel="stylesheet" href="./styles.css?v=0.3.0">
+<link rel="stylesheet" href="./latin-games.css?v=0.3.0">
 </head>
 <body>
 <header class="topbar">
@@ -18,20 +18,73 @@
 </header>
 
 <main>
+
 <section class="screen" data-screen="home" id="homeScreen">
- <article class="hero hero-home"><img src="hero_01.webp" alt="" fetchpriority="high"><div class="hero-copy"><p class="eyebrow">THE SCHOLAR’S GARDEN</p><h1>Small steps.<br>Brighter horizons.</h1><p>Latin and French in one daily study world. Practice, remember, play — and grow something of your own.</p><div><button class="primary" data-route="latin">Start today</button><button class="secondary" data-route="garden">Visit Garden</button></div></div></article>
- <section class="growth-strip card"><div><p class="eyebrow">SCHOLAR JOURNEY</p><h2>Level <span data-growth="level">1</span></h2></div><div class="xp-wrap"><div><b><span data-growth="xp">0</span> / <span data-growth="next">100</span> XP</b><span>Real learning only</span></div><div class="bar"><i data-growth-bar></i></div></div><div class="mini-stats"><span><b data-growth="medals">0</b>Medals</span><span><b data-growth="items">0</b>Items</span><span><b data-growth="days">0</b>Study days</span></div></section>
- <section class="home-grid">
-   <article class="garden-feature card"><img src="garden_01.webp" alt="Scholar's Garden" loading="lazy"><div><p class="eyebrow">YOUR GROWTH WORLD</p><h2>Scholar’s Garden</h2><p>XP, medals and collectibles come from real practice, delayed recall, writing and learning games — not from endlessly replaying easy items.</p><button class="secondary" data-route="garden">Visit Garden</button></div></article>
-   <aside class="today card"><p class="eyebrow">TODAY</p><h2>Your study path</h2><div id="homePlan"></div></aside>
+ <article class="quest-hero">
+   <img src="hero_01.webp" alt="" fetchpriority="high">
+   <div class="quest-hero-copy">
+     <div class="date-line"><span id="todayDate">Today</span><span class="daily-seal" id="dailySealBadge">Daily Seal ○</span></div>
+     <p class="eyebrow">TODAY’S SCHOLAR QUEST</p>
+     <h1>What will you grow today?</h1>
+     <p id="questSummary">Your minimum study path is being prepared…</p>
+     <div class="quest-overall">
+       <div><strong id="questDone">0 / 6 tasks</strong><span id="activeTimeLabel">0 / 20 active min</span></div>
+       <div class="big-progress"><i id="questProgressBar"></i></div>
+     </div>
+   </div>
+ </article>
+
+ <section class="daily-layout">
+   <article class="quest-board card">
+     <div class="quest-board-head">
+       <div><p class="eyebrow">TODAY’S MINIMUM</p><h2>Daily Quest Board</h2></div>
+       <div class="quest-reward"><small>Completion reward</small><strong>Daily Seal + 35 XP</strong></div>
+     </div>
+     <div id="dailyQuestList" class="quest-list"></div>
+     <div class="bonus-quest">
+       <div><span>✦</span><div><b>Bonus Quest</b><small>Do one learning game after your minimum work.</small></div></div>
+       <button class="secondary" data-route="latin">Open Games</button>
+     </div>
+   </article>
+
+   <aside class="week-card card">
+     <p class="eyebrow">THIS WEEK</p><h2>7-Day Study Trail</h2>
+     <div id="weekCalendar" class="week-calendar"></div>
+     <div class="week-legend"><span><i class="seal"></i> Daily Seal</span><span><i class="partial"></i> Study started</span></div>
+     <div class="next-reward"><small>NEXT GARDEN MILESTONE</small><strong id="nextGardenReward">Keep studying to grow your garden.</strong></div>
+   </aside>
  </section>
- <section class="subjects-section"><div class="section-head"><div><p class="eyebrow">SUBJECTS</p><h2>Choose your path</h2></div><p>Shared motivation. Separate academic mastery.</p></div>
- <div class="subject-grid">
-  <button class="subject-card" data-route="latin"><span class="subject-letter">L</span><span><small>ACTIVE</small><strong>Latin</strong><em>Practice · Games · Vocabulary · Translation</em></span><b>→</b></button>
-  <button class="subject-card french" data-route="french"><span class="subject-letter">F</span><span><small>ACTIVE</small><strong>French</strong><em>Practice · Vocabulary · Writing · Spelling</em></span><b>→</b></button>
-  <button class="subject-card locked" data-locked="Biology"><span class="subject-letter">B</span><span><small>COMING LATER</small><strong>Biology</strong><em>Reserved subject module</em></span><b>◆</b></button>
-  <button class="subject-card locked" data-locked="Chemistry"><span class="subject-letter">C</span><span><small>COMING LATER</small><strong>Chemistry</strong><em>Reserved subject module</em></span><b>◆</b></button>
- </div></section>
+
+ <section class="garden-home card">
+   <img id="homeGardenImage" src="garden_01.webp" alt="Scholar's Garden" loading="lazy">
+   <div class="garden-home-copy">
+     <p class="eyebrow">YOUR WORLD</p><h2>Scholar’s Garden</h2>
+     <p id="gardenHomeMessage">Every real learning step adds to your Scholar journey.</p>
+     <div class="garden-home-stats">
+       <span><b>Lv <span data-growth="level">1</span></b>Scholar</span>
+       <span><b><span data-growth="xp">0</span>/<span data-growth="next">100</span></b>XP</span>
+       <span><b data-growth="items">0</b>Items</span>
+       <span><b data-growth="medals">0</b>Medals</span>
+     </div>
+     <div class="bar garden-xp"><i data-growth-bar></i></div>
+     <button class="secondary" data-route="garden">Enter Garden</button>
+   </div>
+ </section>
+
+ <section class="continue-section">
+   <div class="section-head"><div><p class="eyebrow">CONTINUE LEARNING</p><h2>Quick launch</h2></div><p>Subjects support today’s quest rather than dominating Home.</p></div>
+   <div class="quick-subject-grid">
+     <button class="quick-subject latin-quick" data-route="latin"><span>L</span><div><small>LATIN</small><strong>Practice & Games</strong><em id="latinHomeStatus">Ready</em></div><b>→</b></button>
+     <button class="quick-subject french-quick" data-route="french"><span>F</span><div><small>FRENCH</small><strong>Practice & Spelling</strong><em id="frenchHomeStatus">Ready</em></div><b>→</b></button>
+     <button class="quick-subject locked" data-locked="Biology"><span>B</span><div><small>COMING LATER</small><strong>Biology</strong><em>Locked</em></div><b>◆</b></button>
+     <button class="quick-subject locked" data-locked="Chemistry"><span>C</span><div><small>COMING LATER</small><strong>Chemistry</strong><em>Locked</em></div><b>◆</b></button>
+   </div>
+ </section>
+
+ <section class="recent-rewards">
+   <div class="section-head"><div><p class="eyebrow">RECENT GROWTH</p><h2>What you earned</h2></div><button class="secondary" data-route="collection">Open Collection</button></div>
+   <div id="recentRewards" class="recent-reward-grid"></div>
+ </section>
 </section>
 
 <section class="screen hidden" data-screen="latin" id="latinScreen">
@@ -106,12 +159,12 @@
 </section>
 </main>
 <div id="toast" role="status" aria-live="polite"></div>
-<footer><span>Lux et Labor · The Scholar’s Garden</span><span>V0.2.0 Full Migration</span></footer>
+<footer><span>Lux et Labor · The Scholar’s Garden</span><span>V0.3.0 Daily Quest</span></footer>
 
-<script src="latin-question-bank.js?v=0.2.0"></script>
-<script src="growth.js?v=0.2.0"></script>
-<script src="latin-module.js?v=0.2.0"></script>
-<script src="french-module.js?v=0.2.0"></script>
-<script src="latin-games.js?v=0.2.0"></script>
-<script src="app.js?v=0.2.0"></script>
+<script src="latin-question-bank.js?v=0.3.0"></script>
+<script src="growth.js?v=0.3.0"></script>
+<script src="latin-module.js?v=0.3.0"></script>
+<script src="french-module.js?v=0.3.0"></script>
+<script src="latin-games.js?v=0.3.0"></script>
+<script src="app.js?v=0.3.0"></script>
 </body></html>

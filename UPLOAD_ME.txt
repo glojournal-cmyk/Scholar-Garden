@@ -1,30 +1,15 @@
-LUX ET LABOR — THE SCHOLAR'S GARDEN V0.2.0
+LUX ET LABOR — THE SCHOLAR'S GARDEN V0.3.0 DAILY QUEST
 
-IMPORTANT: THIS PACKAGE IS INTENTIONALLY FLAT.
-Upload EVERY file inside this ZIP directly to the ROOT of the Scholar-Garden GitHub repository.
+Upload EVERY file in this ZIP directly to the ROOT of the Scholar-Garden GitHub repository.
+Keep the package flat exactly as supplied.
 
-Do not create js/, assets/, or data/ folders for this release.
-This avoids the folder-flattening problem seen in the first GitHub web upload.
+After deploy:
+1. Confirm footer says V0.3.0 Daily Quest.
+2. Home must show today's date, Daily Quest Board and 7-Day Study Trail.
+3. Leave the app visibly active for about a minute; Active Study Minutes should begin increasing.
+4. Answer Latin questions, return Home and confirm Latin progress updates.
+5. Use French Spelling, return Home and confirm the spelling task updates.
+6. Complete all six minimum tasks to earn today's Daily Seal (+35 XP once).
+7. Check Garden and Recent Growth.
 
-Replace the existing repository files with all files from this ZIP.
-
-After GitHub Pages redeploys:
-1. Open https://glojournal-cmyk.github.io/Scholar-Garden/
-2. Confirm footer shows: V0.2.0 Full Migration
-3. Test Home -> Latin -> Practice
-4. Test Latin -> Games -> each game opens its level menu
-5. Test French -> wait for "Loaded 1,502 questions..." status
-6. Test French Practice, Vocabulary, Writing and Spelling Game
-7. Open Garden and Collection.
-
-French data bridge:
-- The new app first looks for French JSON files in Scholar-Garden root.
-- If absent, it loads the current audited files from the existing sibling French-Revision repo.
-- The service worker runtime-caches those files after use.
-- Later we can copy the JSON files into Scholar-Garden root without changing any code.
-
-Existing progress:
-- Latin continues to use latinSummerV8State.
-- French continues to use monJardinFrancais.progress.v2.
-- Shared growth uses luxScholarGardenV1.
-No reset is performed.
+Do not create folders manually.

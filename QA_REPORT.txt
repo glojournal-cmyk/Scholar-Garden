@@ -1,8 +1,7 @@
 LUX ET LABOR — THE SCHOLAR'S GARDEN
-V0.2.0 FULL MIGRATION QA
+V0.3.0 DAILY QUEST QA
 
 Latin bank: {'q': 1056, 'b': 24, 'n': 24}
-Local WebP assets: 13
 Missing HTML refs: []
 Missing SW refs: []
 
@@ -13,33 +12,36 @@ Missing SW refs: []
 - JS syntax app.js: PASS
 - JS syntax sw.js: PASS
 - JS syntax latin-question-bank.js: PASS
-- No duplicate HTML IDs: PASS
-- Flat root: no ./js or ./assets references: PASS
-- All local HTML refs exist: PASS
-- Latin questions = 1,056: PASS
-- Latin blocks preserved = 24: PASS
-- Latin notes preserved = 24: PASS
-- Latin old summer route removed from Games: PASS
-- Latin Games V2 present: PASS
-- Latin formal state key preserved: PASS
-- French formal state key preserved: PASS
-- Shared state separate: PASS
-- French audited source paths present: PASS
-- French spelling game present: PASS
+- No duplicate IDs: PASS
+- Today date UI: PASS
+- Daily Quest board: PASS
+- 7-day calendar: PASS
+- Daily Seal engine: PASS
+- Active minutes tracker: PASS
+- Latin live today stats: PASS
+- French live today stats: PASS
+- French spelling tracked: PASS
+- Garden feedback on Home: PASS
+- Recent rewards on Home: PASS
+- Quick launch below quest: PASS
 - Bio/Chem locked: PASS
-- 13 supplied images packaged: PASS
-- Images not bulk precached: PASS
-- French data runtime cache rule: PASS
-- Version visible: PASS
-- No old framework-only status copy: PASS
-- Service worker core refs exist: PASS
+- V0.3 visible: PASS
+- Flat-root preserved: PASS
+- All local HTML refs exist: PASS
+- Latin 1056/24/24: PASS
+- SW core refs exist: PASS
+- V0.3 cache: PASS
 
-RUNTIME LIMITS / HONESTY
-- Static deterministic checks above were executed in the build environment.
-- French's 1,502-question/617-vocab JSON is loaded from the existing live French-Revision repo unless the same JSON files are later copied into Scholar-Garden root.
-- Physical iPad Safari/audio testing still requires the deployed site.
-- No claim is made that the new avatar/chibi/medal artwork exists yet; CSS slots are ready for it.
+HOME CHANGES
+- Live date is now visible on the first screen.
+- Six minimum daily tasks show live progress and one-click entry points.
+- Active study time is tracked while the app is visible/in use.
+- A 7-day study trail marks started days and earned Daily Seals.
+- Completing all six minimum tasks awards one Daily Seal + 35 shared XP per day.
+- Garden state and recent rewards are visible on Home.
+- Subject modules are quick launch tools below the daily quest loop.
 
-CAUSE OF V0.1 BUTTON FAILURE
-- The GitHub repository shows V0.1 files flattened at root while V0.1 index.html expected nested js/ and assets/ paths.
-- V0.2 is deliberately flat-root to prevent that upload failure mode.
+LIMITATIONS
+- Final chibi/avatar/medal/collectible artwork is still waiting for the next image batches.
+- Existing 13 images remain the visual base and can be replaced later without changing the daily quest engine.
+- Physical iPad Safari interaction is not claimed until post-deploy testing.

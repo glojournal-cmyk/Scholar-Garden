@@ -1,10 +1,10 @@
 
-const V='scholars-garden-v0-2-0-20260906';
+const V='scholars-garden-v0-3-0-20260906';
 const CORE=`${V}-core`,RUN=`${V}-runtime`;
 const FILES=[
- './','./index.html','./styles.css?v=0.2.0','./latin-games.css?v=0.2.0','./manifest.webmanifest',
- './latin-question-bank.js?v=0.2.0','./growth.js?v=0.2.0','./latin-module.js?v=0.2.0',
- './french-module.js?v=0.2.0','./latin-games.js?v=0.2.0','./app.js?v=0.2.0'
+ './','./index.html','./styles.css?v=0.3.0','./latin-games.css?v=0.3.0','./manifest.webmanifest',
+ './latin-question-bank.js?v=0.3.0','./growth.js?v=0.3.0','./latin-module.js?v=0.3.0',
+ './french-module.js?v=0.3.0','./latin-games.js?v=0.3.0','./app.js?v=0.3.0'
 ];
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CORE).then(c=>c.addAll(FILES)));self.skipWaiting()});
 self.addEventListener('activate',e=>{e.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('scholars-garden-')&&![CORE,RUN].includes(k)).map(k=>caches.delete(k)))));self.clients.claim()});
