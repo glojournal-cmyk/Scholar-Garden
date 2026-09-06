@@ -1,0 +1,35 @@
+LUX ET LABOR — THE SCHOLAR'S GARDEN
+FRAMEWORK V0.1.0 QA
+
+Latin counts: {'q': 1056, 'b': 24, 'n': 24}
+Optimised images: 13 (2.78 MB)
+
+- JS syntax js/app.js: PASS
+- JS syntax js/subjects/latin.js: PASS
+- JS syntax js/subjects/french.js: PASS
+- JS syntax js/shared/router.js: PASS
+- JS syntax js/shared/growth.js: PASS
+- JS syntax js/shared/collection.js: PASS
+- JS syntax js/shared/storage.js: PASS
+- JS syntax sw.js: PASS
+- JS syntax data/latin-question-bank.js: PASS
+- No duplicate HTML IDs: PASS
+- No inline onclick: PASS
+- Manifest JSON valid: PASS
+- All HTML assets exist: PASS
+- Latin bank 1,056: PASS
+- Latin 24 blocks preserved: PASS
+- Latin 24 notes preserved: PASS
+- Legacy Latin state key preserved: PASS
+- Shared scholar key separate: PASS
+- New Latin routing ignores old dates: PASS
+- Anti-grind decay exists: PASS
+- Artwork not bulk-pre-cached: PASS
+- 13 supplied images optimised: PASS
+- Bio and Chem locked: PASS
+
+LIMITATIONS
+- Framework build only: Latin practice/Games V2 not ported yet.
+- French JSON banks not bundled yet; adapter metadata only.
+- No physical iPad Safari claim in this framework build.
+- Future-subject asset mapping left intentionally unassigned: PASS

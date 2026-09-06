@@ -1,0 +1,6 @@
+
+import{legacyLatin}from'../shared/storage.js';
+const order=['Vocabulary','Grammar','Translation','Roman World','Spelling'];
+function bucket(q){const a=`${q?.topic||''} ${q?.label||''}`.toLowerCase(),type=String(q?.type||'').toLowerCase();if(/roman|culture|civilisation|civilization|world/.test(a))return'Roman World';if(/translation|set-text|set text/.test(a)||['eng_auto','lat_auto'].includes(type))return'Translation';if(/vocab|word|preposition/.test(a))return'Vocabulary';if(/spell|headword|dictionary/.test(a))return'Spelling';return'Grammar'}
+export function summary(){const bank=Array.isArray(window.LATIN_BANK)?window.LATIN_BANK:[],categories=Object.fromEntries(order.map(x=>[x,0]));bank.forEach(q=>categories[bucket(q)]++);return{questionCount:bank.length,categories,legacy:!!legacyLatin(),routingUsesOldDates:false}}
+export function cards(){const s=summary(),copy={'Vocabulary':'Meanings, word families and source-covered forms.','Grammar':'Cases, morphology, tense, person, number and syntax.','Translation':'Latin ↔ English, set text and sentence production.','Roman World':'Teacher-covered civilisation and context.','Spelling':'Reserved for Scriptorium acquisition.'};return order.map((name,i)=>({name,count:s.categories[name],copy:copy[name],n:i+1}))}

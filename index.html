@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#fbf7ef">
+<title>Lux et Labor — The Scholar’s Garden</title>
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="stylesheet" href="./styles.css?v=0.1.0">
+</head>
+<body>
+<header class="topbar">
+  <button class="brand" data-route="home"><b>II</b><span><strong>Lux et Labor</strong><small>The Scholar’s Garden</small></span></button>
+  <nav>
+    <button data-route="home">Home</button><button data-route="latin">Latin</button><button data-route="french">French</button>
+    <button data-route="garden">Garden</button><button data-route="collection">Collection</button>
+  </nav>
+  <button class="profile" data-route="profile" aria-label="Profile">S</button>
+</header>
+
+<main>
+<section class="screen" data-screen="home">
+  <article class="hero">
+    <img src="./assets/heroes/hero_01.webp" alt="" fetchpriority="high">
+    <div class="hero-copy"><p class="eyebrow">THE SCHOLAR’S GARDEN</p><h1>Learn a little.<br>Grow a lot.</h1>
+      <p>One scholar journey across Latin and French. Real learning grows your own world.</p>
+      <div><button class="primary" data-route="latin">Continue learning</button><button class="secondary" data-route="garden">Visit your garden</button></div>
+    </div>
+  </article>
+
+  <section class="growth card">
+    <div><p class="eyebrow">YOUR GROWTH JOURNEY</p><h2>Scholar Level <span data-bind="level">1</span></h2></div>
+    <div class="xp"><div><strong><span data-bind="xp-current">0</span> / <span data-bind="xp-next">100</span> XP</strong><span data-bind="xp-label">A new path begins.</span></div><div class="bar"><i data-bind="xp-bar"></i></div></div>
+    <div class="mini-stats"><span><b data-bind="medals">0</b>Medals</span><span><b data-bind="collectibles">0</b>Items</span><span><b data-bind="study-days">0</b>Days</span></div>
+  </section>
+
+  <section class="home-grid">
+    <article class="garden-card card">
+      <img src="./assets/garden/garden_01.webp" alt="Scholar's Garden" loading="lazy">
+      <div><p class="eyebrow">YOUR WORLD</p><h2>Scholar’s Garden</h2><p>Daily work, practice, quizzes and delayed recall will unlock genuine rewards here.</p><button class="secondary" data-route="garden">Visit Garden</button></div>
+    </article>
+    <aside class="card today"><p class="eyebrow">TODAY</p><h2>Study path</h2><div id="todayPlan"></div><small>Old summer dates are no longer the study route.</small></aside>
+  </section>
+
+  <section class="subjects">
+    <header><div><p class="eyebrow">SUBJECTS</p><h2>Choose your path</h2></div><p>Shared motivation. Separate academic mastery.</p></header>
+    <div class="subject-grid">
+      <button class="subject" data-route="latin"><i>L</i><span><small>ACTIVE</small><strong>Latin</strong><em data-bind="latin-status">Bank connected</em></span><b>→</b></button>
+      <button class="subject french" data-route="french"><i>F</i><span><small>ACTIVE</small><strong>French</strong><em>Audited core adapter ready</em></span><b>→</b></button>
+      <button class="subject locked" data-locked="Biology"><i>B</i><span><small>COMING LATER</small><strong>Biology</strong><em>Locked</em></span><b>◆</b></button>
+      <button class="subject locked" data-locked="Chemistry"><i>C</i><span><small>COMING LATER</small><strong>Chemistry</strong><em>Locked</em></span><b>◆</b></button>
+    </div>
+  </section>
+</section>
+
+<section class="screen hidden" data-screen="latin">
+  <header class="subject-hero"><img src="./assets/heroes/hero_02.webp" alt="" loading="lazy"><div><p class="eyebrow">LATINA</p><h1>Latin</h1><p>Vocabulary · Grammar · Translation · Roman World · Spelling</p></div></header>
+  <div class="stats card"><span>Questions<strong data-bind="latin-count">—</strong></span><span>Formal progress<strong data-bind="latin-progress">Preserved</strong></span><span>Summer dates<strong>Metadata only</strong></span></div>
+  <div id="latinCategories" class="categories"></div>
+  <article class="notice card"><p class="eyebrow">FRAMEWORK STATUS</p><h2>Content connected; old routing removed.</h2><p>The next port is the proven Latin practice and Games V2 engines into these category routes.</p></article>
+</section>
+
+<section class="screen hidden" data-screen="french">
+  <header class="subject-hero"><img src="./assets/heroes/hero_03.webp" alt="" loading="lazy"><div><p class="eyebrow">FRANÇAIS</p><h1>French</h1><p>Vocabulary · Grammar · Writing · Reading · Spelling</p></div></header>
+  <div class="stats card"><span>Learned vocab rows<strong>617</strong></span><span>Default-safe questions<strong>1,220</strong></span><span>Writing tasks<strong>19</strong></span></div>
+  <div class="categories">
+    <article><b>01</b><h3>Vocabulary</h3><p>Meaning, gender, articles and recall.</p></article>
+    <article><b>02</b><h3>Grammar</h3><p>Source-covered structures only.</p></article>
+    <article><b>03</b><h3>Writing</h3><p>Sentence-building and short production.</p></article>
+    <article><b>04</b><h3>Reading</h3><p>Comprehension and evidence tasks.</p></article>
+    <article><b>05</b><h3>Spelling</h3><p>Atelier d’Orthographe adapter slot.</p></article>
+  </div>
+  <article class="notice card"><p class="eyebrow">FRAMEWORK STATUS</p><h2>French boundary ready.</h2><p>The audited JSON core will plug in here next. This build does not invent replacement questions.</p></article>
+</section>
+
+<section class="screen hidden" data-screen="garden">
+  <header class="page-head"><div><p class="eyebrow">YOUR GROWTH JOURNEY</p><h1>Scholar’s Garden</h1></div><p>Garden progress motivates; it never replaces mastery.</p></header>
+  <article class="garden-stage card"><img src="./assets/garden/garden_01.webp" alt="Scholar's Garden" loading="lazy"><div><strong>Garden Stage <span data-bind="garden-stage">1</span></strong><p>Earned items will appear here. No random loot.</p></div></article>
+  <div class="slots"><article>Scholar items<b>0 / 8</b></article><article>Latin<b>0 / 8</b></article><article>French<b>0 / 8</b></article><article>Prestige<b>0 / 6</b></article></div>
+</section>
+
+<section class="screen hidden" data-screen="collection">
+  <header class="page-head"><div><p class="eyebrow">COLLECTION BOOK</p><h1>Earned through learning</h1></div><p>Every item has a visible academic condition.</p></header>
+  <div class="filters"><button data-filter="all" class="active">All</button><button data-filter="shared">Scholar</button><button data-filter="latin">Latin</button><button data-filter="french">French</button><button data-filter="prestige">Prestige</button></div>
+  <div id="collectionGrid" class="collection"></div>
+</section>
+
+<section class="screen hidden" data-screen="profile">
+  <header class="page-head"><div><p class="eyebrow">MY CLASSICAL STUDY</p><h1>Your scholar style</h1></div><p>Hair, clothes and accessories unlock through genuine study.</p></header>
+  <div class="profile-grid">
+    <article class="room card"><img src="./assets/room/room_01.webp" alt="Classical study room" loading="lazy"><div class="avatar">Scholar<small>Starter look</small></div></article>
+    <aside class="wardrobe card"><p class="eyebrow">WARDROBE</p><h2>Starter scholar</h2><label>Hair</label><div class="wardrobe-row"><i class="open"></i><i></i><i></i><i></i></div><label>Outfits</label><div class="wardrobe-row"><i class="open"></i><i></i><i></i><i></i></div><label>Accessories</label><div class="wardrobe-row"><i></i><i></i><i></i><i></i></div><small>Artwork slots are real placeholders; no fake avatar art is baked in.</small></aside>
+  </div>
+</section>
+
+<section class="screen hidden" data-screen="diagnostics"><header class="page-head"><h1>Framework health</h1></header><pre id="diagnostics"></pre></section>
+</main>
+
+<div id="toast" role="status" aria-live="polite"></div>
+<footer><span>Lux et Labor · The Scholar’s Garden</span><span>Framework V0.1.0</span></footer>
+<script src="./data/latin-question-bank.js?v=0.1.0"></script>
+<script type="module" src="./js/app.js?v=0.1.0"></script>
+</body></html>

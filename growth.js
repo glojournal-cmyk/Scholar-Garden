@@ -1,0 +1,9 @@
+
+import{load,save,localDay}from'./storage.js';
+export const XP_RULES=Object.freeze({daily_complete:60,practice_first_correct:4,practice_repair_correct:2,formal_due_review_correct:6,spelling_first_independent:8,spelling_repair:2,vocab_review_2d:10,vocab_review_7d:15,quiz_complete_80:30,quiz_bonus_90:15,game_learning_complete:20,boss_complete:25,vocab_mastered:10,reveal:0,assisted_build:1,clue_correct:1});
+export const xpNeed=l=>Math.round(100+(Math.max(1,l)-1)*35+Math.pow(Math.max(0,l-1),1.35)*10);
+export function levelFor(total){let xp=Math.max(0,total||0),level=1;while(level<50&&xp>=xpNeed(level)){xp-=xpNeed(level);level++}return{level,into:xp,next:xpNeed(level)}}
+function decay(type,count){if(['daily_complete','vocab_review_2d','vocab_review_7d','boss_complete','vocab_mastered'].includes(type))return count?0:1;return count===0?1:count===1?.2:0}
+export function award(event){if(!event||!(event.type in XP_RULES))return{awarded:0,reason:'unknown'};const s=load(),key=[event.subject||'shared',event.type,event.itemId||'session',localDay()].join('|'),count=s.eventCounts[key]||0,amount=Math.round(XP_RULES[event.type]*decay(event.type,count));s.eventCounts[key]=count+1;if(amount){s.xp=(s.xp||0)+amount;s.level=levelFor(s.xp).level;s.studyDates[localDay()]=true;s.history.push({at:new Date().toISOString(),subject:event.subject||'shared',type:event.type,itemId:event.itemId||null,xp:amount});s.history=s.history.slice(-300)}save(s);return{awarded:amount,reason:amount?'awarded':'repeat_decay'}}
+export function snapshot(){const s=load(),l=levelFor(s.xp);return{...l,total:s.xp||0,medals:Object.keys(s.medals||{}).length,collectibles:Object.keys(s.collectibles||{}).length,studyDays:Object.keys(s.studyDates||{}).length,gardenStage:s.garden?.stage||1}}
+window.LuxGrowth=Object.freeze({award,snapshot,XP_RULES});

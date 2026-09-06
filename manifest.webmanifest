@@ -1,0 +1,11 @@
+{
+  "name": "Lux et Labor \u2014 The Scholar\u2019s Garden",
+  "short_name": "Lux et Labor",
+  "start_url": "./#home",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fbf7ef",
+  "theme_color": "#fbf7ef",
+  "description": "Shared Latin and French scholar journey.",
+  "icons": []
+}
