@@ -20,14 +20,14 @@ function routeInfo(){
  let h=location.hash||'#home';
  const legacy={
   '#latin':'#subject/latin/practice','#french':'#subject/french/practice',
-  '#collection':'#scholar/collection','#profile':'#scholar/wardrobe',
+  '#collection':'#scholar/collection','#profile':'#scholar/profile',
   '#games':'#subject/latin/play','#gamesHub':'#subject/latin/play'
  };
  if(legacy[h]){history.replaceState(null,'',legacy[h]);h=legacy[h]}
  const parts=h.replace(/^#/,'').split('/').filter(Boolean);
  if(!parts.length)return {screen:'home'};
  if(parts[0]==='subject')return {screen:'subject',subject:window.SubjectHub.parseRoute(h)};
- if(parts[0]==='scholar')return {screen:'scholar',tab:['wardrobe','collection','achievements'].includes(parts[1])?parts[1]:'wardrobe'};
+ if(parts[0]==='scholar')return {screen:'scholar',tab:['overview','wardrobe','collection','achievements','profile'].includes(parts[1])?parts[1]:'overview'};
  if(['home','study','garden'].includes(parts[0]))return {screen:parts[0]};
  return {screen:'home',redirect:true};
 }
@@ -316,8 +316,9 @@ function renderGarden(){
  const s=g.state,events=[];
  Object.keys(s.collectibles||{}).forEach(id=>events.push({id,title:id.replace(/-/g,' ').replace(/\b\w/g,c=>c.toUpperCase()),kind:'Collectible'}));
  Object.keys(s.medals||{}).forEach(id=>events.push({id,title:id.replace(/-/g,' ').replace(/\b\w/g,c=>c.toUpperCase()),kind:'Achievement'}));
- document.getElementById('gardenRewards').innerHTML=(events.slice(-8).reverse().length?events.slice(-8).reverse():[{title:'Your first growth item is waiting',kind:'Keep studying'}]).map(e=>`<article class="collect-card earned"><div class="collect-art">✦</div><h3>${e.title}</h3><p>${e.kind}</p></article>`).join('');
+ document.getElementById('gardenRewards').innerHTML=(events.slice(-8).reverse().length?events.slice(-8).reverse():[{title:'Your first growth item is waiting',kind:'Keep studying',empty:true}]).map(e=>`<article class="collect-card earned"><div class="collect-art">${e.empty?`<img class="v04-collection-state" src="${window.V04UI?.asset?.('emptyGarden')||'ui_empty_state_garden.webp'}" alt="">`:`<img class="v04-collection-state" src="${window.V04UI?.asset?.('success')||'ui_v04_success_badge.webp'}" alt="">`}</div><h3>${e.title}</h3><p>${e.kind}</p></article>`).join('');
  window.V04Visual?.garden?.();
+ window.ScholarGardenGrowth?.render?.();
 }
 async function render(){
  const info=routeInfo();
@@ -460,10 +461,14 @@ async function init(){
    renderScholarScene();
    if(routeInfo().screen==='home')renderHome();
  });
+ document.addEventListener('scholar:profile-change',()=>{
+   if(routeInfo().screen==='home')renderHome();
+   if(routeInfo().screen==='scholar')window.ScholarView?.renderOverview?.();
+ });
  document.addEventListener('lux:plan-change',()=>{if(routeInfo().screen==='home')renderHome()});
  await Promise.race([Promise.allSettled([frenchLegacyReady,biologyReady,latinMasterReady,frenchMasterReady]),new Promise(resolve=>setTimeout(resolve,2600))]);
  await render();
- if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=0.4.0-a1',{updateViaCache:'none'}).then(reg=>reg.update()).catch(err=>console.warn('[PWA] service worker update failed',err));
+ if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=0.4.0-a3',{updateViaCache:'none'}).then(reg=>reg.update()).catch(err=>console.warn('[PWA] service worker update failed',err));
 }
 document.readyState==='loading'?document.addEventListener('DOMContentLoaded',init):init();
 })();
