@@ -7,9 +7,10 @@
 <meta name="description" content="Lux et Labor — The Scholar's Garden">
 <title>Lux et Labor — The Scholar’s Garden</title>
 <link rel="manifest" href="./manifest.webmanifest">
-<link rel="stylesheet" href="./styles.css?v=0.3.4.5">
-<link rel="stylesheet" href="./scholar-assets.css?v=0.3.4.5">
-<link rel="stylesheet" href="./latin-games.css?v=0.3.4.5">
+<link rel="stylesheet" href="./styles.css?v=0.4.0-a1">
+<link rel="stylesheet" href="./scholar-assets.css?v=0.4.0-a1">
+<link rel="stylesheet" href="./latin-games.css?v=0.4.0-a1">
+<link rel="stylesheet" href="./v04-visual.css?v=0.4.0-a1">
 <link rel="preload" as="image" href="./scholar_idle.png">
 </head>
 <body>
@@ -117,7 +118,17 @@
 </section>
 
 <section class="route-screen hidden" data-route-screen="study" id="studyScreen">
- <header class="page-title"><p class="eyebrow">STUDY WORLD</p><h1>Study</h1><p>Current learning first. Foundation review stays ready when you need it.</p></header>
+ <section class="v04-study-hero" aria-labelledby="v04StudyTitle">
+   <div class="v04-study-hero-copy">
+     <p class="eyebrow">DISCOVER · PRACTISE · MAKE PROGRESS</p>
+     <h1 id="v04StudyTitle">Study Hub</h1>
+     <p>Choose a subject and continue your learning journey. Current Year 9 learning stays separate from Year 8 Foundation Review.</p>
+     <div class="v04-year-switch" aria-label="Study year">
+       <button type="button" data-v04-year="current" aria-pressed="true">Year 9 · Current</button>
+       <button type="button" data-v04-year="foundation" aria-pressed="false">Year 8 · Foundation</button>
+     </div>
+   </div>
+ </section>
 
  <section class="study-band">
    <div class="section-title"><div><p class="eyebrow">CURRENT</p><h2>Year 9</h2></div><span class="route-pill current">Current curriculum</span></div>
@@ -275,19 +286,20 @@
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="./latin-question-bank.js?v=0.3.4.5"></script>
-<script src="./growth.js?v=0.3.4.5"></script>
-<script src="./latin-module.js?v=0.3.4.5"></script>
-<script src="./french-module.js?v=0.3.4.5"></script>
-<script src="./latin-games.js?v=0.3.4.5"></script>
-<script src="./science-notes.js?v=0.3.4.5"></script>
-<script src="./biology-y8.js?v=0.3.4.5"></script>
-<script src="./language-y8.js?v=0.3.4.5"></script>
-<script src="./daily-plan.js?v=0.3.4.5"></script>
-<script src="./scholar-assets.js?v=0.3.4.5"></script>
-<script src="./subject-hub.js?v=0.3.4.5"></script>
-<script src="./scholar.js?v=0.3.4.5"></script>
-<script src="./app.js?v=0.3.4.5"></script>
-<footer class="build-footer">Lux et Labor · Scholar’s Garden · V0.3.4.5 Flat Asset Path Fix</footer>
+<script src="./latin-question-bank.js?v=0.4.0-a1"></script>
+<script src="./growth.js?v=0.4.0-a1"></script>
+<script src="./latin-module.js?v=0.4.0-a1"></script>
+<script src="./french-module.js?v=0.4.0-a1"></script>
+<script src="./latin-games.js?v=0.4.0-a1"></script>
+<script src="./science-notes.js?v=0.4.0-a1"></script>
+<script src="./biology-y8.js?v=0.4.0-a1"></script>
+<script src="./language-y8.js?v=0.4.0-a1"></script>
+<script src="./daily-plan.js?v=0.4.0-a1"></script>
+<script src="./scholar-assets.js?v=0.4.0-a1"></script>
+<script src="./v04-visual.js?v=0.4.0-a1"></script>
+<script src="./subject-hub.js?v=0.4.0-a1"></script>
+<script src="./scholar.js?v=0.4.0-a1"></script>
+<script src="./app.js?v=0.4.0-a1"></script>
+<footer class="build-footer">Lux et Labor · Scholar’s Garden · V0.4.0 Alpha 1 · Visual Rebuild</footer>
 </body>
 </html>

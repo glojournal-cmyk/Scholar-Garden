@@ -123,6 +123,7 @@ function setHeader(subject,track){
  c.dataset.subjectContinue=subject;c.dataset.subjectTrack=track;
  configureTabs(subject,track);
  renderSubjectScholarPose(subject,track,current.tab);
+ window.V04Visual?.subject?.(subject,track,current.tab);
 }
 function hideAllHosts(){
  document.getElementById('latinScreen').classList.add('hidden');
@@ -238,6 +239,7 @@ async function renderTab(tab){
  hideAllHosts();
  document.querySelectorAll('[data-subject-tab]').forEach(b=>b.classList.toggle('active',b.dataset.subjectTab===tab));
  renderSubjectScholarPose(subject,track,tab);
+ window.V04Visual?.subject?.(subject,track,tab);
 
  const pane=document.getElementById(`generic${tab[0].toUpperCase()+tab.slice(1)}Pane`);
  if(pane){

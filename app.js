@@ -303,6 +303,7 @@ function renderHome(){
  document.getElementById('homeGreeting').textContent=learnerGreeting();
  document.getElementById('homeDate').textContent=new Intl.DateTimeFormat('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).format(new Date());
  growth();renderScholarScene();renderWeek();renderToday();renderReward();renderSubjectTraining();renderQuickPlay();
+ window.V04Visual?.home?.();
 }
 function gardenStageBounds(stage){return ({1:[0,400],2:[400,1000],3:[1000,2200],4:[2200,3200]})[stage]||[0,400]}
 function renderGarden(){
@@ -316,16 +317,17 @@ function renderGarden(){
  Object.keys(s.collectibles||{}).forEach(id=>events.push({id,title:id.replace(/-/g,' ').replace(/\b\w/g,c=>c.toUpperCase()),kind:'Collectible'}));
  Object.keys(s.medals||{}).forEach(id=>events.push({id,title:id.replace(/-/g,' ').replace(/\b\w/g,c=>c.toUpperCase()),kind:'Achievement'}));
  document.getElementById('gardenRewards').innerHTML=(events.slice(-8).reverse().length?events.slice(-8).reverse():[{title:'Your first growth item is waiting',kind:'Keep studying'}]).map(e=>`<article class="collect-card earned"><div class="collect-art">✦</div><h3>${e.title}</h3><p>${e.kind}</p></article>`).join('');
+ window.V04Visual?.garden?.();
 }
 async function render(){
  const info=routeInfo();
  if(info.redirect){history.replaceState(null,'','#home');return await render()}
  showScreen(info.screen);
  if(info.screen==='home')renderHome();
- else if(info.screen==='study'){growth();window.SubjectHub.renderStudy()}
+ else if(info.screen==='study'){growth();window.SubjectHub.renderStudy();window.V04Visual?.study?.()}
  else if(info.screen==='subject'&&info.subject){growth();await window.SubjectHub.open(info.subject.subject,info.subject.track,info.subject.tab)}
  else if(info.screen==='garden')renderGarden();
- else if(info.screen==='scholar'){growth();window.ScholarView.openTab(info.tab)}
+ else if(info.screen==='scholar'){growth();window.ScholarView.openTab(info.tab);window.V04Visual?.scholar?.(info.tab)}
  const ux=window.ScholarUX.load();ux.lastRoute=location.hash||'#home';window.ScholarUX.save(ux);
  window.scrollTo({top:0,behavior:'auto'});
 }
@@ -461,7 +463,7 @@ async function init(){
  document.addEventListener('lux:plan-change',()=>{if(routeInfo().screen==='home')renderHome()});
  await Promise.race([Promise.allSettled([frenchLegacyReady,biologyReady,latinMasterReady,frenchMasterReady]),new Promise(resolve=>setTimeout(resolve,2600))]);
  await render();
- if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=0.3.4.5',{updateViaCache:'none'}).then(reg=>reg.update()).catch(err=>console.warn('[PWA] service worker update failed',err));
+ if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=0.4.0-a1',{updateViaCache:'none'}).then(reg=>reg.update()).catch(err=>console.warn('[PWA] service worker update failed',err));
 }
 document.readyState==='loading'?document.addEventListener('DOMContentLoaded',init):init();
 })();

@@ -1,14 +1,14 @@
-const V='scholars-garden-v0-3-4-5-flat-asset-path-fix-20260906';
+const V='scholars-garden-v0-4-0-alpha1-visual-rebuild-20260907';
 const CORE=`${V}-core`,RUN=`${V}-runtime`;
 const FILES=[
- './','./index.html','./styles.css?v=0.3.4.5','./scholar-assets.css?v=0.3.4.5','./latin-games.css?v=0.3.4.5','./manifest.webmanifest',
- './latin-question-bank.js?v=0.3.4.5','./growth.js?v=0.3.4.5','./latin-module.js?v=0.3.4.5',
- './french-module.js?v=0.3.4.5','./latin-games.js?v=0.3.4.5','./science-notes.js?v=0.3.4.5',
- './biology-y8.js?v=0.3.4.5','./language-y8.js?v=0.3.4.5','./mcp-reference-marker.mjs',
+ './','./index.html','./styles.css?v=0.4.0-a1','./scholar-assets.css?v=0.4.0-a1','./latin-games.css?v=0.4.0-a1','./manifest.webmanifest',
+ './latin-question-bank.js?v=0.4.0-a1','./growth.js?v=0.4.0-a1','./latin-module.js?v=0.4.0-a1',
+ './french-module.js?v=0.4.0-a1','./latin-games.js?v=0.4.0-a1','./science-notes.js?v=0.4.0-a1',
+ './biology-y8.js?v=0.4.0-a1','./language-y8.js?v=0.4.0-a1','./mcp-reference-marker.mjs',
  './mcp-runtime-index.json','./mcp-concept-index.json','./mcp-origin-map.json','./mcp-language-summary.json',
  './bio-y8-question-bank.json','./bio-y8-answer-bank.json','./bio-y8-concept-bank.json',
  './bio-y8-keyword-bank.json','./bio-y8-notes-by-topic.json','./bio-y8-diagram-specs.json',
- './daily-plan.js?v=0.3.4.5','./scholar-assets.js?v=0.3.4.5','./subject-hub.js?v=0.3.4.5','./scholar.js?v=0.3.4.5','./app.js?v=0.3.4.5',
+ './daily-plan.js?v=0.4.0-a1','./scholar-assets.js?v=0.4.0-a1','./v04-visual.js?v=0.4.0-a1','./subject-hub.js?v=0.4.0-a1','./scholar.js?v=0.4.0-a1','./app.js?v=0.4.0-a1','./v04-visual.css?v=0.4.0-a1',
  './scholar_idle.png'
 ];
 
