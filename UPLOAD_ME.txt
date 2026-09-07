@@ -1,42 +1,16 @@
-SCHOLAR'S GARDEN — V0.3.4.4 SCHOLAR ASSET INTEGRATION
+LUX ET LABOR — THE SCHOLAR'S GARDEN
+V0.4.0 ALPHA 3 — AVATAR/GARDEN RUNTIME + SCHOLAR PROFILE
 
-Expected footer:
-V0.3.4.4 Scholar Asset Integration
+GitHub Pages flat-root package.
 
-Because this release contains the 52 original Scholar PNGs, the full repository has more than 100 files.
-For GitHub browser upload, use the two supplied batches:
+When deploying:
+1. Upload every file from this package into the repository root.
+2. Overwrite matching old files.
+3. Do not create an extra enclosing folder.
+4. Commit and wait for GitHub Pages deployment.
+5. Footer should read:
+   V0.4.0 Alpha 3 · Avatar/Garden Runtime + Scholar Profile
 
-BATCH 1 — CODE
-Lux_et_Labor_Scholars_Garden_V0_3_4_4_Code_Batch.zip
-
-BATCH 2 — SCHOLAR ASSETS
-Lux_et_Labor_Scholars_Garden_V0_3_4_4_Scholar_Assets_Batch.zip
-
-Commit both batches before accepting the public build.
-
-Priority public QA:
-HOME
-- fresh learner / tasks remaining / due review / all tasks complete
-- no placeholder S
-- Quest buttons remain clickable
-
-WARDROBE
-- 10 outfits visible
-- lock requirements correct
-- unlocked outfit equips and persists
-- Home immediately reflects equipped non-school outfit
-- legacy starter behaves as school-uniform
-
-REWARDS
-- Ink Pot exact art
-- Study Books exact art
-- Ivy Pot exact art
-- unsupported rewards have no false image mapping
-
-REGRESSION
-- Learn
-- Extra Practice
-- Latin mini-games
-- French spelling
-- XP persistence
-- Mastery persistence
+IMPORTANT:
+Pending Batch 6-9 character/garden files are NOT required for Alpha 3 to run.
+Their feature switches are deliberately OFF in v04-art-config.js until the final aligned art is integrated.

@@ -1,3 +1,4 @@
+
 (function(){
 'use strict';
 const BLUEPRINT=[
@@ -14,9 +15,12 @@ const MEDALS=[
  ['french-scholar','French Scholar','Grow through French learning.'],
  ['polyglot','Polyglot Scholar','Build strength across both languages.']
 ];
+const TABS=new Set(['overview','wardrobe','collection','achievements','profile']);
 function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function state(){return window.LuxGrowth.load()}
 function save(s){window.LuxGrowth.save(s)}
+function uxState(){try{return window.ScholarUX?.load?.()||{}}catch{return {}}}
+function saveUx(s){try{return window.ScholarUX?.save?.(s)||s}catch{return s}}
 function ensureWardrobe(s){
  s.wardrobe=s.wardrobe||{};
  if(!s.wardrobe.hair)s.wardrobe.hair='starter';
@@ -33,7 +37,12 @@ function normalizeWardrobeState(){
  }
  return s;
 }
-function renderAvatarCanvas(s){
+function displayName(){
+ const ux=uxState();
+ const profile=state()?.profile||{};
+ return String(profile.displayName||ux.displayName||'').trim()||'Scholar';
+}
+function renderAvatarCanvas(){
  const img=document.getElementById('wardrobeScholarImage'),canvas=document.getElementById('avatarCanvas');
  if(!img||!canvas)return;
  const selected=window.ScholarAssets?.selectedOutfit?.()||window.ScholarAssets?.manifest?.outfits?.[0];
@@ -42,12 +51,13 @@ function renderAvatarCanvas(s){
    img.alt=`Scholar wearing ${selected.name}`;
    canvas.classList.add('has-scholar-art');
  }
+ window.ScholarAvatarLayers?.compose?.(canvas);
 }
 function renderWardrobe(){
  const s=normalizeWardrobeState(),root=document.getElementById('wardrobeControls');if(!root)return;
  const g=window.LuxGrowth.snapshot(),items=window.ScholarAssets?.manifest?.outfits||[];
  const equipped=window.ScholarAssets?.normalizeOutfitId?.(s.wardrobe.outfit)||'school-uniform';
- renderAvatarCanvas(s);
+ renderAvatarCanvas();
  root.innerHTML=`<div class="wardrobe-gallery">${items.map(item=>{
    const unlocked=window.ScholarAssets.outfitUnlocked(item,g),selected=item.id===equipped;
    const requirement=window.ScholarAssets.unlockRequirement(item);
@@ -74,14 +84,42 @@ function renderWardrobe(){
    renderWardrobe();
    document.dispatchEvent(new CustomEvent('scholar:wardrobe-change',{detail:{outfit:item.id}}));
  });
+ window.ScholarAvatarLayers?.renderControls?.();
+}
+function renderOverview(){
+ const g=window.LuxGrowth.snapshot(),s=g.state||{},selected=window.ScholarAssets?.selectedOutfit?.();
+ const img=document.getElementById('scholarOverviewImage');
+ if(img){
+   img.src=selected?.asset||window.ScholarAssets?.homeAsset?.()||'scholar_idle.png';
+   img.alt=`${displayName()} Scholar appearance`;
+ }
+ const set=(id,value)=>{const el=document.getElementById(id);if(el)el.textContent=value};
+ set('scholarOverviewName',displayName());
+ set('scholarOverviewLevel',`Scholar Level ${g.level}`);
+ set('scholarOverviewXP',`${g.into} / ${g.next} XP`);
+ const bar=document.getElementById('scholarOverviewXPBar');
+ if(bar)bar.style.width=`${Math.min(100,Math.round((g.into/Math.max(1,g.next))*100))}%`;
+ set('scholarStatDays',g.studyDays);
+ set('scholarStatGarden',`Stage ${g.gardenStage}`);
+ set('scholarStatLatin',g.subjectTotals?.latin||0);
+ set('scholarStatFrench',g.subjectTotals?.french||0);
+ const recent=document.getElementById('scholarOverviewRecent');
+ if(recent){
+   const tags=[];
+   if(selected?.name)tags.push(`Equipped: ${selected.name}`);
+   Object.keys(s.collectibles||{}).slice(-2).reverse().forEach(id=>tags.push(id.replace(/-/g,' ').replace(/\b\w/g,c=>c.toUpperCase())));
+   Object.keys(s.medals||{}).slice(-1).reverse().forEach(id=>tags.push(id.replace(/-/g,' ').replace(/\b\w/g,c=>c.toUpperCase())));
+   recent.innerHTML=(tags.length?tags:['Your Scholar journey is ready.']).map(x=>`<span>${esc(x)}</span>`).join('');
+ }
 }
 function renderCollection(){
  const s=state(),filter=document.querySelector('[data-collection-filter].active')?.dataset.collectionFilter||'All';
  const root=document.getElementById('collectionGrid');if(!root)return;
  root.innerHTML=BLUEPRINT.filter(x=>filter==='All'||x[1]===filter).map(x=>{
   const earned=!!s.collectibles?.[x[0]],art=window.ScholarAssets?.rewardAsset?.(x[0]);
+  const stateArt=earned?(window.V04UI?.asset?.('success')||'ui_v04_success_badge.webp'):(window.V04UI?.asset?.('lockCrest')||'ui_v04_lock_crest.webp');
   return `<article class="collect-card ${earned?'earned':''}">
-    <div class="collect-art ${art?'has-reward-art':''}">${art?`<img class="reward-interaction-art" src="${esc(art)}" alt="${esc(x[2])} reward interaction" loading="lazy" decoding="async">`:(earned?'✓':'◆')}</div>
+    <div class="collect-art ${art?'has-reward-art':''}">${art?`<img class="reward-interaction-art" src="${esc(art)}" alt="${esc(x[2])} reward interaction" loading="lazy" decoding="async">`:`<img class="v04-collection-state" src="${esc(stateArt)}" alt="" loading="lazy" decoding="async">`}</div>
     <small>${esc(x[1])}</small><h3>${esc(x[2])}</h3>
     <p>${earned?'Earned through study.':`Next step: ${esc(x[3])}`}</p>
   </article>`;
@@ -89,12 +127,50 @@ function renderCollection(){
 }
 function renderAchievements(){
  const s=state(),root=document.getElementById('medalGrid');if(!root)return;
- root.innerHTML=MEDALS.map(([id,title,copy])=>`<article class="medal-card ${s.medals?.[id]?'earned':''}"><div>${s.medals?.[id]?'✓':'◉'}</div><b>${esc(title)}</b><small>${s.medals?.[id]?esc(copy):'Not earned yet'}</small></article>`).join('');
+ root.innerHTML=MEDALS.map(([id,title,copy])=>{
+   const earned=!!s.medals?.[id],badge=earned?(window.V04UI?.asset?.('success')||'ui_v04_success_badge.webp'):(window.V04UI?.asset?.('badgeLocked')||'ui_badge_locked.webp');
+   return `<article class="medal-card ${earned?'earned':''}"><img class="v04-achievement-badge" src="${esc(badge)}" alt="" loading="lazy" decoding="async"><b>${esc(title)}</b><small>${earned?esc(copy):'Not earned yet'}</small></article>`;
+ }).join('');
 }
-function openTab(tab='wardrobe'){
+function renderProfile(){
+ const ux=uxState(),input=document.getElementById('scholarDisplayName'),summary=document.getElementById('scholarProfileData');
+ if(input)input.value=String(ux.displayName||'');
+ if(summary){
+   const g=window.LuxGrowth.snapshot();
+   const avatar=window.ScholarAvatarLayers?.status?.();
+   summary.innerHTML=[
+     ['Scholar level',g.level],
+     ['Study days',g.studyDays],
+     ['Garden stage',g.gardenStage],
+     ['Collectibles',g.collectibleCount],
+     ['Achievements',g.medalCount],
+     ['Layer avatar',avatar?.composing?'Active':avatar?.artAvailable?'Available':'Waiting for aligned art']
+   ].map(([k,v])=>`<div><span>${esc(k)}</span><b>${esc(v)}</b></div>`).join('');
+ }
+}
+function saveProfileName(value){
+ const ux=uxState(),name=String(value||'').trim().slice(0,32);
+ if(name)ux.displayName=name;else delete ux.displayName;
+ saveUx(ux);
+ document.dispatchEvent(new CustomEvent('scholar:profile-change',{detail:{displayName:name}}));
+ window.LuxApp?.toast?.(name?'Display name saved.':'Display name cleared.');
+ renderProfile();renderOverview();
+}
+function bindProfile(){
+ const saveBtn=document.getElementById('saveScholarProfile'),clearBtn=document.getElementById('clearScholarProfile'),input=document.getElementById('scholarDisplayName');
+ if(saveBtn)saveBtn.onclick=()=>saveProfileName(input?.value||'');
+ if(clearBtn)clearBtn.onclick=()=>{if(input)input.value='';saveProfileName('')};
+ if(input)input.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();saveProfileName(input.value)}};
+}
+function openTab(tab='overview'){
+ tab=TABS.has(tab)?tab:'overview';
  document.querySelectorAll('[data-scholar-tab]').forEach(b=>b.classList.toggle('active',b.dataset.scholarTab===tab));
  document.querySelectorAll('[data-scholar-pane]').forEach(p=>p.classList.toggle('hidden',p.dataset.scholarPane!==tab));
- if(tab==='wardrobe')renderWardrobe();if(tab==='collection')renderCollection();if(tab==='achievements')renderAchievements();
+ if(tab==='overview')renderOverview();
+ if(tab==='wardrobe')renderWardrobe();
+ if(tab==='collection')renderCollection();
+ if(tab==='achievements')renderAchievements();
+ if(tab==='profile')renderProfile();
  history.replaceState(null,'',`#scholar/${tab}`);
 }
 function bind(){
@@ -102,7 +178,12 @@ function bind(){
  document.querySelectorAll('[data-collection-filter]').forEach(b=>b.onclick=()=>{
   document.querySelectorAll('[data-collection-filter]').forEach(x=>x.classList.toggle('active',x===b));renderCollection();
  });
+ bindProfile();
 }
-window.ScholarView=Object.freeze({openTab,renderWardrobe,renderAvatarCanvas,renderCollection,renderAchievements,BLUEPRINT});
+document.addEventListener('lux:growth',()=>{const tab=document.querySelector('[data-scholar-tab].active')?.dataset.scholarTab;if(tab==='overview')renderOverview();if(tab==='profile')renderProfile()});
+document.addEventListener('scholar:wardrobe-change',()=>{renderOverview();renderAvatarCanvas()});
+window.ScholarView=Object.freeze({
+ TABS,openTab,renderOverview,renderWardrobe,renderAvatarCanvas,renderCollection,renderAchievements,renderProfile,saveProfileName,BLUEPRINT
+});
 window.addEventListener('DOMContentLoaded',bind,{once:true});
 })();

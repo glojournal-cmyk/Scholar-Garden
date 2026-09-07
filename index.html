@@ -7,17 +7,22 @@
 <meta name="description" content="Lux et Labor — The Scholar's Garden">
 <title>Lux et Labor — The Scholar’s Garden</title>
 <link rel="manifest" href="./manifest.webmanifest">
-<link rel="stylesheet" href="./styles.css?v=0.4.0-a1">
-<link rel="stylesheet" href="./scholar-assets.css?v=0.4.0-a1">
-<link rel="stylesheet" href="./latin-games.css?v=0.4.0-a1">
-<link rel="stylesheet" href="./v04-visual.css?v=0.4.0-a1">
+<link rel="icon" type="image/png" sizes="32x32" href="./favicon_32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="./favicon_192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="./apple_touch_icon_180.png">
+<link rel="stylesheet" href="./styles.css?v=0.4.0-a3">
+<link rel="stylesheet" href="./scholar-assets.css?v=0.4.0-a3">
+<link rel="stylesheet" href="./latin-games.css?v=0.4.0-a3">
+<link rel="stylesheet" href="./v04-visual.css?v=0.4.0-a3">
+<link rel="stylesheet" href="./v04-ui-assets.css?v=0.4.0-a3">
+<link rel="stylesheet" href="./v04-alpha3.css?v=0.4.0-a3">
 <link rel="preload" as="image" href="./scholar_idle.png">
 </head>
 <body>
 <div class="app-shell">
 <header class="brandbar">
  <button class="brand" type="button" data-brand-home aria-label="Home">
-   <span class="brand-mark">II</span>
+   <span class="brand-mark" aria-hidden="true"><img src="./favicon_192.png" alt="" decoding="async"></span>
    <span><strong>Lux et Labor</strong><small>The Scholar’s Garden</small></span>
  </button>
  <div class="scholar-chip"><span>Lv <b data-growth="level">1</b></span><span><b data-growth="xp">0</b> XP</span></div>
@@ -32,12 +37,23 @@
 
 <main class="main-stage">
 <section class="route-screen" data-route-screen="home" id="homeScreen">
+ <section class="v04-home-overview" aria-label="Today's journey">
+   <div class="v04-journey-title">
+     <p class="eyebrow">TODAY'S JOURNEY</p>
+     <strong id="journeyHeadline">Choose one clear next step.</strong>
+   </div>
+   <div class="v04-journey-stats">
+     <button type="button" class="v04-journey-chip" data-journey="garden" data-global-route="garden"><small>GARDEN</small><b id="journeyGarden">Stage 1</b></button>
+     <div class="v04-journey-chip" data-journey="daily"><small>DAILY QUEST</small><b id="journeyDaily">0 / 3</b></div>
+     <div class="v04-journey-chip" data-journey="reward"><small>NEXT REWARD</small><b id="journeyReward">Ink Pot</b></div>
+   </div>
+ </section>
  <section class="raising-hero">
    <aside class="scholar-base-scene" id="scholarScene" aria-label="Current Scholar">
      <div class="base-scene-backdrop" aria-hidden="true"></div>
      <div class="base-scene-head">
        <div><p class="eyebrow">MY SCHOLAR</p><h1>Scholar Level <span data-growth="level">1</span></h1></div>
-       <button class="scene-link" data-global-route="scholar">Wardrobe</button>
+       <button class="scene-link" data-global-route="scholar">Open Scholar</button>
      </div>
 
      <div class="base-character-stage" id="scholarArtSlot" data-art-slot="master-scholar">
@@ -99,11 +115,12 @@
    </section>
  </section>
 
- <section class="subject-training-section home-zone">
+ <section class="subject-training-section home-zone" id="continueLearningSection">
    <div class="section-title">
-     <div><p class="eyebrow">SUBJECTS / TRAINING</p><h2>Train whenever you want</h2></div>
-     <span>Daily quests guide you. Free training is always open.</span>
+     <div><p class="eyebrow">CONTINUE LEARNING</p><h2>Pick up where you left off</h2></div>
+     <button class="text-button" type="button" data-global-route="study">See all subjects</button>
    </div>
+   <p class="v04-section-lede">Recommended from your real recent activity, due review and current learning. Each card has one clear next action.</p>
    <div class="subject-training-grid" id="subjectTrainingGrid"></div>
  </section>
 
@@ -221,6 +238,7 @@
    <div class="garden-overlay">
      <p class="eyebrow">YOUR GROWTH WORLD</p>
      <h1>Scholar’s Garden</h1>
+     <div id="gardenGrowthSpecimen" class="garden-growth-specimen" hidden aria-live="polite"></div>
      <div class="garden-meta">
        <span><small>Garden stage</small><strong id="gardenStageText">Stage 1</strong></span>
        <span><small>Scholar level</small><strong>Lv <span data-growth="level">1</span></strong></span>
@@ -239,12 +257,41 @@
 <section class="route-screen hidden" data-route-screen="scholar" id="scholarScreen">
  <header class="page-title"><p class="eyebrow">YOUR SCHOLAR</p><h1>Scholar</h1><p>Your style, collection and achievements in one place.</p></header>
  <nav class="scholar-tabs" aria-label="Scholar sections">
+   <button data-scholar-tab="overview">Overview</button>
    <button data-scholar-tab="wardrobe">Wardrobe</button>
    <button data-scholar-tab="collection">Collection</button>
    <button data-scholar-tab="achievements">Achievements</button>
+   <button data-scholar-tab="profile">Profile</button>
  </nav>
 
- <section class="scholar-pane" data-scholar-pane="wardrobe">
+ <section class="scholar-pane" data-scholar-pane="overview">
+   <div class="scholar-overview-grid">
+     <article class="scholar-identity-card">
+       <img id="scholarOverviewImage" src="./scholar_idle.png" alt="Scholar" loading="lazy" decoding="async">
+       <div class="scholar-identity-copy">
+         <p class="eyebrow">SCHOLAR IDENTITY</p>
+         <h2 id="scholarOverviewName">Scholar</h2>
+         <p id="scholarOverviewLevel">Level 1</p>
+         <div class="scholar-overview-xp">
+           <div><span>Scholar XP</span><b id="scholarOverviewXP">0 / 100</b></div>
+           <div class="progress-track"><i id="scholarOverviewXPBar"></i></div>
+         </div>
+         <div class="scholar-recent" id="scholarOverviewRecent"></div>
+       </div>
+     </article>
+     <article class="scholar-stats-card">
+       <p class="eyebrow">GROWTH SNAPSHOT</p>
+       <div class="scholar-stats-grid">
+         <div class="scholar-stat"><small>STUDY DAYS</small><strong id="scholarStatDays">0</strong></div>
+         <div class="scholar-stat"><small>GARDEN</small><strong id="scholarStatGarden">Stage 1</strong></div>
+         <div class="scholar-stat"><small>LATIN XP</small><strong id="scholarStatLatin">0</strong></div>
+         <div class="scholar-stat"><small>FRENCH XP</small><strong id="scholarStatFrench">0</strong></div>
+       </div>
+     </article>
+   </div>
+ </section>
+
+ <section class="scholar-pane hidden" data-scholar-pane="wardrobe">
    <div class="scholar-layout">
      <article class="avatar-stage card-soft" aria-label="Avatar preview area">
        <div class="avatar-canvas" id="avatarCanvas" data-avatar-canvas="560x760">
@@ -262,6 +309,7 @@
      <aside class="wardrobe-panel">
        <p class="eyebrow">WARDROBE</p><h2>Build your look</h2>
        <div id="wardrobeControls"></div>
+       <div id="avatarLayerControls" hidden></div>
      </aside>
    </div>
  </section>
@@ -280,26 +328,51 @@
  <section class="scholar-pane hidden" data-scholar-pane="achievements">
    <div class="medal-grid" id="medalGrid"></div>
  </section>
+
+ <section class="scholar-pane hidden" data-scholar-pane="profile">
+   <div class="profile-layout">
+     <article class="profile-card">
+       <p class="eyebrow">PROFILE</p><h2>Learner details</h2>
+       <p class="profile-note">Your display name is stored only in this browser’s Scholar Garden UX state. Changing it does not alter mastery, XP or revision history.</p>
+       <div class="profile-field">
+         <label for="scholarDisplayName">Display name</label>
+         <input id="scholarDisplayName" type="text" maxlength="32" autocomplete="nickname" placeholder="Scholar">
+       </div>
+       <div class="profile-actions">
+         <button class="primary" id="saveScholarProfile">Save name</button>
+         <button class="secondary" id="clearScholarProfile">Clear</button>
+       </div>
+     </article>
+     <aside class="profile-card">
+       <p class="eyebrow">LOCAL DATA</p><h2>State summary</h2>
+       <div class="profile-data-list" id="scholarProfileData"></div>
+     </aside>
+   </div>
+ </section>
 </section>
 </main>
 </div>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-<script src="./latin-question-bank.js?v=0.4.0-a1"></script>
-<script src="./growth.js?v=0.4.0-a1"></script>
-<script src="./latin-module.js?v=0.4.0-a1"></script>
-<script src="./french-module.js?v=0.4.0-a1"></script>
-<script src="./latin-games.js?v=0.4.0-a1"></script>
-<script src="./science-notes.js?v=0.4.0-a1"></script>
-<script src="./biology-y8.js?v=0.4.0-a1"></script>
-<script src="./language-y8.js?v=0.4.0-a1"></script>
-<script src="./daily-plan.js?v=0.4.0-a1"></script>
-<script src="./scholar-assets.js?v=0.4.0-a1"></script>
-<script src="./v04-visual.js?v=0.4.0-a1"></script>
-<script src="./subject-hub.js?v=0.4.0-a1"></script>
-<script src="./scholar.js?v=0.4.0-a1"></script>
-<script src="./app.js?v=0.4.0-a1"></script>
-<footer class="build-footer">Lux et Labor · Scholar’s Garden · V0.4.0 Alpha 1 · Visual Rebuild</footer>
+<script src="./latin-question-bank.js?v=0.4.0-a3"></script>
+<script src="./growth.js?v=0.4.0-a3"></script>
+<script src="./latin-module.js?v=0.4.0-a3"></script>
+<script src="./french-module.js?v=0.4.0-a3"></script>
+<script src="./latin-games.js?v=0.4.0-a3"></script>
+<script src="./science-notes.js?v=0.4.0-a3"></script>
+<script src="./biology-y8.js?v=0.4.0-a3"></script>
+<script src="./language-y8.js?v=0.4.0-a3"></script>
+<script src="./daily-plan.js?v=0.4.0-a3"></script>
+<script src="./scholar-assets.js?v=0.4.0-a3"></script>
+<script src="./v04-art-config.js?v=0.4.0-a3"></script>
+<script src="./avatar-layer-system.js?v=0.4.0-a3"></script>
+<script src="./garden-growth.js?v=0.4.0-a3"></script>
+<script src="./v04-visual.js?v=0.4.0-a3"></script>
+<script src="./v04-ui-assets.js?v=0.4.0-a3"></script>
+<script src="./subject-hub.js?v=0.4.0-a3"></script>
+<script src="./scholar.js?v=0.4.0-a3"></script>
+<script src="./app.js?v=0.4.0-a3"></script>
+<footer class="build-footer">Lux et Labor · Scholar’s Garden · V0.4.0 Alpha 3 · Avatar/Garden Runtime + Scholar Profile</footer>
 </body>
 </html>
