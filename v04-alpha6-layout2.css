@@ -1,0 +1,161 @@
+
+/* Alpha 6 Layout Pass 2 — composition cleanup */
+:root{
+  --l2-max:1380px;
+  --l2-gap:18px;
+  --l2-radius:16px;
+}
+body{overflow-x:hidden}
+.main-stage{background:
+  linear-gradient(180deg,rgba(255,255,255,.12),transparent 260px),
+  #fbf7ee!important}
+.route-screen{width:min(calc(100% - 48px),var(--l2-max))!important;margin-inline:auto!important;padding:28px 0 64px!important}
+
+/* shell */
+.brandbar{height:68px!important}
+.main-stage{padding-top:68px!important}
+.global-nav{width:78px!important}
+.main-stage{margin-left:78px!important}
+.global-nav button{min-height:62px!important}
+.global-nav button b{font-size:9px!important;letter-spacing:.05em}
+.brandbar{padding-left:98px!important}
+
+/* HOME: stronger hierarchy and cleaner ratios */
+#homeScreen{display:block!important}
+.a6-home{grid-template-columns:minmax(0,1.72fr) minmax(300px,.68fr)!important;gap:20px!important}
+.a6-home-title{padding:8px 2px 10px!important}
+.a6-home-title h1{max-width:760px!important}
+.a6-home-title p{max-width:360px!important}
+.a6-hero{min-height:590px!important}
+.a6-side{grid-auto-rows:auto!important}
+.a6-card{padding:16px!important}
+.a6-level{min-height:130px!important}
+.a6-journey{min-height:250px!important}
+.a6-garden{min-height:210px!important}
+.a6-daily{gap:10px!important}
+.a6-mini{min-height:82px!important}
+.a6-bottom{grid-template-columns:minmax(0,1.3fr) minmax(300px,.7fr)!important;gap:20px!important;margin-top:2px}
+.a6-continue,.a6-quick{min-height:230px!important}
+.a6-panel-copy{padding:24px!important}
+.a6-panel-copy h3{font-size:32px!important}
+.a6-hero-copy{align-items:flex-end!important}
+.a6-hero-copy h2{font-size:40px!important}
+
+/* HOME image diversification */
+.a6-hero>img{object-position:center 42%!important}
+.a6-continue img{object-position:center 36%!important}
+.a6-quick img{object-position:center 50%!important}
+
+/* STUDY */
+#studyScreen .v04-study-hero{min-height:220px!important}
+#studyScreen .study-band{padding-top:18px!important}
+#studyScreen .study-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:16px!important}
+#studyScreen .study-card,#studyScreen .subject-card{min-height:270px!important}
+#studyScreen .study-card img,#studyScreen .subject-card img{height:128px!important;aspect-ratio:auto!important}
+#studyScreen .study-card .card-body,#studyScreen .subject-card .card-body{padding:16px!important}
+.a6-study-footer{margin-top:18px!important}
+.a6-study-footer .a6-card{min-height:145px!important}
+
+/* SUBJECT */
+#subjectScreen{max-width:1280px!important}
+#subjectScreen .back-link{margin-bottom:12px!important}
+#subjectScreen .subject-hub-header{min-height:224px!important;padding:30px!important}
+#subjectScreen .subject-summary{margin-top:14px!important}
+#subjectScreen .subject-tabs{margin-top:16px!important}
+#subjectScreen .a5-subject-actions{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:12px!important}
+#subjectScreen .a5-subject-action{min-height:150px!important}
+
+/* LESSON / PRACTICE: readable central column */
+.a5-lesson-workspace,.a5-practice-workspace{
+  display:grid!important;
+  grid-template-columns:minmax(0,1fr) 280px!important;
+  gap:20px!important;
+  align-items:start!important
+}
+.a5-lesson-workspace>.note-detail,
+.a5-practice-workspace>.quiz-card{max-width:none!important}
+.a5-lesson-rail,.a5-practice-rail{position:sticky!important;top:92px!important}
+.note-detail{padding:26px!important}
+.quiz-card{padding:24px!important}
+
+/* SCHOLAR */
+#scholarScreen{max-width:1260px!important}
+.scholar-overview-grid{gap:20px!important}
+.scholar-overview-grid>*{min-width:0!important}
+.wardrobe-gallery{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:16px!important}
+.collection-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:14px!important}
+#medalGrid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:14px!important}
+
+/* GARDEN */
+#gardenScreen{max-width:1280px!important}
+#gardenScreen .garden-world{border-radius:18px!important;overflow:hidden!important}
+#gardenScreen .garden-panel-grid{gap:16px!important}
+
+/* avoid visual repetition by varying art blocks */
+.a6-journey::after{
+ content:"";display:block;height:54px;margin-top:12px;border-radius:10px;
+ background:url("./study_planner.png") center 44%/cover no-repeat;
+ opacity:.9
+}
+.a6-level::after{content:none!important}
+.a6-mini:first-child{background:
+ linear-gradient(rgba(247,242,232,.88),rgba(247,242,232,.88)),
+ url("./study_flashcards.png") center/cover no-repeat!important}
+.a6-mini:last-child{background:
+ linear-gradient(rgba(247,242,232,.9),rgba(247,242,232,.9)),
+ url("./reward_interaction_ink_pot.png") center/cover no-repeat!important}
+
+/* tablet */
+@media(max-width:1100px){
+ .route-screen{width:min(calc(100% - 34px),var(--l2-max))!important}
+ .a6-home{grid-template-columns:minmax(0,1.35fr) minmax(280px,.65fr)!important}
+ .a6-hero{min-height:520px!important}
+ .a6-bottom{grid-template-columns:1fr!important}
+ #studyScreen .study-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ .collection-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+}
+
+/* mobile/tablet shell */
+@media(max-width:900px){
+ .brandbar{padding-left:16px!important;height:60px!important}
+ .main-stage{margin-left:0!important;padding-top:60px!important;padding-bottom:78px!important}
+ .global-nav{
+   left:0!important;right:0!important;bottom:0!important;top:auto!important;
+   width:auto!important;height:70px!important;flex-direction:row!important;
+   align-items:center!important;justify-content:space-around!important;padding:6px 8px!important
+ }
+ .global-nav button{min-height:54px!important;flex:1!important}
+ .route-screen{width:min(calc(100% - 28px),var(--l2-max))!important;padding-top:20px!important}
+ .a6-home{grid-template-columns:1fr!important}
+ .a6-home-title{grid-column:auto!important}
+ .a6-side{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ .a6-daily{grid-column:1/-1!important}
+ .a6-bottom{grid-template-columns:1fr!important}
+ .a5-lesson-workspace,.a5-practice-workspace{grid-template-columns:1fr!important}
+ .a5-lesson-rail,.a5-practice-rail{position:static!important}
+ .wardrobe-gallery{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ .collection-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ #medalGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+
+/* mobile */
+@media(max-width:640px){
+ .route-screen{width:calc(100% - 20px)!important;padding-top:14px!important}
+ .a6-home-title{gap:10px!important}
+ .a6-home-title h1{font-size:40px!important;line-height:.96!important}
+ .a6-home-title p{font-size:14px!important}
+ .a6-hero{min-height:430px!important}
+ .a6-hero-copy{left:16px!important;right:16px!important;bottom:16px!important}
+ .a6-hero-copy h2{font-size:30px!important}
+ .a6-side{grid-template-columns:1fr!important}
+ .a6-level,.a6-journey,.a6-garden{min-height:auto!important}
+ .a6-bottom{grid-template-columns:1fr!important}
+ .a6-continue,.a6-quick{min-height:210px!important}
+ #studyScreen .v04-study-hero{min-height:190px!important;padding:22px!important}
+ #studyScreen .study-grid{grid-template-columns:1fr!important}
+ #studyScreen .study-card,#studyScreen .subject-card{min-height:auto!important}
+ #subjectScreen .subject-hub-header{min-height:190px!important;padding:22px!important}
+ #subjectScreen .a5-subject-actions{grid-template-columns:1fr 1fr!important}
+ .wardrobe-gallery,.collection-grid,#medalGrid{grid-template-columns:1fr!important}
+ .subject-tabs{grid-template-columns:repeat(4,minmax(100px,1fr))!important}
+}

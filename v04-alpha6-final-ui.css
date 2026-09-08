@@ -1,0 +1,212 @@
+
+/* Alpha 6 Final UI — one coherent composition system */
+:root{
+  --sg-navy:#14384f;
+  --sg-navy-deep:#0f2f44;
+  --sg-green:#54745e;
+  --sg-green-soft:#dce7da;
+  --sg-cream:#fbf7ef;
+  --sg-paper:#f6f0e4;
+  --sg-line:#ddd3c2;
+  --sg-ink:#193749;
+  --sg-muted:#6f7973;
+  --sg-gold:#b9955e;
+  --sg-shadow:0 12px 34px rgba(30,48,42,.08);
+  --sg-radius:16px;
+  --sg-max:1360px;
+}
+html{scroll-behavior:smooth}
+body{background:var(--sg-cream)!important;color:var(--sg-ink)!important}
+.main-stage{background:
+ radial-gradient(circle at 94% 4%,rgba(177,197,172,.16),transparent 26rem),
+ linear-gradient(180deg,#fcf9f2 0,#fbf7ef 420px)!important}
+.route-screen{
+ width:min(calc(100% - 52px),var(--sg-max))!important;
+ max-width:none!important;margin-inline:auto!important;padding:30px 0 70px!important;
+}
+.route-screen h1,.route-screen h2,.route-screen h3{letter-spacing:-.018em}
+.eyebrow{font-size:10px!important;letter-spacing:.18em!important;font-weight:800!important;color:#758078!important}
+
+/* Header + navigation */
+.brandbar{
+ height:66px!important;padding:0 22px 0 100px!important;
+ background:rgba(251,247,239,.96)!important;border-bottom:1px solid var(--sg-line)!important;
+ backdrop-filter:blur(14px)!important;
+}
+.brandbar .brand strong{font-size:17px!important}
+.brandbar .brand small{opacity:.72!important}
+.scholar-chip{gap:14px!important}
+.global-nav{
+ width:78px!important;padding:14px 8px 12px!important;
+ background:linear-gradient(180deg,#12364e 0%,#153b53 62%,#102f44 100%)!important;
+}
+.global-nav button{min-height:62px!important;border-radius:11px!important}
+.global-nav button b{font-size:9px!important;letter-spacing:.04em!important}
+.main-stage{margin-left:78px!important;padding-top:66px!important}
+
+/* HOME */
+.a6-home{grid-template-columns:minmax(0,1.72fr) minmax(300px,.68fr)!important;gap:20px!important}
+.a6-home-title{padding:8px 2px 12px!important}
+.a6-home-title h1{font-size:clamp(46px,5vw,70px)!important;line-height:.94!important}
+.a6-home-title p{font-size:15px!important;color:#758078!important}
+.a6-hero{min-height:580px!important;border-radius:18px!important;box-shadow:var(--sg-shadow)!important}
+.a6-hero>img{object-position:center 40%!important}
+.a6-hero-copy{left:26px!important;right:26px!important;bottom:24px!important}
+.a6-hero-copy h2{font-size:39px!important}
+.a6-hero-copy p{max-width:520px!important}
+.a6-side{gap:14px!important}
+.a6-card{border-radius:14px!important;border-color:var(--sg-line)!important;box-shadow:0 8px 24px rgba(35,53,46,.055)!important}
+.a6-level{min-height:126px!important}
+.a6-journey{min-height:236px!important}
+.a6-journey li{padding:9px!important}
+.a6-journey::after{height:62px!important;background-image:url("./study_planner.png")!important;background-position:center 42%!important}
+.a6-garden{min-height:205px!important}
+.a6-garden img{height:118px!important;object-position:center 45%!important}
+.a6-daily{gap:10px!important}
+.a6-mini{min-height:80px!important}
+.a6-bottom{grid-template-columns:minmax(0,1.25fr) minmax(290px,.75fr)!important;gap:20px!important;margin-top:1px!important}
+.a6-continue,.a6-quick{min-height:225px!important}
+.a6-continue img{object-position:center 38%!important}
+.a6-quick img{object-position:center 46%!important}
+.a6-panel-copy h3{font-size:31px!important}
+
+/* STUDY HUB */
+#studyScreen{width:min(calc(100% - 52px),1320px)!important}
+#studyScreen .v04-study-hero{
+ min-height:230px!important;border-radius:18px!important;padding:34px!important;
+ background:
+ linear-gradient(90deg,rgba(251,247,239,.97) 0 42%,rgba(251,247,239,.72) 55%,rgba(251,247,239,.08) 79%),
+ url("./v04_study_hub_hero.webp") center 42%/cover no-repeat!important;
+}
+#studyScreen .v04-study-hero h1{font-size:56px!important}
+#studyScreen .study-band{padding-top:22px!important}
+#studyScreen .section-title{margin-bottom:14px!important}
+#studyScreen .study-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:16px!important}
+#studyScreen .study-grid>*{
+ min-width:0!important;border-radius:15px!important;border:1px solid var(--sg-line)!important;
+ box-shadow:0 9px 24px rgba(31,48,42,.055)!important;background:rgba(255,255,255,.72)!important;overflow:hidden!important;
+}
+#studyScreen [data-a6-art]::before{
+ content:"";display:block;height:126px;background:var(--a6-card-art) center/cover no-repeat;border-bottom:1px solid var(--sg-line)
+}
+#studyScreen .a6-study-footer{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:16px!important}
+.a6-study-footer .a6-card{background:rgba(255,255,255,.64)!important}
+
+/* SUBJECT LANDING */
+#subjectScreen{width:min(calc(100% - 52px),1260px)!important}
+#subjectScreen .subject-hub-header{
+ min-height:230px!important;padding:31px!important;border-radius:18px!important;
+ background:
+ linear-gradient(90deg,rgba(251,247,239,.98) 0 46%,rgba(251,247,239,.72) 60%,rgba(251,247,239,.12) 82%),
+ var(--a6-subject-art,url("./v04_latin_subject_hero.webp")) center/cover no-repeat!important;
+}
+#subjectScreen .subject-hub-header h1{font-size:54px!important}
+#subjectScreen .subject-summary{margin-top:13px!important}
+.subject-tabs{position:sticky!important;top:82px!important;z-index:18!important;box-shadow:0 5px 14px rgba(29,45,39,.035)!important}
+#subjectScreen .a5-subject-actions{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:13px!important}
+#subjectScreen .a5-subject-action{
+ min-height:148px!important;border:1px solid var(--sg-line)!important;border-radius:14px!important;background:rgba(255,255,255,.72)!important
+}
+#subjectContent>.subject-pane,#subjectContent>.engine-host{min-width:0!important}
+#subjectScreen .card,#subjectScreen .quiz-card,#subjectScreen .note-detail{
+ border:1px solid var(--sg-line)!important;border-radius:14px!important;background:rgba(255,255,255,.75)!important;
+ box-shadow:0 8px 24px rgba(31,48,42,.045)!important
+}
+
+/* Subject-specific editorial strip without fake learning data */
+.a6-subject-strip{
+ display:grid;grid-template-columns:1.25fr .75fr;gap:14px;margin:0 0 18px;
+}
+.a6-subject-strip-card{
+ min-height:126px;border:1px solid var(--sg-line);border-radius:14px;overflow:hidden;position:relative;background:#eef1e9
+}
+.a6-subject-strip-card img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.a6-subject-strip-card::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(18,51,72,.92),rgba(18,51,72,.25))}
+.a6-subject-strip-copy{position:relative;z-index:2;color:white;padding:20px;max-width:520px}
+.a6-subject-strip-copy small{letter-spacing:.16em}.a6-subject-strip-copy h3{font-size:26px;margin:5px 0}.a6-subject-strip-copy p{margin:0;color:rgba(255,255,255,.84);font-size:13px}
+.a6-subject-strip-mini{padding:18px;background:rgba(255,255,255,.74);border:1px solid var(--sg-line);border-radius:14px}
+.a6-subject-strip-mini h3{font-size:21px;margin:5px 0}.a6-subject-strip-mini p{font-size:13px;color:var(--sg-muted);margin:0}
+
+/* LESSON + PRACTICE */
+.a5-lesson-workspace,.a5-practice-workspace{
+ grid-template-columns:minmax(0,1fr) 272px!important;gap:20px!important;align-items:start!important;
+}
+.a5-lesson-rail,.a5-practice-rail{top:146px!important}
+.note-detail{padding:28px!important;line-height:1.7!important}
+.note-detail p,.note-detail li{max-width:76ch!important}
+.quiz-card{padding:25px!important}
+.progress-stats{gap:12px!important}
+.topic-progress{border-color:var(--sg-line)!important}
+
+/* Games */
+.game-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:14px!important}
+.game-card{border:1px solid var(--sg-line)!important;border-radius:14px!important;overflow:hidden!important}
+.game-shell-v2{border-radius:16px!important;overflow:hidden!important}
+
+/* GARDEN */
+#gardenScreen{width:min(calc(100% - 52px),1260px)!important}
+#gardenScreen .garden-world{
+ min-height:570px!important;border-radius:20px!important;border:1px solid var(--sg-line)!important;box-shadow:var(--sg-shadow)!important
+}
+#gardenImage{object-position:center 48%!important}
+#gardenScreen .garden-overlay{
+ max-width:470px!important;margin:24px!important;padding:22px!important;border-radius:15px!important;
+ background:rgba(251,247,239,.9)!important;backdrop-filter:blur(12px)!important
+}
+#gardenExplorePanel{margin-top:18px!important}
+.reward-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:14px!important}
+
+/* SCHOLAR */
+#scholarScreen{width:min(calc(100% - 52px),1240px)!important}
+#scholarScreen>.page-title{padding:8px 2px 18px!important}
+#scholarScreen>.page-title h1{font-size:54px!important}
+.scholar-tabs{top:82px!important;margin-bottom:18px!important}
+.scholar-overview-grid{grid-template-columns:minmax(320px,.78fr) minmax(0,1.22fr)!important;gap:20px!important}
+.scholar-identity-card,.scholar-stats-card,.avatar-stage,.wardrobe-panel,.profile-card{
+ border:1px solid var(--sg-line)!important;border-radius:15px!important;box-shadow:0 8px 24px rgba(31,48,42,.05)!important
+}
+#scholarOverviewImage{object-fit:contain!important;max-height:530px!important}
+.wardrobe-gallery{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:14px!important}
+.collection-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:14px!important}
+.medal-grid,#medalGrid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:14px!important}
+.collection-grid img,.wardrobe-gallery img{object-fit:contain!important;background:linear-gradient(180deg,#f1ebde,#fff)!important}
+
+/* responsive */
+@media(max-width:1120px){
+ .route-screen,#studyScreen,#subjectScreen,#gardenScreen,#scholarScreen{width:min(calc(100% - 36px),var(--sg-max))!important}
+ .a6-home{grid-template-columns:minmax(0,1.38fr) minmax(280px,.62fr)!important}
+ .a6-hero{min-height:510px!important}
+ #studyScreen .study-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ .collection-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+}
+@media(max-width:900px){
+ .brandbar{height:60px!important;padding-left:18px!important}.main-stage{margin-left:0!important;padding-top:60px!important;padding-bottom:80px!important}
+ .global-nav{left:0!important;right:0!important;top:auto!important;bottom:0!important;width:auto!important;height:72px!important;flex-direction:row!important;justify-content:space-around!important;padding:6px 8px!important}
+ .global-nav button{flex:1!important;min-height:56px!important}
+ .route-screen,#studyScreen,#subjectScreen,#gardenScreen,#scholarScreen{width:calc(100% - 28px)!important;padding-top:20px!important}
+ .a6-home{grid-template-columns:1fr!important}.a6-side{grid-template-columns:repeat(2,minmax(0,1fr))!important}.a6-daily{grid-column:1/-1!important}
+ .a6-bottom{grid-template-columns:1fr!important}
+ #studyScreen .a6-study-footer{grid-template-columns:1fr!important}
+ .a6-subject-strip{grid-template-columns:1fr!important}
+ .a5-lesson-workspace,.a5-practice-workspace{grid-template-columns:1fr!important}
+ .a5-lesson-rail,.a5-practice-rail{position:static!important}
+ .subject-tabs,.scholar-tabs{top:68px!important}
+ .wardrobe-gallery{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ .collection-grid,.medal-grid,#medalGrid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ .scholar-overview-grid{grid-template-columns:1fr!important}
+}
+@media(max-width:640px){
+ .route-screen,#studyScreen,#subjectScreen,#gardenScreen,#scholarScreen{width:calc(100% - 20px)!important;padding-top:14px!important}
+ .brandbar .brand small,.scholar-chip .label{display:none!important}
+ .a6-home-title h1{font-size:40px!important}.a6-home-title p{font-size:13px!important}
+ .a6-hero{min-height:430px!important}.a6-hero-copy{left:16px!important;right:16px!important;bottom:16px!important}
+ .a6-hero-copy h2{font-size:29px!important}.a6-side{grid-template-columns:1fr!important}.a6-daily{grid-column:auto!important}
+ #studyScreen .v04-study-hero,#subjectScreen .subject-hub-header{min-height:190px!important;padding:22px!important}
+ #studyScreen .v04-study-hero h1,#subjectScreen .subject-hub-header h1,#scholarScreen>.page-title h1{font-size:40px!important}
+ #studyScreen .study-grid{grid-template-columns:1fr!important}
+ #subjectScreen .a5-subject-actions{grid-template-columns:1fr 1fr!important}
+ .game-card-grid{grid-template-columns:1fr!important}
+ #gardenScreen .garden-world{min-height:500px!important}
+ #gardenScreen .garden-overlay{margin:12px!important;padding:17px!important}
+ .reward-grid,.wardrobe-gallery,.collection-grid,.medal-grid,#medalGrid{grid-template-columns:1fr!important}
+}
