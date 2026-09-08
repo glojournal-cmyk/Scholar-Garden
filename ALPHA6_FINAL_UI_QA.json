@@ -1,0 +1,15 @@
+{
+  "js_syntax_total": 31,
+  "js_syntax_pass": 31,
+  "duplicate_ids": [],
+  "missing_local_refs": [],
+  "sw_missing_refs": [],
+  "final_assets": [
+    "v04-alpha6-final-ui.css",
+    "alpha6-final-ui.js",
+    "v04_home_hero.webp",
+    "v04_alt_study_scene_03.webp",
+    "v04_alt_study_scene_07.webp",
+    "garden_02.webp"
+  ]
+}
