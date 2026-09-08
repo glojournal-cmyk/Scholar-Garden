@@ -1,0 +1,158 @@
+
+/* Alpha 5 P4 — Global polish / Home / Header / Subject heroes / Wardrobe / Settings */
+
+/* Global typography + spacing */
+:root{
+  --a5-ink:#173a52;
+  --a5-muted:#6d7771;
+  --a5-paper:#fffdf8;
+  --a5-line:rgba(54,72,64,.12);
+  --a5-shadow:0 12px 28px rgba(51,46,37,.07);
+}
+body{
+  letter-spacing:.002em;
+  background:linear-gradient(180deg,#fffdf8 0%,#f7f1e6 100%);
+}
+.main-stage{padding-bottom:28px}
+section.screen{scroll-margin-top:84px}
+.eyebrow{letter-spacing:.14em!important;font-weight:700!important;font-size:11px!important}
+
+/* Header / nav */
+.site-header,.top-header,.app-header{
+  min-height:72px!important;background:rgba(255,253,248,.94)!important;
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(55,72,64,.09)!important;
+  box-shadow:0 8px 24px rgba(51,46,37,.04)!important;
+}
+.site-header .brand,.top-header .brand,.app-header .brand{
+  color:#123651!important;font-family:Georgia,"Times New Roman",serif!important;font-weight:700!important;
+}
+.nav-link,.global-nav button,.top-nav button{
+  border-radius:999px!important;transition:.18s ease!important
+}
+.nav-link:hover,.global-nav button:hover,.top-nav button:hover{transform:translateY(-1px)}
+.nav-link.active,.global-nav button.active,.top-nav button.active{
+  background:#315f4b!important;color:white!important;box-shadow:0 6px 14px rgba(49,95,75,.18)!important
+}
+
+/* Home */
+#homeScreen{background:linear-gradient(180deg,#fffdf8,#f8f2e8)}
+#homeScreen .journey-card,#homeScreen .quest-card,#homeScreen .task-card,#homeScreen .subject-card,#homeScreen .quick-play-card{
+  border:1px solid var(--a5-line)!important;border-radius:18px!important;background:#fffdf8!important;
+  box-shadow:var(--a5-shadow)!important
+}
+#homeScreen .journey-card img,#homeScreen .subject-card img,#homeScreen .quick-play-card img{
+  border-radius:14px!important
+}
+#homeScreen .quest-card{
+  background:
+    linear-gradient(90deg,rgba(255,253,247,.98),rgba(255,253,247,.80)),
+    url("./study_planner.png") right 18px center/120px auto no-repeat!important;
+  min-height:170px!important
+}
+#homeScreen .task-card{min-height:128px!important}
+#homeScreen h2,#homeScreen h3{
+  color:var(--a5-ink)!important
+}
+#homeScreen .week-strip,#homeScreen .weekStrip{
+  border-radius:16px!important;background:#fffdf8!important;border:1px solid var(--a5-line)!important;box-shadow:0 9px 22px rgba(51,46,37,.05)!important
+}
+
+/* Subject hero crop / subject shell */
+#subjectScreen{background:linear-gradient(180deg,#fffdf8,#f8f1e7)}
+#subjectHero,.subject-hero{
+  min-height:300px!important;border-radius:22px!important;overflow:hidden!important;
+  border:1px solid var(--a5-line)!important;box-shadow:0 15px 32px rgba(50,45,36,.08)!important
+}
+#subjectHero img,.subject-hero img{
+  object-fit:cover!important;object-position:center 35%!important
+}
+#subjectHero .subject-hero-copy,.subject-hero .subject-hero-copy{
+  padding:clamp(26px,4vw,44px)!important
+}
+#subjectHero h1,.subject-hero h1{
+  font:700 clamp(46px,5vw,72px)/.98 Georgia,"Times New Roman",serif!important;color:#123651!important
+}
+.subject-action-grid,.subject-actions{
+  display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:12px!important
+}
+.subject-action-card,.subject-actions>button,.subject-actions>a{
+  min-height:118px!important;border-radius:17px!important;background:#fffdf8!important;border:1px solid var(--a5-line)!important;
+  box-shadow:0 10px 22px rgba(51,46,37,.06)!important
+}
+
+/* Wardrobe: artwork presentation */
+#wardrobeControls{
+  align-items:stretch!important
+}
+.wardrobe-preview-card{
+  position:relative!important;
+  min-height:430px!important;
+  transition:transform .18s ease,box-shadow .18s ease!important;
+}
+.wardrobe-preview-card:hover{
+  transform:translateY(-3px)!important;box-shadow:0 16px 32px rgba(50,45,36,.10)!important
+}
+.wardrobe-art-wrap{
+  min-height:330px!important;
+  background:
+    radial-gradient(circle at 50% 18%,rgba(255,255,255,.95),rgba(247,241,231,.88) 46%,rgba(235,227,214,.92))!important
+}
+.wardrobe-art-wrap img{
+  width:100%!important;height:330px!important;object-fit:contain!important;object-position:center bottom!important;
+  filter:drop-shadow(0 10px 14px rgba(45,42,35,.08))
+}
+.wardrobe-preview-card.equipped:after{
+  content:"EQUIPPED";position:absolute;top:12px;right:12px;background:#315f4b;color:#fff;border-radius:999px;
+  padding:6px 10px;font-size:10px;font-weight:800;letter-spacing:.12em
+}
+.a5-outfit-new-badge{
+  position:absolute;top:12px;left:12px;background:#efe7d5;color:#6a583e;border-radius:999px;
+  padding:6px 10px;font-size:10px;font-weight:800;letter-spacing:.11em;border:1px solid rgba(106,88,62,.12)
+}
+
+/* Profile/settings */
+.a5-settings{
+  display:grid;grid-template-columns:1fr 1fr;gap:0 26px
+}
+.a5-settings h2{grid-column:1/-1}
+.a5-setting-row{min-height:70px}
+.a5-setting-row:hover{background:rgba(245,240,230,.55)}
+.a5-settings-footer{
+  grid-column:1/-1;margin-top:18px;padding-top:18px;border-top:1px solid rgba(52,70,63,.10);
+  display:flex;flex-wrap:wrap;gap:10px
+}
+.a5-settings-footer button{
+  border-radius:12px;padding:10px 14px;border:1px solid rgba(53,71,64,.13);background:#fffdf8;cursor:pointer
+}
+.a5-settings-footer button.primary{background:#315f4b;color:#fff}
+
+/* Footer */
+footer,.site-footer{
+  margin-top:28px!important;background:#efe8dc!important;border-top:1px solid rgba(55,72,64,.10)!important;
+  color:#68736d!important
+}
+
+/* animation discipline */
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+}
+.a5-reduced-motion *, .a5-reduced-motion *::before,.a5-reduced-motion *::after{
+  animation:none!important;transition:none!important;scroll-behavior:auto!important
+}
+
+/* Tablet */
+@media(max-width:1000px){
+  .subject-action-grid,.subject-actions{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .a5-settings{grid-template-columns:1fr}
+  .a5-settings h2,.a5-settings-footer{grid-column:auto}
+}
+@media(max-width:760px){
+  .site-header,.top-header,.app-header{min-height:64px!important}
+  #subjectHero,.subject-hero{min-height:250px!important}
+}
+@media(max-width:560px){
+  .subject-action-grid,.subject-actions{grid-template-columns:1fr!important}
+  .wardrobe-preview-card{min-height:390px!important}
+  .wardrobe-art-wrap,.wardrobe-art-wrap img{min-height:300px!important;height:300px!important}
+}

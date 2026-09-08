@@ -1,3 +1,18 @@
+# V0.4.0 Visual Rebuild — Current Status
+
+## Alpha 5 RC4
+
+Remaining before production tag:
+1. Real-browser screenshot acceptance.
+2. iPadOS Safari responsive/PWA lifecycle check.
+3. Narrow-mobile overflow/navigation check.
+4. Confirm production GitHub Pages configuration.
+5. Tag the accepted commit.
+
+---
+
+## Historical roadmap
+
 # V0.4.0 Visual Rebuild — Implementation Status
 
 ## Alpha 1 completed
@@ -30,3 +45,4 @@
 
 ## Safety boundary
 Academic engines, banks, mastery/review rules and Growth/DailyPlan logic are unchanged from Alpha 2.
+

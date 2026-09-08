@@ -195,6 +195,8 @@ async function renderFoundationEngine(subject,tab){
  if(subject==='latin'||subject==='french'){
    if(tab==='play'){
      if(subject==='latin'){
+       const playPane=document.getElementById('genericPlayPane');
+       if(playPane){playPane.innerHTML='';playPane.classList.add('hidden');}
        document.getElementById('latinScreen').classList.remove('hidden');
        if(!window.GameV2?.openHub)throw new Error('Latin GameV2 engine unavailable');
        window.GameV2.openHub();

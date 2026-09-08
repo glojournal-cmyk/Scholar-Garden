@@ -1,0 +1,66 @@
+
+/* Alpha 5 RC — cumulative regression guards */
+
+/* Prevent wide content from breaking tablet/mobile */
+#homeScreen,#studyScreen,#subjectScreen,#gardenScreen,#scholarScreen,
+.scholar-pane,#genericLearnPane,#genericPracticePane,#genericProgressPane,
+#latinProgress,#frenchProgress,#frenchWriting,#gameArea,#gamesHub{
+  min-width:0;
+}
+img,svg,video,canvas{max-width:100%}
+input,textarea,select,button{max-width:100%;box-sizing:border-box}
+
+/* Keep long academic content readable */
+.note-detail,.quiz-card,.a5-writing-card,.a5-game-side,.a5-settings,
+.a5-study-widget,.a5-garden-panel,.a5-achievement-list{
+  overflow-wrap:anywhere;
+}
+table{max-width:100%}
+.note-detail table{
+  width:100%;border-collapse:separate;border-spacing:0;display:block;overflow-x:auto;
+  -webkit-overflow-scrolling:touch
+}
+.note-detail th,.note-detail td{white-space:nowrap}
+
+/* Make active/focus states keyboard-visible */
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,[tabindex]:focus-visible{
+  outline:3px solid rgba(49,95,75,.32)!important;
+  outline-offset:3px!important;
+}
+
+/* Stable sticky desktop header without obscuring hash targets */
+.site-header,.top-header,.app-header{position:sticky!important;top:0!important;z-index:100!important}
+[id]{scroll-margin-top:92px}
+
+/* Guard cards against text/image overflow */
+.wardrobe-preview-card,.game-card,.game-tile,.study-card,.collection-card,.medal-card{
+  min-width:0;
+}
+.wardrobe-preview-card img,.game-card img,.game-tile img,.study-card img,.collection-card img{
+  display:block;
+}
+
+/* Mobile nav safety */
+@media(max-width:700px){
+  .site-header,.top-header,.app-header{
+    overflow:visible!important;
+  }
+  .global-nav,.top-nav,.site-nav{
+    max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;
+  }
+  .global-nav::-webkit-scrollbar,.top-nav::-webkit-scrollbar,.site-nav::-webkit-scrollbar{display:none}
+  .global-nav button,.top-nav button,.site-nav a,.nav-link{white-space:nowrap}
+  [id]{scroll-margin-top:76px}
+}
+
+/* Very narrow devices */
+@media(max-width:390px){
+  .a5-home-intro,.a5-garden-summary,.a5-garden-panels,.scholar-pane,
+  #scholarScreen>.page-title,.scholar-tabs,#studyScreen .study-hero,#studyScreen .page-title,
+  #studyScreen .year-switcher,#studyScreen .study-year-tabs,#currentStudyGrid,#foundationStudyGrid,
+  .a5-study-dashboard{
+    width:calc(100% - 20px)!important;
+  }
+  .a5-practice-topline,.a5-game-header,.a5-lesson-tabs{grid-template-columns:1fr!important}
+  #medalGrid,#collectionGrid{grid-template-columns:1fr!important}
+}

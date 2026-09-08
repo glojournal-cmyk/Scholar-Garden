@@ -1,21 +1,36 @@
-const V='scholars-garden-v0-4-0-alpha3-avatar-garden-runtime-20260907';
+const V='scholars-garden-v0-4-0-alpha5-rc4-20260908';
 const CORE=`${V}-core`,RUN=`${V}-runtime`;
 const FILES=[
  './','./index.html',
- './styles.css?v=0.4.0-a3','./scholar-assets.css?v=0.4.0-a3','./latin-games.css?v=0.4.0-a3',
- './v04-visual.css?v=0.4.0-a3','./v04-ui-assets.css?v=0.4.0-a3','./v04-alpha3.css?v=0.4.0-a3',
+ './styles.css?v=0.4.0-a5-rc4','./scholar-assets.css?v=0.4.0-a5-rc4','./latin-games.css?v=0.4.0-a5-rc4',
+ './v04-visual.css?v=0.4.0-a5-rc4','./v04-ui-assets.css?v=0.4.0-a5-rc4','./v04-alpha3.css?v=0.4.0-a5-rc4','./v04-alpha4.css?v=0.4.0-a5-rc4','./v04-alpha4-1.css?v=0.4.0-a5-rc4',
+ './v04-alpha5-parity.css?v=0.4.0-a5-rc4',
+ './alpha5-parity.js?v=0.4.0-a5-rc4',
+ './v04-alpha5-p1.css?v=0.4.0-a5-rc4',
+ './alpha5-p1.js?v=0.4.0-a5-rc4',
+ './v04-alpha5-p2.css?v=0.4.0-a5-rc4',
+ './alpha5-p2.js?v=0.4.0-a5-rc4',
+ './v04-alpha5-p3.css?v=0.4.0-a5-rc4',
+ './alpha5-p3.js?v=0.4.0-a5-rc4',
+ './v04-alpha5-p4.css?v=0.4.0-a5-rc4',
+ './alpha5-p4.js?v=0.4.0-a5-rc4',
+ './v04-alpha5-rc.css?v=0.4.0-a5-rc4',
+ './alpha5-rc.js?v=0.4.0-a5-rc4',
+ './alpha5-rc2.js?v=0.4.0-a5-rc4',
+ './alpha5-rc3.js?v=0.4.0-a5-rc4',
  './manifest.webmanifest',
- './latin-question-bank.js?v=0.4.0-a3','./growth.js?v=0.4.0-a3','./latin-module.js?v=0.4.0-a3',
- './french-module.js?v=0.4.0-a3','./latin-games.js?v=0.4.0-a3','./science-notes.js?v=0.4.0-a3',
- './biology-y8.js?v=0.4.0-a3','./language-y8.js?v=0.4.0-a3',
- './daily-plan.js?v=0.4.0-a3','./scholar-assets.js?v=0.4.0-a3','./v04-art-config.js?v=0.4.0-a3',
- './avatar-layer-system.js?v=0.4.0-a3','./garden-growth.js?v=0.4.0-a3',
- './v04-visual.js?v=0.4.0-a3','./v04-ui-assets.js?v=0.4.0-a3',
- './subject-hub.js?v=0.4.0-a3','./scholar.js?v=0.4.0-a3','./app.js?v=0.4.0-a3',
- './mcp-reference-marker.mjs','./mcp-runtime-index.json','./mcp-concept-index.json','./mcp-origin-map.json','./mcp-language-summary.json',
+ './offline.html',
+ './latin-question-bank.js?v=0.4.0-a5-rc4','./growth.js?v=0.4.0-a5-rc4','./latin-module.js?v=0.4.0-a5-rc4',
+ './french-module.js?v=0.4.0-a5-rc4','./latin-games.js?v=0.4.0-a5-rc4','./science-notes.js?v=0.4.0-a5-rc4',
+ './biology-y8.js?v=0.4.0-a5-rc4','./language-y8.js?v=0.4.0-a5-rc4',
+ './daily-plan.js?v=0.4.0-a5-rc4','./scholar-assets.js?v=0.4.0-a5-rc4','./v04-art-config.js?v=0.4.0-a5-rc4',
+ './avatar-layer-system.js?v=0.4.0-a5-rc4','./garden-growth.js?v=0.4.0-a5-rc4',
+ './v04-visual.js?v=0.4.0-a5-rc4','./v04-ui-assets.js?v=0.4.0-a5-rc4',
+ './subject-hub.js?v=0.4.0-a5-rc4','./scholar.js?v=0.4.0-a5-rc4','./app.js?v=0.4.0-a5-rc4',
+ './mcp-reference-marker.mjs?v=0.4.0-a5-rc4','./mcp-runtime-index.json','./mcp-concept-index.json','./mcp-origin-map.json','./mcp-language-summary.json',
  './bio-y8-question-bank.json','./bio-y8-answer-bank.json','./bio-y8-concept-bank.json',
  './bio-y8-keyword-bank.json','./bio-y8-notes-by-topic.json','./bio-y8-diagram-specs.json',
- './scholar_idle.png','./favicon_192.png','./favicon_512.png','./apple_touch_icon_180.png','./app_icon_maskable_512.png'
+ './scholar_idle.png','./garden_growth_01_seed.webp','./favicon_192.png','./favicon_512.png','./apple_touch_icon_180.png','./app_icon_maskable_512.png'
 ];
 
 self.addEventListener('install',event=>{
@@ -54,7 +69,14 @@ self.addEventListener('fetch',event=>{
    event.respondWith(fetch(new Request(req,{cache:'reload'})).then(res=>{
      if(res.ok)caches.open(RUN).then(c=>c.put('./index.html',res.clone()));
      return res;
-   }).catch(()=>caches.match('./index.html').then(hit=>hit||Response.error())));
+   }).catch(async()=>{
+     const exact=await caches.match(req);
+     if(exact)return exact;
+     const shell=await caches.match('./index.html');
+     if(shell)return shell;
+     const offline=await caches.match('./offline.html');
+     return offline||Response.error();
+   }));
    return;
  }
 
@@ -95,5 +117,5 @@ self.addEventListener('fetch',event=>{
 });
 
 self.addEventListener('message',event=>{
- if(event.data==='SKIP_WAITING')self.skipWaiting();
+ if(event.data==='SKIP_WAITING'||event.data?.type==='SKIP_WAITING')self.skipWaiting();
 });

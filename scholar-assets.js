@@ -25,7 +25,14 @@ const A=Object.freeze({
     {id:'french-scholar',name:'French Scholar',asset:'outfit_french_scholar.png',unlock:{type:'subjectXP',subject:'french',value:250}},
     {id:'reward-cardigan',name:'Scholar Reward Cardigan',asset:'outfit_reward_cardigan.png',unlock:{type:'scholarXP',value:400}},
     {id:'achievement',name:'Achievement Outfit',asset:'outfit_achievement.png',unlock:{type:'dualSubjectXP',subjects:['latin','french'],valueEach:300}},
-    {id:'prestige',name:'Prestige Scholar',asset:'outfit_prestige.png',unlock:{type:'scholarXP',value:1500}}
+    {id:'prestige',name:'Prestige Scholar',asset:'outfit_prestige.png',unlock:{type:'scholarXP',value:1500}},
+    {id:'rose-academy',name:'Rose Academy Cardigan',asset:'outfit_rose_academy.png',category:'seasonal',source:'user-upload',unlock:{type:'always'}},
+    {id:'garden-athletics',name:'Garden Athletics',asset:'outfit_garden_athletics.png',category:'athletics',source:'user-upload',unlock:{type:'always'}},
+    {id:'scholar-athletics',name:'Scholar Athletics',asset:'outfit_scholar_athletics.png',category:'athletics',source:'user-upload',unlock:{type:'always'}},
+    {id:'midnight-track',name:'Midnight Track',asset:'outfit_midnight_track.png',category:'athletics',source:'user-upload',unlock:{type:'always'}},
+    {id:'noir-academy',name:'Noir Academy',asset:'outfit_noir_academy.png',category:'prestige',source:'user-upload',unlock:{type:'always'}},
+    {id:'onyx-prefect',name:'Onyx Prefect',asset:'outfit_onyx_prefect.png',category:'prestige',source:'user-upload',unlock:{type:'always'}},
+    {id:'midnight-atelier',name:'Midnight Atelier',asset:'outfit_midnight_atelier.png',category:'prestige',source:'user-upload',unlock:{type:'always'}}
   ]),
   study:Object.freeze({
     latinLearn:'study_latin_textbook.png',
@@ -115,8 +122,8 @@ function selectedOutfit(){
   return A.outfits.find(x=>x.id===id)||A.outfits[0];
 }
 function homeAsset(){
-  const outfit=selectedOutfit();
-  if(outfit.id!=='school-uniform')return outfit.asset;
+  // Outfit PNGs are wardrobe previews. Until aligned avatar layers are enabled,
+  // keep Home/Overview on a complete Scholar render instead of showing a headless outfit.
   return A.home[baseHomeState()]||A.home.idle;
 }
 function rewardAsset(id){

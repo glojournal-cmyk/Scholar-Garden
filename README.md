@@ -1,30 +1,37 @@
 # Lux et Labor — The Scholar’s Garden
-Framework V0.1.0
 
-Fresh PWA shell for a shared Latin + French revision world.
+Current release candidate: **V0.4.0 Alpha 5 RC4**
 
-Live framework
-- Shared Scholar Home
-- XP/Level store and central anti-grind API
-- Garden, Collection and wardrobe shells
-- Latin adapter connected to the preserved 1,056-question bank
-- French audited-core boundary prepared
-- Biology/Chemistry locked
-- responsive routing
-- PWA service worker
-- supplied artwork converted to WebP and lazy/runtime-cached
+The Scholar’s Garden is a static vanilla-JavaScript educational PWA with subject learning, practice, review, games, Garden progression and Scholar customisation.
 
-State separation
-- `latinSummerV8State`: preserved Latin formal progress
-- future French formal state: separate
-- `luxScholarGardenV1`: shared XP, level, garden, collection, wardrobe
+## Run locally
 
-Important
-The old summer dates remain source/provenance metadata only. The new student route is category/skill/review based.
+Run it through HTTP rather than opening `index.html` directly from disk:
 
-Next ports
-1. Latin practice + Games V2
-2. audited French JSON banks/marking
-3. Scriptorium + Atelier d’Orthographe
-4. final daily planner and reward conditions
-5. chibi/avatar/medal/collectible art
+```bash
+python3 -m http.server 8000
+```
+
+Then open `http://localhost:8000/`.
+
+## Main routes
+- `#home`
+- `#study`
+- `#subject/latin`
+- `#subject/french`
+- `#subject/biology`
+- `#garden`
+- `#scholar/overview`
+- `#scholar/wardrobe`
+- `#scholar/collection`
+- `#scholar/achievements`
+- `#scholar/profile`
+
+## Deployment
+See `GITHUB_PAGES_DEPLOYMENT.md`.
+
+## Release notes
+See `RELEASE_NOTES_ALPHA5_RC4.md` and `ALPHA5_RC4_FINAL_QA.md`.
+
+## Academic-state boundary
+Presentation code does not rewrite answer marking, question-bank content, mastery transitions, XP award rules, due-review scheduling, Garden thresholds, game scoring or Scholar unlock rules.

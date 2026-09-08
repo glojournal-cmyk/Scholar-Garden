@@ -37,11 +37,11 @@ window.ScholarAvatarLayerConfig=Object.freeze({
 });
 
 window.ScholarGardenGrowthConfig=Object.freeze({
-  available:false,
+  available:true,
   stages:Object.freeze({
-    1:'garden_growth_01_seed.png',
-    2:'garden_growth_02_young.png',
-    3:'garden_growth_03_budding.png',
-    4:'garden_growth_04_bloom.png'
+    1:'garden_growth_01_seed.webp',
+    2:'garden_growth_02_young.webp',
+    3:'garden_growth_03_budding.webp',
+    4:'garden_growth_04_bloom.webp'
   })
 });

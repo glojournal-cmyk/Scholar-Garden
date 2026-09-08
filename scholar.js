@@ -90,7 +90,7 @@ function renderOverview(){
  const g=window.LuxGrowth.snapshot(),s=g.state||{},selected=window.ScholarAssets?.selectedOutfit?.();
  const img=document.getElementById('scholarOverviewImage');
  if(img){
-   img.src=selected?.asset||window.ScholarAssets?.homeAsset?.()||'scholar_idle.png';
+   img.src=window.ScholarAssets?.homeAsset?.()||'scholar_idle.png';
    img.alt=`${displayName()} Scholar appearance`;
  }
  const set=(id,value)=>{const el=document.getElementById(id);if(el)el.textContent=value};
@@ -111,6 +111,7 @@ function renderOverview(){
    Object.keys(s.medals||{}).slice(-1).reverse().forEach(id=>tags.push(id.replace(/-/g,' ').replace(/\b\w/g,c=>c.toUpperCase())));
    recent.innerHTML=(tags.length?tags:['Your Scholar journey is ready.']).map(x=>`<span>${esc(x)}</span>`).join('');
  }
+ window.ScholarGardenGrowth?.render?.();
 }
 function renderCollection(){
  const s=state(),filter=document.querySelector('[data-collection-filter].active')?.dataset.collectionFilter||'All';
@@ -171,6 +172,7 @@ function openTab(tab='overview'){
  if(tab==='collection')renderCollection();
  if(tab==='achievements')renderAchievements();
  if(tab==='profile')renderProfile();
+ document.dispatchEvent(new CustomEvent('scholar:tab-open',{detail:{tab}}));
  history.replaceState(null,'',`#scholar/${tab}`);
 }
 function bind(){

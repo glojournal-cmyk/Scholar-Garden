@@ -1,0 +1,115 @@
+
+/* Alpha 5 P2 — Lesson / Practice / Feedback / Progress / Writing / Biology parity */
+
+#a5LessonBanner,.a5-practice-topline,.a5-progress-hero,.a5-writing-tools{
+  width:100%;box-sizing:border-box
+}
+.a5-lesson-banner{
+  margin:0 0 18px;border-radius:18px;overflow:hidden;min-height:220px;position:relative;
+  background:linear-gradient(90deg,rgba(255,253,247,.96),rgba(255,253,247,.70)),var(--a5-banner) center/cover no-repeat;
+  border:1px solid rgba(51,70,63,.12);box-shadow:0 12px 26px rgba(51,46,37,.08);padding:28px
+}
+.a5-lesson-banner h2{font:700 clamp(34px,4vw,52px)/1.05 Georgia,"Times New Roman",serif;color:#153853;margin:.12em 0}
+.a5-lesson-banner p{max-width:650px;color:#67736d;line-height:1.55}
+.a5-lesson-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:18px}
+.a5-lesson-tabs span{background:rgba(255,253,247,.86);border:1px solid rgba(53,72,64,.12);border-radius:12px;padding:10px 12px;text-align:center;color:#173a52;font-weight:600}
+
+.a5-lesson-workspace .note-detail{
+  padding:28px!important;border-radius:18px!important;background:#fffdf8!important;
+  box-shadow:0 12px 28px rgba(52,47,37,.08)!important
+}
+.a5-lesson-workspace .note-detail h2{font:700 38px Georgia,"Times New Roman",serif;color:#143851}
+.a5-lesson-workspace .note-detail h3{color:#183c56;margin-top:24px;font:700 24px Georgia,"Times New Roman",serif}
+.a5-lesson-workspace .note-detail ul{padding-left:22px}.a5-lesson-workspace .note-detail li{margin:7px 0;line-height:1.5}
+.a5-lesson-workspace .model-answer{background:#f5f0e4!important;border-radius:14px!important;padding:16px!important;border:1px solid rgba(57,72,63,.08)!important}
+
+.a5-practice-topline{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:14px
+}
+.a5-practice-chip{
+  border:1px solid rgba(52,71,64,.12);border-radius:13px;background:#fffdf8;padding:13px 14px;
+  box-shadow:0 8px 18px rgba(50,46,37,.05)
+}
+.a5-practice-chip b{display:block;color:#173a52}.a5-practice-chip small{color:#79817d}
+
+.a5-practice-workspace .quiz-card{
+  border-radius:20px!important;padding:30px!important;background:
+    radial-gradient(circle at 95% 7%,rgba(238,232,212,.55),transparent 24%),#fffdf8!important;
+  box-shadow:0 14px 30px rgba(49,45,36,.09)!important
+}
+.a5-practice-workspace .quiz-card h2{font:700 clamp(30px,3.5vw,46px)/1.12 Georgia,"Times New Roman",serif!important;color:#153752!important}
+.a5-practice-workspace .answer-input,.a5-practice-workspace textarea{
+  min-height:76px;border-radius:13px!important;border:1px solid #aebdb7!important;background:white!important;padding:16px!important;font-size:17px!important
+}
+.a5-practice-workspace .options{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.a5-practice-workspace .option{min-height:54px;border-radius:12px!important}
+.a5-practice-workspace .quiz-actions{gap:10px!important;margin-top:18px!important}
+.a5-practice-workspace .quiz-actions .primary{min-width:210px}
+
+.feedback.good,.feedback.bad{
+  margin-top:18px!important;border-radius:17px!important;padding:22px!important;box-shadow:0 9px 20px rgba(51,47,38,.06)
+}
+.feedback.good{border:1px solid rgba(68,116,82,.18)!important;background:linear-gradient(180deg,#f4f8ef,#eef5e9)!important}
+.feedback.bad{border:1px solid rgba(167,87,78,.18)!important;background:linear-gradient(180deg,#fff6f2,#faece7)!important}
+.feedback.good h3{font:700 30px Georgia,"Times New Roman",serif;color:#315e4a!important}
+.feedback.bad h3{font:700 28px Georgia,"Times New Roman",serif;color:#8b5049!important}
+.a5-feedback-explain{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px
+}
+.a5-feedback-card{border:1px solid rgba(55,72,64,.10);border-radius:13px;padding:14px;background:rgba(255,253,247,.72)}
+.a5-feedback-card b{color:#153955}.a5-feedback-card p{margin:6px 0 0;color:#6d756f;line-height:1.45}
+
+.a5-progress-hero{
+  margin-bottom:16px;min-height:190px;border:1px solid rgba(55,72,64,.12);border-radius:18px;
+  background:linear-gradient(90deg,rgba(255,253,247,.97),rgba(255,253,247,.68)),var(--a5-progress-art) right center/cover no-repeat;
+  box-shadow:0 12px 28px rgba(52,47,37,.08);padding:28px;display:flex;flex-direction:column;justify-content:center
+}
+.a5-progress-hero h2{font:700 clamp(36px,4vw,52px)/1 Georgia,"Times New Roman",serif;color:#143853;margin:.1em 0}
+.a5-progress-hero p{max-width:650px;color:#6b756f}
+#genericProgressPane .progress-stats,#latinProgress .progress-stats,#frenchProgress .progress-stats{
+  display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:12px!important
+}
+#genericProgressPane .progress-stats>div,#latinProgress .progress-stats>div,#frenchProgress .progress-stats>div{
+  min-height:120px;border-radius:16px!important;background:#fffdf8!important;border:1px solid rgba(54,72,64,.11)!important;
+  display:flex!important;flex-direction:column;align-items:flex-start!important;justify-content:center!important;padding:18px!important
+}
+#genericProgressPane .progress-stats b,#latinProgress .progress-stats b,#frenchProgress .progress-stats b{
+  font:700 35px Georgia,"Times New Roman",serif!important;color:#173a52!important
+}
+.topic-progress,.topic-progress-list{border-radius:18px!important;background:#fffdf8!important;border:1px solid rgba(53,71,64,.10)!important;padding:18px!important}
+.topic-bar{padding:12px 0!important}.topic-bar+.topic-bar{border-top:1px solid rgba(52,68,62,.08)}
+.topic-bar .bar{height:10px!important;border-radius:999px!important;overflow:hidden!important}
+
+.a5-writing-shell{
+  display:grid;grid-template-columns:minmax(230px,.72fr) minmax(0,1.55fr) minmax(250px,.78fr);gap:14px
+}
+.a5-writing-side{
+  display:flex;flex-direction:column;gap:12px
+}
+.a5-writing-card{
+  border:1px solid rgba(54,72,64,.11);border-radius:16px;background:#fffdf8;box-shadow:0 9px 20px rgba(51,47,38,.06);padding:18px
+}
+.a5-writing-card h3{margin:0 0 10px;color:#153955;font:700 23px Georgia,"Times New Roman",serif}
+.a5-writing-card ul{margin:0;padding-left:19px}.a5-writing-card li{margin:7px 0;line-height:1.4;color:#596760}
+#a5WritingEditorHost{min-width:0}
+#frenchWritingEditor{min-height:520px!important;padding:22px!important;border-radius:18px!important}
+#frenchWritingEditor textarea{min-height:330px!important;border-radius:13px!important;background:white!important}
+
+.a5-bio-science-card{
+  margin-top:14px;border-radius:16px;border:1px solid rgba(53,72,64,.11);background:
+  linear-gradient(90deg,rgba(255,253,247,.95),rgba(255,253,247,.70)),
+  url("./study_biology_book.png") right 18px center/170px auto no-repeat;padding:18px
+}
+.a5-bio-science-card h3{font:700 24px Georgia,"Times New Roman",serif;color:#173a52;margin:.1em 0}
+
+@media(max-width:1000px){
+ .a5-writing-shell{grid-template-columns:1fr 1.5fr}.a5-writing-side.right{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr}
+ #genericProgressPane .progress-stats,#latinProgress .progress-stats,#frenchProgress .progress-stats{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(max-width:700px){
+ .a5-lesson-tabs,.a5-practice-topline{grid-template-columns:repeat(2,1fr)}
+ .a5-practice-workspace .options{grid-template-columns:1fr}
+ .a5-feedback-explain{grid-template-columns:1fr}
+ .a5-writing-shell{grid-template-columns:1fr}.a5-writing-side.right{grid-column:auto;display:flex}
+ #genericProgressPane .progress-stats,#latinProgress .progress-stats,#frenchProgress .progress-stats{grid-template-columns:1fr!important}
+}

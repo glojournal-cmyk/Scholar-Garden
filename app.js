@@ -232,12 +232,12 @@ function flashScholarRewardUnlock(rewardId){
 function renderQuickPlay(){
  const root=document.getElementById('quickPlayGrid'),drawer=document.getElementById('allGamesDrawer');
  const recommended=[
-  {subject:'latin',id:'verbum',icon:'V',name:'Verbum Match',copy:'Vocabulary and grammar connections',time:'~3 min'},
-  {subject:'french',id:'atelier-spelling',icon:'F',name:'Spelling Sprint',copy:'Exact French recall with accents',time:'~3 min'},
-  {subject:'latin',id:'mosaic',icon:'M',name:'Sentence Mosaic',copy:'Build valid Latin sentences',time:'~4 min'}
+  {subject:'latin',id:'verbum',name:'Verbum Match',copy:'Vocabulary and grammar connections',time:'~3 min'},
+  {subject:'french',id:'atelier-spelling',name:'Spelling Sprint',copy:'Exact French recall with accents',time:'~3 min'},
+  {subject:'latin',id:'mosaic',name:'Sentence Mosaic',copy:'Build valid Latin sentences',time:'~4 min'}
  ];
  root.innerHTML=recommended.map(g=>`<article class="quick-play-card" data-subject="${g.subject}">
-   <div class="quick-play-icon">${g.icon}</div><div><small>${g.subject.toUpperCase()}</small><strong>${g.name}</strong><em>${g.copy} · ${g.time}</em></div>
+   <div class="quick-play-icon" aria-hidden="true"></div><div><small>${g.subject.toUpperCase()}</small><strong>${g.name}</strong><em>${g.copy} · ${g.time}</em></div>
    <button class="primary" data-quick-game="${g.id}" data-game-subject="${g.subject}">Play</button>
   </article>`).join('');
  const all=[
@@ -305,9 +305,9 @@ function renderHome(){
  growth();renderScholarScene();renderWeek();renderToday();renderReward();renderSubjectTraining();renderQuickPlay();
  window.V04Visual?.home?.();
 }
-function gardenStageBounds(stage){return ({1:[0,400],2:[400,1000],3:[1000,2200],4:[2200,3200]})[stage]||[0,400]}
+function gardenStageBounds(stage){return ({1:[0,400],2:[400,1000],3:[1000,2200],4:[2200,2200]})[stage]||[0,400]}
 function renderGarden(){
- const g=growth(),bounds=gardenStageBounds(g.gardenStage),span=Math.max(1,bounds[1]-bounds[0]),pct=Math.max(0,Math.min(100,(g.total-bounds[0])/span*100));
+ const g=growth(),bounds=gardenStageBounds(g.gardenStage),span=Math.max(1,bounds[1]-bounds[0]),pct=g.gardenStage>=4?100:Math.max(0,Math.min(100,(g.total-bounds[0])/span*100));
  document.getElementById('gardenStageText').textContent=`Stage ${g.gardenStage}`;
  document.getElementById('gardenStageBar').style.width=`${pct}%`;
  document.getElementById('gardenNextLabel').textContent=g.gardenStage>=4?'Flourishing':`${Math.max(0,bounds[1]-g.total)} XP`;

@@ -1,3 +1,13 @@
+# V0.4.0 Alpha 5 RC4 — Implementation Report
+
+Alpha 5 is at release-candidate stage. Presentation parity, outfit integration, runtime cleanup, PWA hardening and GitHub Pages readiness are integrated.
+
+No answer marking, question banks, mastery transitions, XP award rules, review scheduling, Garden thresholds, game scoring or Scholar unlock logic was rewritten.
+
+---
+
+## Historical implementation report
+
 # V0.4.0 Alpha 3 — Avatar/Garden Runtime + Scholar Profile
 
 This pass continues coding while final image assets are still being produced.
@@ -47,3 +57,4 @@ Only these existing runtime files were changed from Alpha 2:
 - `sw.js`
 
 All academic engines/content files remain byte-identical to Alpha 2.
+

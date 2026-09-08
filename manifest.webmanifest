@@ -1,12 +1,12 @@
 {
-  "name": "Lux et Labor — The Scholar's Garden",
-  "short_name": "Scholar's Garden",
+  "name": "Lux et Labor — The Scholar’s Garden",
+  "short_name": "Scholar Garden",
   "id": "./",
-  "start_url": "./#home",
+  "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#f8f4ea",
-  "theme_color": "#f8f4ea",
+  "background_color": "#fffdf8",
+  "theme_color": "#173a52",
   "description": "A scholarly cultivation PWA with a Scholar Scene, daily quests, real mini-games and structured Year 8 Master Content Pack learning.",
   "icons": [
     {
@@ -33,5 +33,11 @@
       "type": "image/png",
       "purpose": "monochrome"
     }
+  ],
+  "orientation": "any",
+  "lang": "en-GB",
+  "categories": [
+    "education",
+    "productivity"
   ]
 }

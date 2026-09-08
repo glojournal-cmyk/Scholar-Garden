@@ -1,0 +1,59 @@
+
+/* V0.4 Alpha 4 — live Garden growth artwork and progression presentation. */
+.garden-growth-live-copy{
+  display:grid;gap:3px;margin:10px 0 4px;padding:10px 12px;border-radius:14px;
+  background:rgba(255,253,248,.88);border:1px solid rgba(181,141,74,.24);
+  color:var(--navy)
+}
+.garden-growth-live-copy strong{font:650 1rem var(--serif)}
+.garden-growth-live-copy span{font-size:.72rem;line-height:1.45;color:#58655f}
+.garden-growth-live-copy small{font-size:.64rem;color:var(--gold-dark);font-weight:750;letter-spacing:.035em}
+
+.garden-growth-path{margin-bottom:26px}
+.garden-growth-timeline{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:14px
+}
+.garden-growth-step{
+  position:relative;overflow:hidden;border:1px solid var(--line2);border-radius:20px;
+  background:linear-gradient(180deg,#fffdf9,#f4f0e7);min-width:0
+}
+.garden-growth-step.current{
+  border-color:rgba(166,123,50,.54);box-shadow:0 12px 30px rgba(28,45,39,.12)
+}
+.garden-growth-step.locked{filter:saturate(.72);opacity:.74}
+.garden-growth-step-art{
+  aspect-ratio:1.08;background:linear-gradient(180deg,#f7f2e8,#ece7dc);
+  display:grid;place-items:center;padding:8px
+}
+.garden-growth-step-art img{width:100%;height:100%;object-fit:contain}
+.garden-growth-step-copy{padding:12px 13px 14px}
+.garden-growth-step-copy small{font-size:.58rem;letter-spacing:.1em;color:var(--muted)}
+.garden-growth-step-copy h3{margin:3px 0 5px;font:650 1rem var(--serif);color:var(--navy)}
+.garden-growth-step-copy p{min-height:3.4em;margin:0;color:var(--muted);font-size:.7rem;line-height:1.55}
+.garden-growth-step-copy span{
+  display:inline-flex;margin-top:9px;padding:5px 8px;border-radius:999px;background:#edf2eb;
+  color:#40534b;font-size:.63rem;font-weight:750
+}
+.garden-growth-step.locked .garden-growth-step-copy span{background:#eee9df;color:#776f63}
+.garden-growth-step.current .garden-growth-step-copy span{background:#f0e5c9;color:#6b5225}
+
+.scholar-stats-card{position:relative}
+.scholar-garden-specimen{
+  float:right;width:96px;margin:-2px 0 8px 12px;border:1px solid var(--line2);border-radius:16px;
+  background:linear-gradient(180deg,#faf7ef,#f0ece3);padding:5px
+}
+.scholar-garden-specimen[hidden]{display:none!important}
+.scholar-garden-specimen img{display:block;width:100%;aspect-ratio:1;object-fit:contain}
+.scholar-garden-specimen div{display:flex;justify-content:space-between;align-items:center;gap:4px;padding:1px 4px 4px}
+.scholar-garden-specimen small{font-size:.48rem;letter-spacing:.08em;color:var(--muted)}
+.scholar-garden-specimen strong{font:650 .66rem var(--serif);color:var(--navy)}
+
+@media(max-width:980px){
+  .garden-growth-timeline{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:560px){
+  .garden-growth-timeline{grid-template-columns:1fr 1fr;gap:9px}
+  .garden-growth-step-copy{padding:10px}
+  .garden-growth-step-copy p{display:none}
+  .scholar-garden-specimen{width:82px}
+}

@@ -1,16 +1,11 @@
-LUX ET LABOR — THE SCHOLAR'S GARDEN
-V0.4.0 ALPHA 3 — AVATAR/GARDEN RUNTIME + SCHOLAR PROFILE
+Lux et Labor — Scholar's Garden V0.4.0 Alpha 4
 
-GitHub Pages flat-root package.
+For GitHub Pages:
+1. Extract the ZIP.
+2. Upload the EXTRACTED files/folders to the Scholar-Garden repository root.
+3. Preserve the assets/... folder structure.
+4. Do not upload the ZIP itself.
+5. Wait for Pages deployment, then open a private tab or hard refresh once.
 
-When deploying:
-1. Upload every file from this package into the repository root.
-2. Overwrite matching old files.
-3. Do not create an extra enclosing folder.
-4. Commit and wait for GitHub Pages deployment.
-5. Footer should read:
-   V0.4.0 Alpha 3 · Avatar/Garden Runtime + Scholar Profile
-
-IMPORTANT:
-Pending Batch 6-9 character/garden files are NOT required for Alpha 3 to run.
-Their feature switches are deliberately OFF in v04-art-config.js until the final aligned art is integrated.
+Expected footer:
+V0.4.0 Alpha 4 · Garden Growth Live + Asset Ingest
