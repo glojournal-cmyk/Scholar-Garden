@@ -1,4 +1,4 @@
-const V='scholars-garden-v0-4-0-alpha5-rc4-20260908';
+const V='scholars-garden-v0-4-0-alpha6-ui-rebuild-20260908';
 const CORE=`${V}-core`,RUN=`${V}-runtime`;
 const FILES=[
  './','./index.html',
@@ -18,6 +18,8 @@ const FILES=[
  './alpha5-rc.js?v=0.4.0-a5-rc4',
  './alpha5-rc2.js?v=0.4.0-a5-rc4',
  './alpha5-rc3.js?v=0.4.0-a5-rc4',
+ './v04-alpha6-ui-rebuild.css?v=0.4.0-a6-ui-rebuild',
+ './alpha6-ui-rebuild.js?v=0.4.0-a6-ui-rebuild',
  './manifest.webmanifest',
  './offline.html',
  './latin-question-bank.js?v=0.4.0-a5-rc4','./growth.js?v=0.4.0-a5-rc4','./latin-module.js?v=0.4.0-a5-rc4',
