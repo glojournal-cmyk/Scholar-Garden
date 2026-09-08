@@ -1,6 +1,6 @@
 {
-  "version": "0.4.0-alpha3",
-  "status": "runtime-ready-art-not-yet-activated",
+  "version": "0.4.0-alpha4",
+  "status": "garden-growth-live-avatar-layer-alignment-pending",
   "flatRoot": true,
   "avatar": {
     "stateKey": "scholarAvatarV04",
@@ -51,7 +51,7 @@
       "handitem_lantern.png",
       "handitem_magnifier.png"
     ],
-    "fallback": "Existing full-render Scholar assets remain active until available=true."
+    "fallback": "Existing full-render Scholar assets remain active until pixel alignment is verified and avatar available=true."
   },
   "garden": {
     "usesExistingGrowthStage": true,
@@ -59,37 +59,54 @@
     "stages": [
       {
         "stage": 1,
-        "file": "garden_growth_01_seed.png",
+        "file": "garden_growth_01_seed.webp",
         "size": [
           1024,
           1024
+        ],
+        "sourceCanvas": [
+          1254,
+          1254
         ]
       },
       {
         "stage": 2,
-        "file": "garden_growth_02_young.png",
+        "file": "garden_growth_02_young.webp",
         "size": [
           1024,
           1024
+        ],
+        "sourceCanvas": [
+          1254,
+          1254
         ]
       },
       {
         "stage": 3,
-        "file": "garden_growth_03_budding.png",
+        "file": "garden_growth_03_budding.webp",
         "size": [
           1024,
           1024
+        ],
+        "sourceCanvas": [
+          1254,
+          1254
         ]
       },
       {
         "stage": 4,
-        "file": "garden_growth_04_bloom.png",
+        "file": "garden_growth_04_bloom.webp",
         "size": [
           1024,
           1024
+        ],
+        "sourceCanvas": [
+          1254,
+          1254
         ]
       }
     ],
-    "fallback": "Existing garden_01.webp / garden_02.webp remain active; specimen slot stays hidden until enabled."
+    "fallback": "Garden stage artwork is now active; existing garden scene backgrounds remain as the world backdrop.",
+    "active": true
   }
 }
