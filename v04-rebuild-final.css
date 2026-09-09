@@ -218,3 +218,252 @@ body{background:#f4efe4;color:var(--lr-ink)}
 .quick-play-card .quick-play-icon{width:86px!important;height:76px!important;border-radius:13px!important;background-position:center!important;background-size:cover!important}
 @media(max-width:720px){.lr-garden-collection .lr-garden-grid{grid-template-columns:1fr 1fr}.quick-play-card{grid-template-columns:72px 1fr!important}.quick-play-card>button{grid-column:1/-1}.quick-play-card .quick-play-icon{width:72px!important;height:66px!important}}
 @media(max-width:430px){.lr-garden-collection .lr-garden-grid{grid-template-columns:1fr}}
+
+
+/* =========================================================
+   RF3 — Editorial composition rebuild
+   Keeps learning/progression engines intact; presentation only.
+   ========================================================= */
+:root{
+  --rf3-navy:#0b2b43;
+  --rf3-navy-deep:#071f32;
+  --rf3-paper:#fbf7ee;
+  --rf3-gold:#b99458;
+  --rf3-sage:#6f8b72;
+  --rf3-ink:#17384b;
+}
+body{background:#ede8dd}
+.app-shell{max-width:none;width:100%;box-shadow:none}
+.main-stage{overflow:hidden}
+
+/* calmer brand */
+.brandbar{height:72px;min-height:72px;background:linear-gradient(110deg,#071f32,#0d3754);border-bottom:1px solid rgba(255,255,255,.08)}
+.global-nav{top:72px;background:rgba(7,31,50,.97);border-bottom:1px solid rgba(255,255,255,.08)}
+.brand-mark{width:42px;height:42px}
+.brand strong{font-size:1.34rem;letter-spacing:.01em}
+.brand small{opacity:.9}
+
+/* HOME — scene first, dashboard second */
+#homeScreen{padding-bottom:70px!important}
+#homeScreen .lr-welcome{display:none!important}
+#homeScreen .rf3-home-hero{
+  min-height:clamp(540px,66vw,780px);
+  margin:0;
+  position:relative;
+  display:flex;
+  align-items:center;
+  isolation:isolate;
+  background:
+    linear-gradient(90deg,rgba(5,25,39,.86) 0%,rgba(6,29,45,.72) 34%,rgba(6,29,45,.15) 62%,rgba(6,29,45,.04) 100%),
+    linear-gradient(180deg,rgba(5,25,39,.05),rgba(5,25,39,.18)),
+    url("./final_home_scholar.webp") center 34%/cover no-repeat;
+}
+#homeScreen .rf3-home-hero:after{
+  content:"";position:absolute;z-index:-1;inset:auto 0 0;height:180px;
+  background:linear-gradient(transparent,#fbf7ee);
+}
+.rf3-home-copy{
+  width:min(650px,88vw);
+  margin-left:clamp(24px,8vw,120px);
+  padding:70px 0 120px;
+  color:white;
+  text-shadow:0 2px 16px rgba(0,0,0,.15);
+}
+.rf3-home-copy .eyebrow{color:#ead8ae;letter-spacing:.2em}
+.rf3-home-copy h1{
+  margin:.15em 0 .15em;
+  max-width:650px;
+  font:500 clamp(3rem,7vw,6.4rem)/.92 var(--lr-serif);
+  color:#fff;
+}
+.rf3-home-date{font:500 1rem/1.4 var(--lr-serif);color:#f0e4ca;margin:.8rem 0}
+.rf3-home-lede{max-width:550px;font-size:1.08rem;line-height:1.7;color:rgba(255,255,255,.86)}
+.rf3-home-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:25px}
+.rf3-home-actions .primary,.rf3-home-actions .secondary{min-height:50px;padding:0 21px}
+.rf3-home-actions .secondary.light{border-color:rgba(255,255,255,.45);color:#fff;background:rgba(255,255,255,.1)}
+.rf3-home-live{display:flex;gap:10px;margin-top:28px;flex-wrap:wrap}
+.rf3-home-live>span{display:grid;gap:2px;min-width:130px;padding:10px 14px;border:1px solid rgba(255,255,255,.2);border-radius:14px;background:rgba(5,25,39,.34);backdrop-filter:blur(10px)}
+.rf3-home-live small{font-size:.62rem;letter-spacing:.15em;color:#dbcaa8}
+.rf3-home-live b{font:600 1rem var(--lr-serif)}
+.rf3-home-live i{font-style:normal}
+
+#homeScreen .v04-home-overview{
+  margin:-70px auto 28px;
+  width:min(1180px,calc(100% - 44px));
+  position:relative;z-index:3;
+  display:grid;grid-template-columns:minmax(230px,.8fr) minmax(0,1.5fr);gap:18px;
+  padding:22px 24px;
+  border:1px solid rgba(31,67,74,.12);
+  border-radius:24px;
+  background:rgba(255,253,247,.94);
+  backdrop-filter:blur(16px);
+  box-shadow:0 22px 55px rgba(22,43,47,.11);
+}
+#homeScreen .v04-journey-title strong{font:500 clamp(1.5rem,3vw,2.25rem)/1.05 var(--lr-serif);color:var(--lr-navy)}
+#homeScreen .v04-journey-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+#homeScreen .v04-journey-chip{min-height:76px;text-align:left;padding:12px 14px;border-radius:15px}
+#homeScreen .raising-hero{
+  display:block!important;
+  margin:0 auto!important;
+  width:min(1180px,calc(100% - 44px));
+}
+#homeScreen .scholar-base-scene{display:none!important}
+#homeScreen .quest-log-panel{
+  min-height:auto!important;border-radius:24px!important;padding:26px!important;
+  display:grid;grid-template-columns:minmax(250px,.55fr) minmax(0,1.45fr);column-gap:26px;
+  box-shadow:0 14px 40px rgba(20,48,54,.07)!important;
+}
+#homeScreen .quest-log-head{grid-column:1;align-self:start}
+#homeScreen .quest-week{grid-column:1}
+#homeScreen .quest-log-main{grid-column:2;grid-row:1 / span 2}
+#homeScreen .quest-side-list{grid-column:2}
+#homeScreen .quest-progress{grid-column:1 / -1}
+#homeScreen .quest-log-label{display:none}
+#homeScreen .subject-training-section,#homeScreen .quick-play-section{
+  width:min(1180px,calc(100% - 44px));margin:34px auto 0!important;padding:0!important
+}
+#homeScreen .subject-training-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+#homeScreen .quick-play-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+
+/* STUDY — gallery rather than small dashboard cards */
+#studyScreen{background:linear-gradient(180deg,#f9f4e9,#fffdf8);padding-bottom:70px!important}
+#studyScreen .v04-study-hero{
+  min-height:360px;
+  margin:0!important;padding:70px clamp(24px,8vw,120px)!important;
+  display:flex;align-items:center;
+  background:
+    linear-gradient(90deg,rgba(6,31,48,.9),rgba(8,43,65,.62) 46%,rgba(8,43,65,.1)),
+    url("./rf2_subject_english.webp") center 46%/cover no-repeat!important;
+  color:white!important;border-radius:0!important;
+}
+#studyScreen .v04-study-hero-copy{max-width:720px}
+#studyScreen .v04-study-hero h1{font:500 clamp(3rem,6vw,5.6rem)/.95 var(--lr-serif);color:white;margin:.12em 0}
+#studyScreen .v04-study-hero p{color:rgba(255,255,255,.84);font-size:1.05rem;line-height:1.65}
+#studyScreen .v04-study-hero .eyebrow{color:#e6d3a8}
+#studyScreen .v04-year-switch{margin-top:22px;background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.18)}
+#studyScreen .v04-year-switch button{color:white}
+#studyScreen .study-band{width:min(1220px,calc(100% - 44px));margin:46px auto 0!important;padding:0!important}
+#studyScreen .study-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+#studyScreen .study-card{
+  min-height:390px!important;position:relative;overflow:hidden;border-radius:24px!important;
+  border:0!important;box-shadow:0 16px 38px rgba(25,47,50,.10)!important;
+}
+#studyScreen .study-card img{height:230px!important;object-fit:cover!important}
+#studyScreen .study-card h3{font:600 1.8rem/1.1 var(--lr-serif);color:var(--lr-navy)}
+#studyScreen .study-card:hover{transform:translateY(-5px)}
+
+/* SUBJECT — large illustrated header with actual learning art */
+#subjectScreen{background:linear-gradient(180deg,#faf5ea,#fffdf8);padding:26px clamp(18px,5vw,70px) 70px!important}
+#subjectScreen>.back-link{margin:0 0 18px}
+#subjectScreen .subject-hub-header{
+  max-width:1320px;margin:0 auto;
+  display:grid!important;grid-template-columns:minmax(300px,.75fr) minmax(440px,1.25fr);
+  align-items:stretch;gap:0;padding:0!important;
+  overflow:hidden;border-radius:28px;border:1px solid rgba(31,63,68,.12);
+  background:#fffdf8;box-shadow:0 22px 56px rgba(22,42,46,.10);
+}
+#subjectScreen .subject-hub-header>div:first-child{
+  padding:48px 42px;display:flex;flex-direction:column;justify-content:center;
+}
+#subjectScreen .subject-hub-header h1{font:500 clamp(3rem,6vw,5.7rem)/.92 var(--lr-serif);margin:.15em 0;color:var(--lr-navy)}
+#subjectScreen .subject-summary{
+  grid-column:1;padding:0 42px 40px!important;display:flex!important;align-items:center;flex-wrap:wrap;gap:10px
+}
+#subjectScreen .subject-summary>span{background:#f3eee2;border-radius:999px;padding:8px 12px}
+#subjectScreen .rf3-subject-art{
+  grid-column:2;grid-row:1 / span 2;position:relative;margin:0;min-height:470px;overflow:hidden;background:#eae2d2;
+}
+#subjectScreen .rf3-subject-art img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
+#subjectScreen .rf3-subject-art:after{content:"";position:absolute;inset:auto 0 0;height:42%;background:linear-gradient(transparent,rgba(5,30,43,.55))}
+#subjectScreen .rf3-subject-art figcaption{position:absolute;z-index:2;left:24px;bottom:22px;color:white;display:grid;gap:3px}
+#subjectScreen .rf3-subject-art figcaption .eyebrow{color:#f0d9aa}
+#subjectScreen .rf3-subject-art figcaption b{font:500 1.3rem var(--lr-serif)}
+#subjectScreen .subject-tabs{max-width:1050px;margin:28px auto 24px!important;padding:6px;background:#efe9dc;border-radius:999px}
+#subjectScreen .subject-tabs button{border-radius:999px!important;min-height:46px}
+#subjectScreen #subjectContent{max-width:1180px;margin:0 auto}
+#subjectScreen .note-topic-list{grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+#subjectScreen .note-topic,#subjectScreen .note-detail,#subjectScreen .unavailable-pane{border-radius:20px!important}
+
+/* GARDEN — world image owns the page */
+#gardenScreen{background:#f6f0e5;padding-bottom:70px!important}
+#gardenScreen .garden-world{
+  width:100%;min-height:clamp(620px,72vw,900px);border-radius:0!important;margin:0!important;
+  box-shadow:none!important;position:relative;overflow:hidden
+}
+#gardenScreen #gardenImage{position:absolute!important;inset:0;width:100%;height:100%!important;object-fit:cover!important}
+#gardenScreen .garden-world:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,28,42,.70),rgba(5,28,42,.18) 55%,transparent 78%);pointer-events:none}
+#gardenScreen .garden-overlay{
+  z-index:2!important;position:absolute!important;left:clamp(24px,8vw,120px)!important;top:50%!important;transform:translateY(-50%);
+  width:min(470px,calc(100% - 48px));padding:0!important;background:transparent!important;color:white!important;box-shadow:none!important
+}
+#gardenScreen .garden-overlay h1{font:500 clamp(3.2rem,7vw,6.3rem)/.9 var(--lr-serif);color:white;margin:.12em 0 .35em}
+#gardenScreen .garden-overlay .eyebrow{color:#ead4a8}
+#gardenScreen .garden-meta{display:flex;gap:10px;flex-wrap:wrap}
+#gardenScreen .garden-meta span,#gardenScreen .garden-growth-live-copy,#gardenScreen .garden-progress,#gardenScreen .garden-next{
+  background:rgba(7,30,44,.48)!important;border:1px solid rgba(255,255,255,.18)!important;backdrop-filter:blur(10px);border-radius:15px!important
+}
+#gardenScreen .lr-garden-collection,#gardenScreen .garden-explore{width:min(1180px,calc(100% - 44px));margin:38px auto 0!important}
+
+/* SCHOLAR — character is the centre, stats are supporting detail */
+#scholarScreen{background:linear-gradient(180deg,#f9f3e8,#fffdf8);padding:46px clamp(20px,5vw,70px) 80px!important}
+#scholarScreen .page-title{max-width:1180px;margin:0 auto 20px}
+#scholarScreen .page-title h1{font:500 clamp(3rem,6vw,5.5rem)/.95 var(--lr-serif);color:var(--lr-navy)}
+#scholarScreen .scholar-tabs{max-width:1180px;margin:0 auto 28px;padding:6px;background:#eee7da;border-radius:999px}
+#scholarScreen .scholar-tabs button{border-radius:999px;min-height:44px}
+#scholarScreen .scholar-pane{max-width:1180px;margin:0 auto}
+#scholarScreen .scholar-overview-grid{grid-template-columns:minmax(0,1.35fr) minmax(280px,.65fr);gap:20px}
+#scholarScreen .scholar-identity-card{
+  min-height:620px;display:grid!important;grid-template-columns:minmax(300px,1fr) minmax(300px,.8fr)!important;
+  padding:0!important;overflow:hidden;border-radius:28px!important;background:#0c3049!important;color:white;
+}
+#scholarScreen #scholarOverviewImage{width:100%!important;height:100%!important;min-height:620px;object-fit:cover!important;object-position:center top}
+#scholarScreen .scholar-identity-copy{padding:50px 38px!important;align-self:center}
+#scholarScreen .scholar-identity-copy h2{font:500 clamp(2.5rem,5vw,4.5rem)/.95 var(--lr-serif);color:#fff}
+#scholarScreen .scholar-identity-copy .eyebrow{color:#e6cf9f}
+#scholarScreen .scholar-stats-card{border-radius:28px!important;padding:28px!important;background:#fffdf8!important}
+#scholarScreen .collection-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+#scholarScreen .collect-card{border-radius:20px!important}
+#scholarScreen .collect-art{aspect-ratio:1/1!important}
+#scholarScreen .collect-art img{width:100%;height:100%;object-fit:contain}
+#scholarScreen .medal-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+
+/* responsive */
+@media(max-width:980px){
+ #homeScreen .v04-home-overview{grid-template-columns:1fr}
+ #homeScreen .quest-log-panel{grid-template-columns:1fr}
+ #homeScreen .quest-log-head,#homeScreen .quest-week,#homeScreen .quest-log-main,#homeScreen .quest-side-list,#homeScreen .quest-progress{grid-column:1;grid-row:auto}
+ #homeScreen .subject-training-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #homeScreen .quick-play-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #studyScreen .study-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ #subjectScreen .subject-hub-header{grid-template-columns:1fr}
+ #subjectScreen .rf3-subject-art{grid-column:1;grid-row:auto;min-height:420px}
+ #subjectScreen .subject-summary{grid-column:1}
+ #scholarScreen .scholar-overview-grid{grid-template-columns:1fr}
+ #scholarScreen .collection-grid,#scholarScreen .medal-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:640px){
+ .brandbar{padding:0 14px}.brand small{display:none}.scholar-chip{font-size:.78rem}
+ .global-nav{padding:0 8px;justify-content:space-around}.global-nav>button{min-width:auto;flex:1}
+ #homeScreen .rf3-home-hero{min-height:610px;background-position:62% center}
+ .rf3-home-copy{margin-left:22px;width:calc(100% - 44px);padding:70px 0 135px}
+ .rf3-home-copy h1{font-size:3.3rem}
+ #homeScreen .v04-home-overview{width:calc(100% - 28px);margin-top:-82px}
+ #homeScreen .v04-journey-stats{grid-template-columns:1fr}
+ #homeScreen .raising-hero,#homeScreen .subject-training-section,#homeScreen .quick-play-section{width:calc(100% - 28px)}
+ #homeScreen .subject-training-grid,#homeScreen .quick-play-grid{grid-template-columns:1fr}
+ #studyScreen .v04-study-hero{padding:54px 22px!important;min-height:390px}
+ #studyScreen .study-band{width:calc(100% - 28px)}
+ #studyScreen .study-grid{grid-template-columns:1fr}
+ #subjectScreen{padding:16px 12px 60px!important}
+ #subjectScreen .subject-hub-header>div:first-child,#subjectScreen .subject-summary{padding-left:24px!important;padding-right:24px!important}
+ #subjectScreen .rf3-subject-art{min-height:310px}
+ #subjectScreen .subject-tabs{overflow:auto;justify-content:flex-start}
+ #subjectScreen .note-topic-list{grid-template-columns:1fr}
+ #gardenScreen .garden-world{min-height:720px}
+ #gardenScreen .garden-world:after{background:linear-gradient(180deg,rgba(5,28,42,.12) 25%,rgba(5,28,42,.78) 75%)}
+ #gardenScreen .garden-overlay{left:20px!important;right:20px!important;top:auto!important;bottom:42px!important;transform:none;width:auto}
+ #scholarScreen{padding-left:14px!important;padding-right:14px!important}
+ #scholarScreen .scholar-identity-card{grid-template-columns:1fr!important}
+ #scholarScreen #scholarOverviewImage{min-height:460px}
+ #scholarScreen .collection-grid,#scholarScreen .medal-grid{grid-template-columns:1fr 1fr}
+}
