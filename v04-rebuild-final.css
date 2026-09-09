@@ -1,0 +1,220 @@
+
+/* Lux et Labor — True Rebuild visual layer
+   Presentation + routing affordances only. Academic engines and progression rules remain untouched. */
+:root{
+  --lr-navy:#0e314d;--lr-navy2:#08243a;--lr-ink:#17364d;--lr-paper:#fffdf7;
+  --lr-ivory:#f7f1e5;--lr-sage:#63836b;--lr-sage2:#dfe8dc;--lr-gold:#b58b4a;
+  --lr-rose:#e8c9c4;--lr-line:rgba(34,62,62,.15);--lr-shadow:0 18px 44px rgba(25,42,43,.10);
+  --lr-serif:Georgia,"Times New Roman",serif;
+}
+html{scroll-behavior:smooth}
+body{background:#f4efe4;color:var(--lr-ink)}
+.app-shell{max-width:1600px;min-height:100vh;background:var(--lr-paper);box-shadow:0 0 70px rgba(16,38,50,.10)}
+.brandbar{height:76px;min-height:76px;padding:0 clamp(18px,4vw,54px);background:linear-gradient(110deg,var(--lr-navy2),var(--lr-navy));display:flex;align-items:center}
+.brand{gap:13px}.brand-mark{width:48px;height:48px;border:0!important;background:transparent!important;overflow:hidden}
+.brand-mark img{width:100%;height:100%;object-fit:cover;border-radius:50%}
+.brand strong{font:600 1.48rem/1 var(--lr-serif);color:#fff}
+.brand small{display:block;margin-top:5px;color:#d8c596;letter-spacing:.16em;font-size:.62rem}
+.scholar-chip{margin-left:auto;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.08);border-radius:999px;color:#fff;padding:8px 13px}
+.global-nav{top:76px;min-height:54px;padding:0 clamp(18px,4vw,54px);background:rgba(8,36,58,.985);display:flex;align-items:center;gap:4px}
+.global-nav>button{min-width:100px;height:46px;border-radius:10px;font-weight:700}
+.global-nav .a5-nav-tools{margin-left:auto}
+.main-stage{background:var(--lr-paper)}
+.build-footer{background:#0a2940;color:rgba(255,255,255,.65);border:0;padding:18px 24px;text-align:center}
+
+/* HOME */
+#homeScreen{padding:0!important;background:
+  radial-gradient(circle at 8% 12%,rgba(113,148,115,.12),transparent 27rem),
+  linear-gradient(180deg,#fffdf8,#f8f2e7)!important}
+#homeScreen .lr-welcome{padding:34px clamp(22px,5vw,76px) 18px;display:flex;align-items:end;justify-content:space-between;gap:24px}
+#homeScreen .lr-welcome h1{font:500 clamp(2.3rem,5vw,4.8rem)/.96 var(--lr-serif);margin:.12em 0;color:var(--lr-navy)}
+#homeScreen .lr-welcome p{margin:7px 0 0;color:#65716d}
+#homeScreen .v04-home-overview{margin:0 clamp(22px,5vw,76px) 22px;padding:16px 18px;border:1px solid var(--lr-line);border-radius:18px;background:rgba(255,255,255,.78);box-shadow:0 8px 24px rgba(24,45,45,.06)}
+#homeScreen .v04-journey-chip{border:1px solid rgba(74,104,83,.14);background:#fbf8f0;border-radius:13px;transition:.18s}
+#homeScreen button.v04-journey-chip:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(24,44,45,.08)}
+#homeScreen .raising-hero{margin:0 clamp(22px,5vw,76px);display:grid!important;grid-template-columns:minmax(0,1.35fr) minmax(330px,.65fr)!important;gap:22px}
+#homeScreen .scholar-base-scene{min-height:570px!important;position:relative;border:0!important;background:
+  linear-gradient(90deg,rgba(10,42,59,.18),rgba(10,42,59,0) 48%),
+  url("./final_home_scholar.webp") center/cover no-repeat!important;border-radius:28px!important;overflow:hidden;box-shadow:var(--lr-shadow)}
+#homeScreen .scholar-base-scene:after{content:"";position:absolute;inset:auto 0 0;height:48%;background:linear-gradient(transparent,rgba(7,27,40,.52));pointer-events:none}
+#homeScreen .base-scene-head,#homeScreen .base-character-stage,#homeScreen .base-scene-hud{display:none!important}
+#homeScreen .scene-world-row{position:absolute!important;z-index:2;left:22px;right:22px;bottom:22px;display:grid!important;grid-template-columns:1fr 1fr;gap:12px}
+#homeScreen .scene-growth-card,#homeScreen .scene-reward-card{background:rgba(255,253,247,.91)!important;backdrop-filter:blur(11px);border:1px solid rgba(255,255,255,.55)!important;border-radius:16px!important;box-shadow:none!important}
+#homeScreen .quest-log-panel{border:1px solid var(--lr-line)!important;border-radius:28px!important;background:#fffdf7!important;box-shadow:var(--lr-shadow);padding:22px!important}
+#homeScreen .quest-log-head{display:none!important}
+#homeScreen .main-quest{background:linear-gradient(135deg,#eef4eb,#fffaf0)!important;border:1px solid rgba(91,129,100,.22)!important;border-radius:18px!important}
+#homeScreen .secondary-task{border-radius:14px!important}
+#homeScreen .subject-training-section,#homeScreen .quick-play-section{margin:24px clamp(22px,5vw,76px) 0!important;padding:26px!important;border:1px solid var(--lr-line)!important;border-radius:24px!important;background:#fffdf8!important;box-shadow:0 10px 28px rgba(27,47,45,.06)!important}
+#homeScreen .subject-training-grid,#homeScreen .quick-play-grid{gap:16px!important}
+#homeScreen .training-access-card,#homeScreen .quick-game-card{border-radius:18px!important;overflow:hidden}
+#homeScreen .quick-game-card{min-height:210px!important}
+#homeScreen .quick-game-card img{height:108px!important;object-fit:cover!important}
+
+/* STUDY HUB */
+#studyScreen{padding:0 0 44px!important;background:linear-gradient(180deg,#fffdf8,#f7f1e7)!important}
+.v04-study-hero{margin:0!important;min-height:390px!important;border-radius:0!important;padding:62px clamp(26px,6vw,92px)!important;background:
+  linear-gradient(90deg,rgba(255,253,247,.97) 0 42%,rgba(255,253,247,.46) 64%,rgba(255,253,247,.05)),
+  url("./v04_study_hub_hero.webp") center/cover no-repeat!important}
+.v04-study-hero-copy{padding:0!important;background:none!important;backdrop-filter:none!important;max-width:650px}
+.v04-study-hero h1{font:500 clamp(3.2rem,6vw,5.8rem)/.95 var(--lr-serif)!important;color:var(--lr-navy)!important}
+.study-band{padding:30px clamp(22px,5vw,76px) 0!important}
+.study-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:18px!important}
+.study-card{position:relative;min-height:310px!important;border-radius:21px!important;overflow:hidden!important;background:#fff!important;box-shadow:0 11px 28px rgba(28,45,43,.08)!important}
+.study-card img{height:165px!important;width:100%;object-fit:cover!important}
+.study-card h3{font:600 1.7rem/1.1 var(--lr-serif)!important;color:var(--lr-navy)}
+.study-card .subject-actions,.study-card .study-actions{gap:7px}
+.study-card button{border-radius:10px}
+.a5-study-dashboard{margin:26px clamp(22px,5vw,76px) 0!important;grid-template-columns:repeat(3,1fr)!important}
+.a5-progress-line i{width:0!important} /* never display the old hard-coded demo percentage */
+
+/* SUBJECT SHELL */
+#subjectScreen{padding:0 0 50px!important;background:linear-gradient(180deg,#fffdf8,#f7f1e7)!important}
+#subjectScreen>.back-link{top:22px!important;left:clamp(22px,5vw,76px)!important}
+.subject-hub-header{min-height:450px!important;padding:78px clamp(25px,6vw,88px) 42px!important;background:
+  linear-gradient(90deg,rgba(255,253,247,.96) 0 44%,rgba(255,253,247,.56) 63%,rgba(255,253,247,.05)),
+  var(--v04-hero-image) center/cover no-repeat!important}
+.subject-hub-header h1{font:500 clamp(3.6rem,7vw,6.3rem)/.93 var(--lr-serif)!important;color:var(--lr-navy)!important}
+.subject-summary{background:rgba(255,253,247,.88)!important;backdrop-filter:blur(8px);border-radius:18px!important;border:1px solid rgba(255,255,255,.6)!important}
+.a5-subject-actions{max-width:1240px;margin:-32px auto 16px!important;position:relative;z-index:5;padding:0 22px;grid-template-columns:repeat(4,1fr)!important}
+.a5-subject-action{min-height:126px!important;border-radius:19px!important;background:#fffdf8!important;box-shadow:0 10px 28px rgba(25,44,45,.09)}
+.a5-subject-action strong{font:600 1.45rem var(--lr-serif)!important}
+.subject-tabs{max-width:1200px;margin:10px auto!important;border-radius:15px!important}
+#subjectContent{max-width:1240px;margin:0 auto;padding:0 22px!important}
+
+/* Latin games — unique art */
+#gamesHub .page-head{padding:22px 0 12px}
+#gamesHub .page-head h2{font:500 clamp(2.3rem,5vw,4rem) var(--lr-serif);color:var(--lr-navy)}
+.game-card-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:20px!important}
+.game-card{display:grid!important;grid-template-columns:46% 54%!important;min-height:230px!important;padding:0!important;text-align:left!important;border-radius:22px!important;overflow:hidden!important;background:#fffdf8!important;border:1px solid var(--lr-line)!important;box-shadow:0 12px 28px rgba(25,43,42,.08)!important}
+.game-card img{width:100%!important;height:100%!important;min-height:230px!important;object-fit:cover!important}
+.game-card>span{padding:25px!important;align-self:center}
+.game-card strong{font:600 1.8rem/1.06 var(--lr-serif)!important;color:var(--lr-navy)}
+.game-card em{line-height:1.45!important}
+.game-card:hover{transform:translateY(-3px);box-shadow:0 18px 36px rgba(25,43,42,.13)!important}
+.game-shell-v2{max-width:1200px;margin:0 auto}
+
+/* GARDEN */
+#gardenScreen{padding:0 0 48px!important;background:linear-gradient(180deg,#f8f4e9,#fffdf8)!important}
+.garden-world{min-height:670px!important;margin:0!important;border-radius:0!important;position:relative;overflow:hidden}
+.garden-world>img{width:100%;height:670px!important;object-fit:cover!important}
+.garden-overlay{left:clamp(24px,6vw,88px)!important;bottom:40px!important;max-width:450px!important;background:rgba(255,253,247,.91)!important;backdrop-filter:blur(13px);border-radius:22px!important;border:1px solid rgba(255,255,255,.62)!important;color:var(--lr-ink)!important;box-shadow:var(--lr-shadow)}
+.garden-overlay h1{color:var(--lr-navy)!important;font:500 clamp(2.8rem,5vw,4.5rem)/.95 var(--lr-serif)!important}
+.garden-explore{max-width:1260px;margin:28px auto 0!important;padding:0 24px!important}
+.garden-growth-timeline,.reward-grid{gap:16px!important}
+
+/* SCHOLAR */
+#scholarScreen{padding:0 0 52px!important;background:
+ radial-gradient(circle at 90% 8%,rgba(218,231,211,.55),transparent 28rem),
+ linear-gradient(180deg,#fffdf8,#f5eee2)!important}
+#scholarScreen>.page-title{padding:46px clamp(24px,6vw,88px) 28px!important;background:
+ linear-gradient(90deg,rgba(255,253,247,.96),rgba(255,253,247,.54)),
+ url("./v04_scholar_profile_hero.webp") center/cover no-repeat!important;min-height:250px}
+#scholarScreen>.page-title h1{font:500 clamp(3.2rem,6vw,5.4rem)/1 var(--lr-serif)!important}
+.scholar-tabs{max-width:1180px;margin:-24px auto 25px!important;position:relative;z-index:4;background:#fffdf8!important;border:1px solid var(--lr-line)!important;border-radius:18px!important;box-shadow:0 10px 25px rgba(25,44,45,.08)}
+.scholar-pane{max-width:1220px;margin:0 auto!important;padding:0 24px!important}
+.scholar-overview-grid{grid-template-columns:1.3fr .7fr!important;gap:20px!important}
+.scholar-identity-card{min-height:500px!important;border-radius:24px!important;overflow:hidden!important;background:#fff!important;box-shadow:var(--lr-shadow)!important}
+#scholarOverviewImage{width:47%!important;height:500px!important;object-fit:contain!important;object-position:center bottom!important;background:linear-gradient(#eff4e9,#f7eee2)}
+.scholar-identity-copy{padding:36px!important}
+.scholar-stats-card{border-radius:24px!important}
+.scholar-layout{grid-template-columns:minmax(330px,.78fr) minmax(0,1.22fr)!important;gap:24px!important}
+.avatar-stage{border-radius:24px!important;background:linear-gradient(180deg,#e8efe3,#f7efe4)!important}
+.avatar-canvas{min-height:720px!important}
+.wardrobe-scholar-art{width:100%!important;height:720px!important;object-fit:contain!important;object-position:center bottom!important}
+.wardrobe-gallery{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:15px!important}
+.wardrobe-preview-card{border-radius:18px!important;overflow:hidden}
+.wardrobe-art-wrap{height:260px!important;background:linear-gradient(180deg,#eef3e9,#f7eee4)!important}
+.wardrobe-art-wrap img{width:100%;height:100%;object-fit:contain!important;object-position:center bottom!important}
+
+/* Collection */
+.collection-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:18px!important}
+.collect-card{border:1px solid var(--lr-line)!important;border-radius:19px!important;background:#fffdf8!important;box-shadow:0 9px 24px rgba(28,46,44,.07)!important;overflow:hidden!important;cursor:pointer;transition:.18s}
+.collect-card:hover{transform:translateY(-3px);box-shadow:0 15px 30px rgba(28,46,44,.12)!important}
+.collect-art{height:205px!important;background:#f3eee4!important}
+.collect-art img{width:100%!important;height:100%!important;object-fit:cover!important}
+.collect-card:not(.earned) .collect-art img{filter:saturate(.64) brightness(.82);opacity:.72}
+.collect-card:not(.earned) .collect-art{position:relative}
+.collect-card:not(.earned) .collect-art:after{content:"LOCKED";position:absolute;right:10px;top:10px;padding:5px 9px;border-radius:999px;background:rgba(7,32,49,.82);color:white;font-size:.65rem;letter-spacing:.1em}
+.collect-card h3,.collect-card p,.collect-card small{margin-left:14px!important;margin-right:14px!important}
+.collect-card p{margin-bottom:16px!important}
+
+/* Achievements */
+.medal-grid{grid-template-columns:repeat(5,minmax(0,1fr))!important;gap:17px!important}
+.medal-card{border:1px solid var(--lr-line)!important;border-radius:20px!important;background:#fffdf8!important;padding:17px!important;box-shadow:0 9px 23px rgba(28,46,44,.07)!important}
+.v04-achievement-badge{width:100%!important;aspect-ratio:1!important;object-fit:contain!important;border-radius:50%}
+.medal-card:not(.earned) .v04-achievement-badge{filter:grayscale(.75) opacity(.45)}
+.medal-card b{font:600 1.15rem var(--lr-serif);color:var(--lr-navy);margin-top:10px}
+
+/* Profile */
+.profile-layout{grid-template-columns:1.15fr .85fr!important;gap:20px!important}
+.profile-card{border-radius:22px!important;background:#fffdf8!important;box-shadow:var(--lr-shadow)!important}
+
+/* Asset detail dialog */
+.lr-asset-dialog{border:0;padding:0;border-radius:24px;max-width:min(720px,92vw);background:#fffdf8;box-shadow:0 30px 80px rgba(5,25,38,.30)}
+.lr-asset-dialog::backdrop{background:rgba(7,28,42,.62);backdrop-filter:blur(4px)}
+.lr-dialog-grid{display:grid;grid-template-columns:46% 54%;min-height:390px}
+.lr-dialog-grid img{width:100%;height:100%;object-fit:cover;background:#eee8dc}
+.lr-dialog-copy{padding:30px;display:flex;flex-direction:column;justify-content:center}
+.lr-dialog-copy h2{font:600 2rem var(--lr-serif);color:var(--lr-navy);margin:.25rem 0}
+.lr-dialog-copy button{margin-top:18px;align-self:flex-start}
+
+/* responsive */
+@media(max-width:1000px){
+ #homeScreen .raising-hero{grid-template-columns:1fr!important}
+ #homeScreen .scholar-base-scene{min-height:520px!important}
+ .study-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ .a5-study-dashboard{grid-template-columns:1fr!important}
+ .game-card-grid{grid-template-columns:1fr!important}
+ .scholar-overview-grid,.scholar-layout{grid-template-columns:1fr!important}
+ .collection-grid{grid-template-columns:repeat(3,1fr)!important}
+ .medal-grid{grid-template-columns:repeat(3,1fr)!important}
+}
+@media(max-width:720px){
+ .brandbar{height:68px;min-height:68px;padding:0 14px}.brand-mark{width:40px;height:40px}.brand strong{font-size:1.15rem}.brand small{font-size:.52rem}
+ .scholar-chip{font-size:.75rem}
+ .global-nav{top:68px;padding:0 8px;justify-content:space-around}.global-nav>button{min-width:0;flex:1}.global-nav button b{font-size:.72rem}
+ .a5-nav-tools{display:none!important}
+ #homeScreen .lr-welcome{padding:24px 18px 13px;align-items:start;flex-direction:column}
+ #homeScreen .v04-home-overview,#homeScreen .raising-hero,#homeScreen .subject-training-section,#homeScreen .quick-play-section{margin-left:14px!important;margin-right:14px!important}
+ #homeScreen .v04-journey-stats{grid-template-columns:1fr!important}
+ #homeScreen .scholar-base-scene{min-height:480px!important;background-position:55% center!important}
+ #homeScreen .scene-world-row{grid-template-columns:1fr!important}
+ #homeScreen .scene-growth-card{display:none!important}
+ .v04-study-hero{min-height:330px!important;padding:42px 20px!important;background-position:63% center!important}
+ .v04-study-hero h1{font-size:3.4rem!important}
+ .study-band{padding-left:14px!important;padding-right:14px!important}
+ .study-grid{grid-template-columns:1fr!important}
+ .a5-subject-actions{grid-template-columns:1fr 1fr!important;padding:0 12px}
+ .subject-hub-header{min-height:390px!important;padding:70px 18px 24px!important;background-position:62% center!important}
+ .subject-hub-header h1{font-size:3.8rem!important}
+ .subject-summary{display:grid!important}
+ #subjectContent{padding:0 12px!important}
+ .game-card{grid-template-columns:1fr!important}.game-card img{height:190px!important;min-height:190px!important}
+ .garden-world,.garden-world>img{height:620px!important;min-height:620px!important}
+ .garden-overlay{left:14px!important;right:14px!important;bottom:18px!important;max-width:none!important}
+ .scholar-tabs{margin:-16px 12px 20px!important;overflow-x:auto;justify-content:flex-start!important}
+ .scholar-tabs button{min-width:108px}
+ #scholarOverviewImage{width:100%!important;height:440px!important}
+ .scholar-identity-card{display:block!important}
+ .wardrobe-gallery{grid-template-columns:1fr 1fr!important}
+ .collection-grid{grid-template-columns:1fr 1fr!important}
+ .medal-grid{grid-template-columns:1fr 1fr!important}
+ .profile-layout{grid-template-columns:1fr!important}
+ .lr-dialog-grid{grid-template-columns:1fr}.lr-dialog-grid img{height:250px}
+}
+@media(max-width:430px){
+ .brand small{display:none}.scholar-chip span:first-child{display:none}
+ .collection-grid,.medal-grid,.wardrobe-gallery{grid-template-columns:1fr!important}
+ #homeScreen .scene-reward-card{grid-template-columns:1fr!important}
+}
+
+.lr-garden-collection{max-width:1260px;margin:28px auto 0;padding:0 24px}
+.lr-garden-collection .lr-garden-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.lr-garden-object{border:1px solid var(--lr-line);border-radius:18px;background:#fffdf8;overflow:hidden;box-shadow:0 9px 24px rgba(28,46,44,.07);text-align:left;padding:0;cursor:pointer}
+.lr-garden-object img{width:100%;height:170px;object-fit:cover;display:block}
+.lr-garden-object span{display:flex;justify-content:space-between;gap:10px;padding:13px 14px;color:var(--lr-navy)}
+.lr-garden-object small{color:#6f7a72}
+.quick-play-card{display:grid!important;grid-template-columns:86px 1fr auto!important;gap:14px!important;align-items:center}
+.quick-play-card .quick-play-icon{width:86px!important;height:76px!important;border-radius:13px!important;background-position:center!important;background-size:cover!important}
+@media(max-width:720px){.lr-garden-collection .lr-garden-grid{grid-template-columns:1fr 1fr}.quick-play-card{grid-template-columns:72px 1fr!important}.quick-play-card>button{grid-column:1/-1}.quick-play-card .quick-play-icon{width:72px!important;height:66px!important}}
+@media(max-width:430px){.lr-garden-collection .lr-garden-grid{grid-template-columns:1fr}}
