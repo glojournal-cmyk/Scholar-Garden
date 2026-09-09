@@ -3,23 +3,23 @@
 'use strict';
 
 const SCENES=Object.freeze({
- home:'v04_home_hero.webp',
+ home:'final_home_scholar.webp',
  study:'v04_study_hub_hero.webp',
- garden:'v04_garden_hero.webp',
+ garden:'final_garden_main.webp',
  scholar:'v04_scholar_profile_hero.webp',
  subject:{
-  latin:'v04_latin_subject_hero.webp',
-  french:'v04_french_subject_hero.webp',
-  biology:'v04_biology_subject_hero.webp',
-  chemistry:'v04_chemistry_subject_hero.webp',
-  physics:'v04_physics_subject_hero.webp'
+  latin:'final_subject_latin.webp',
+  french:'final_subject_french.webp',
+  biology:'final_subject_biology.webp',
+  chemistry:'final_subject_chemistry.webp',
+  physics:'final_subject_physics.webp'
  },
  tab:{
-  latin:{learn:'v04_latin_learn_hero.webp',practice:'v04_latin_practice_hero.webp',progress:'v04_latin_progress_hero.webp',play:'v04_latin_games_hero.webp'},
-  french:{learn:'v04_french_learn_hero.webp',practice:'v04_french_practice_hero.webp',progress:'v04_french_progress_hero.webp',play:'v04_french_subject_hero.webp'},
-  biology:{learn:'v04_biology_learn_hero.webp',practice:'v04_biology_subject_hero.webp',progress:'v04_biology_progress_hero.webp',play:'v04_biology_subject_hero.webp'},
-  chemistry:{learn:'v04_chemistry_subject_hero.webp',practice:'v04_chemistry_subject_hero.webp',progress:'v04_chemistry_subject_hero.webp',play:'v04_chemistry_subject_hero.webp'},
-  physics:{learn:'v04_physics_subject_hero.webp',practice:'v04_physics_subject_hero.webp',progress:'v04_physics_subject_hero.webp',play:'v04_physics_subject_hero.webp'}
+  latin:{learn:'final_subject_latin.webp',practice:'v04_latin_practice_hero.webp',progress:'v04_latin_progress_hero.webp',play:'v04_latin_games_hero.webp'},
+  french:{learn:'final_subject_french.webp',practice:'final_french_scholar.webp',progress:'v04_french_progress_hero.webp',play:'final_subject_french.webp'},
+  biology:{learn:'final_subject_biology.webp',practice:'final_biology_scholar.webp',progress:'v04_biology_progress_hero.webp',play:'final_subject_biology.webp'},
+  chemistry:{learn:'final_subject_chemistry.webp',practice:'final_subject_chemistry.webp',progress:'final_subject_chemistry.webp',play:'final_subject_chemistry.webp'},
+  physics:{learn:'final_subject_physics.webp',practice:'final_subject_physics.webp',progress:'final_subject_physics.webp',play:'final_subject_physics.webp'}
  }
 });
 
