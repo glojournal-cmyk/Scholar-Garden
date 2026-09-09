@@ -192,7 +192,7 @@ function enhance(){
  requestAnimationFrame(()=>{
    scheduled=false;
    addNavTools();
-   addStudyDashboard();
+   
    addSubjectActions();
    enhanceLesson();
    enhancePractice();
