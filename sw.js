@@ -1,11 +1,13 @@
-const V='scholars-garden-v0-4-0-alpha5-rf2-20260909';
+const V='scholars-garden-v0-4-0-alpha5-rf5-20260909';
 const CORE=`${V}-core`,RUN=`${V}-runtime`;
 const FILES=[
  './','./index.html',
  './styles.css?v=0.4.0-a5-rc4','./scholar-assets.css?v=0.4.0-a5-rc4','./latin-games.css?v=0.4.0-a5-rc4',
  './v04-visual.css?v=0.4.0-a5-rc4','./v04-ui-assets.css?v=0.4.0-a5-rc4','./v04-alpha3.css?v=0.4.0-a5-rc4','./v04-alpha4.css?v=0.4.0-a5-rc4','./v04-alpha4-1.css?v=0.4.0-a5-rc4',
  './v04-alpha5-parity.css?v=0.4.0-a5-rc4',
- './v04-rebuild-final.css?v=0.4.0-a5-rf2','./v04-rebuild-final.js?v=0.4.0-a5-rf2',
+ './v04-rebuild-final.css?v=0.4.0-a5-rf3','./v04-rebuild-final.js?v=0.4.0-a5-rf3',
+ './rf4-composition.css?v=0.4.0-a5-rf4','./rf4-composition.js?v=0.4.0-a5-rf4',
+ './rf5-composition.css?v=0.4.0-a5-rf5','./rf5-composition.js?v=0.4.0-a5-rf5',
  './alpha5-parity.js?v=0.4.0-a5-rc4',
  './v04-alpha5-p1.css?v=0.4.0-a5-rc4',
  './alpha5-p1.js?v=0.4.0-a5-rc4',
@@ -23,11 +25,11 @@ const FILES=[
  './offline.html',
  './latin-question-bank.js?v=0.4.0-a5-rc4','./growth.js?v=0.4.0-a5-rc4','./latin-module.js?v=0.4.0-a5-rc4',
  './french-module.js?v=0.4.0-a5-rc4','./latin-games.js?v=0.4.0-a5-rc4','./science-notes.js?v=0.4.0-a5-rc4',
- './biology-y8.js?v=0.4.0-a5-rc4','./language-y8.js?v=0.4.0-a5-rc4',
+ './biology-y8.js?v=0.4.0-a5-rc4','./science-y8.js?v=0.4.0-a5-rf5','./language-y8.js?v=0.4.0-a5-rc4',
  './daily-plan.js?v=0.4.0-a5-rc4','./scholar-assets.js?v=0.4.0-a5-rc4','./v04-art-config.js?v=0.4.0-a5-rc4',
  './avatar-layer-system.js?v=0.4.0-a5-rc4','./garden-growth.js?v=0.4.0-a5-rc4',
  './v04-visual.js?v=0.4.0-a5-rc4','./v04-ui-assets.js?v=0.4.0-a5-rc4',
- './subject-hub.js?v=0.4.0-a5-rc4','./scholar.js?v=0.4.0-a5-rc4','./app.js?v=0.4.0-a5-rc4',
+ './subject-hub.js?v=0.4.0-a5-rf5','./scholar.js?v=0.4.0-a5-rf5','./app.js?v=0.4.0-a5-rf5',
  './mcp-reference-marker.mjs?v=0.4.0-a5-rc4','./mcp-runtime-index.json','./mcp-concept-index.json','./mcp-origin-map.json','./mcp-language-summary.json',
  './bio-y8-question-bank.json','./bio-y8-answer-bank.json','./bio-y8-concept-bank.json',
  './bio-y8-keyword-bank.json','./bio-y8-notes-by-topic.json','./bio-y8-diagram-specs.json',
@@ -89,7 +91,8 @@ const FILES=[
  './rf2_object_fountain.webp',
  './rf2_object_rose_arch.webp',
  './rf2_object_study_table.webp',
- './rf2_object_bird_bath.webp'];
+ './rf2_object_bird_bath.webp','./rf3_french_lesson.webp','./rf3_french_vocab.webp','./rf3_french_gender.webp','./rf3_french_conjugation.webp','./rf3_french_sentence.webp','./rf3_french_listening.webp','./rf3_french_writing.webp','./rf3_french_correction.webp','./rf3_french_practice.webp','./rf3_french_mastery.webp','./rf3_biology_lesson.webp','./rf3_biology_cell.webp','./rf3_biology_compare.webp','./rf3_biology_microscopy.webp','./rf3_biology_photosynthesis.webp','./rf3_biology_ecosystem.webp','./rf3_biology_practice.webp','./rf3_biology_correction.webp','./rf3_biology_investigation.webp','./rf3_biology_mastery.webp','./rf5_chemistry_practical.webp','./rf5_chemistry_particles.webp','./rf5_chemistry_reaction.webp','./rf5_chemistry_practice.webp','./rf5_chemistry_lab.webp','./rf5_physics_motion.webp','./rf5_physics_observatory.webp','./rf5_physics_practice.webp','./rf5_physics_night.webp','./rf5_physics_diagram.webp',
+ './cp-y8/runtime/index.json','./cp-y8/shared/marking-spec.json','./cp-y8/shared/mastery-review-spec.json','./cp-y8/shared/session-blueprints.json','./cp-y8/bank-summary.json','./cp-y8/scope-matrix.json'];
 
 self.addEventListener('install',event=>{
  event.waitUntil((async()=>{
