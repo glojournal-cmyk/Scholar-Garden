@@ -148,7 +148,7 @@ function profileSettings(){
 }
 
 function enhance(){
- homeIntro();gardenParity();scholarSummary();syncScholarLevel();wardrobeFilters();collectionFeature();achievementSummary();syncAchievementCount();profileSettings();
+ wardrobeFilters();collectionFeature();profileSettings();
 }
 document.addEventListener('DOMContentLoaded',enhance);
 document.addEventListener('alpha5:refresh',enhance);
