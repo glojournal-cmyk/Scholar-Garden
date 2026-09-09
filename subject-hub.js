@@ -6,7 +6,7 @@ let current={subject:'latin',track:'foundation',tab:'practice'};
 
 function canonicalRoute(subject=current.subject,track=current.track,tab=current.tab){
  let slug=subject;
- if(track==='foundation'&&subject==='biology')slug='biology-foundation';
+ if(track==='foundation'&&['biology','chemistry','physics'].includes(subject))slug=`${subject}-foundation`;
  return `#subject/${slug}/${tab}`;
 }
 
@@ -14,6 +14,7 @@ function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&l
 function due(subject){
  if(subject==='latin'||subject==='french')return Number(window.MasterY8?.dueCount?.(subject))||0;
  if(subject==='biology')return Number(window.BiologyY8?.dueCount?.())||0;
+ if(subject==='chemistry'||subject==='physics')return Number(window.ScienceY8?.dueCount?.(subject))||0;
  return 0;
 }
 function weak(subject){
@@ -69,11 +70,20 @@ function foundationCard(subject){
    <div class="card-action"><small>${subject==='latin'?latinMastery():frenchMastery()}</small><button class="primary" data-open-subject="${subject}" data-track="foundation">Continue</button></div>
  </article>`;
 }
+function scienceFoundationCard(subject){
+ const d=due(subject),summary=window.ScienceY8?.masterySummary?.(subject)||{};
+ return `<article class="study-card rf5-foundation-science" data-foundation-subject="${subject}">
+   <div class="subject-orb">${ICON[subject]}</div><h3>${LABEL[subject]}</h3>
+   <p>Year 8 Foundation Review with source-locked revision notes, retrieval and application practice.</p>
+   <div class="study-status"><span>${d} due</span><span>${summary.secure||0} secure</span></div>
+   <div class="card-action"><small>Confirmed Year 8 content; optional preview stays separate.</small><button class="primary" data-open-subject="${subject}" data-track="foundation">Continue</button></div>
+ </article>`;
+}
 function renderStudy(){
  const currentGrid=document.getElementById('currentStudyGrid'),foundationGrid=document.getElementById('foundationStudyGrid');
  if(!currentGrid||!foundationGrid)return;
  currentGrid.innerHTML=unavailableCurrent('latin')+unavailableCurrent('french')+scienceCard('biology')+scienceCard('chemistry')+scienceCard('physics');
- foundationGrid.innerHTML=foundationCard('latin')+foundationCard('french')+foundationCard('biology');
+ foundationGrid.innerHTML=foundationCard('latin')+foundationCard('french')+foundationCard('biology')+scienceFoundationCard('chemistry')+scienceFoundationCard('physics');
 }
 
 function configureTabs(subject,track){
@@ -86,8 +96,8 @@ function configureTabs(subject,track){
      if(tab==='practice'){enabled=false;reason='Practice bank not yet available'}
      if(tab==='play'){enabled=false;reason='Verified learning game not yet available'}
    }
-   if(track==='foundation'&&subject==='biology'&&tab==='play'){
-     enabled=false;reason='Verified Biology game not yet available';
+   if(track==='foundation'&&['biology','chemistry','physics'].includes(subject)&&tab==='play'){
+     enabled=false;reason=`${LABEL[subject]} Foundation uses Learn, Practise and Progress`;
    }
    b.disabled=!enabled;
    b.title=reason;
@@ -111,14 +121,15 @@ function setHeader(subject,track){
  pill.className=`route-pill ${track==='current'?'current':'foundation'}`;
  document.getElementById('subjectSubtitle').textContent=
    track==='current'?'Learn the current course in a clear topic sequence.':'Consolidate prior learning with spaced review and focused practice.';
- const d=track==='foundation'?(subject==='biology'?(Number(window.BiologyY8?.dueCount?.())||0):due(subject)):0;
- document.getElementById('subjectDue').textContent=track==='foundation'&&['latin','french','biology'].includes(subject)?`${d} due`:'Current learning';
+ const d=track==='foundation'?due(subject):0;
+ document.getElementById('subjectDue').textContent=track==='foundation'&&['latin','french','biology','chemistry','physics'].includes(subject)?`${d} due`:'Current learning';
  document.getElementById('subjectMastery').textContent=
    track==='foundation'&&['latin','french'].includes(subject)?((window.MasterY8?.masterySummary?.(subject)?.secure||0)+' secure concepts'):
    track==='foundation'&&subject==='biology'?((window.BiologyY8?.masterySummary?.().secure||0)+' secure concepts'):
+   track==='foundation'&&['chemistry','physics'].includes(subject)?((window.ScienceY8?.masterySummary?.(subject)?.secure||0)+' secure concepts'):
    track==='current'&&window.ScholarScience?.get(subject)?'Learn available':'Not available yet';
  const c=document.getElementById('subjectContinue');
- const available=(track==='foundation'&&['latin','french','biology'].includes(subject))||(track==='current'&&!!window.ScholarScience?.get(subject));
+ const available=(track==='foundation'&&['latin','french','biology','chemistry','physics'].includes(subject))||(track==='current'&&!!window.ScholarScience?.get(subject));
  c.disabled=!available;c.textContent=available?'Continue today':'Not available yet';
  c.dataset.subjectContinue=subject;c.dataset.subjectTrack=track;
  configureTabs(subject,track);
@@ -255,6 +266,9 @@ async function renderTab(tab){
      else await renderScienceOther(subject,tab);
    }else if(subject==='biology'){
      await renderFoundationBio(tab);
+   }else if(['chemistry','physics'].includes(subject)){
+     if(!(await window.ScienceY8?.ensureIndex?.()))throw new Error(`${subject} Foundation data unavailable`);
+     await window.ScienceY8.render(subject,tab);
    }else{
      await renderFoundationEngine(subject,tab);
    }
@@ -314,6 +328,10 @@ async function continueToday(subject,track){
  if(subject==='biology'){
    const bd=Number(window.BiologyY8?.dueCount?.())||0;
    setTimeout(()=>window.BiologyY8.startPractice(bd?'due':'mixed',bd?7:15,'all'),0);
+ }
+ if(subject==='chemistry'||subject==='physics'){
+   const sd=Number(window.ScienceY8?.dueCount?.(subject))||0;
+   setTimeout(()=>window.ScienceY8.startPractice(subject,sd?'due':'mixed',sd?7:15,'all'),0);
  }
 }
 async function open(subject,track='current',tab){

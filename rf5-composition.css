@@ -1,0 +1,346 @@
+
+/* Lux et Labor — RF5 source-template parity pass.
+   Scene-first editorial composition based on supplied reference art. */
+
+:root{
+  --rf5-navy:#112f43;
+  --rf5-navy-soft:#1b4257;
+  --rf5-paper:#fbf6ea;
+  --rf5-paper-deep:#efe4d2;
+  --rf5-gold:#b99556;
+  --rf5-sage:#778b72;
+  --rf5-rose:#c88f91;
+  --rf5-ink:#15384b;
+  --rf5-line:rgba(21,56,75,.14);
+  --rf5-shadow:0 24px 70px rgba(25,42,47,.12);
+}
+
+/* Global rhythm: quiet paper, large serif titles, restrained controls */
+.main-stage{background:var(--rf5-paper)}
+.route-screen{background:var(--rf5-paper)}
+.page-title h1,.section-title h2,.subject-hub-header h1,#homeGreeting{letter-spacing:-.035em}
+button,.study-card,.subject-training-card,.quick-play-card,.collection-card,.wardrobe-preview-card{transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid rgba(185,149,86,.48);outline-offset:3px}
+
+/* HOME — use one complete illustrated room, not a split dashboard. */
+#homeScreen .rf4-home-hero{
+  min-height:clamp(640px,78vh,850px)!important;
+  display:block!important;
+  position:relative;
+  background:
+    linear-gradient(90deg,rgba(10,37,53,.08) 0%,rgba(10,37,53,.02) 44%,rgba(251,246,234,.18) 57%,rgba(251,246,234,.88) 77%,rgba(251,246,234,.97) 100%),
+    url("./v04_home_hero.webp") center/cover no-repeat!important;
+}
+#homeScreen .rf4-home-copy{
+  position:absolute!important;z-index:5!important;
+  right:clamp(30px,7vw,120px)!important;left:auto!important;top:50%!important;transform:translateY(-51%);
+  width:min(480px,42vw)!important;padding:36px 0!important;color:var(--rf5-ink)!important;
+}
+#homeScreen .rf4-home-copy .eyebrow{color:#7e6847!important}
+#homeScreen .rf4-home-copy h1{
+  color:var(--rf5-ink)!important;
+  font-size:clamp(3.7rem,6vw,6.6rem)!important;
+  line-height:.88!important;
+}
+#homeScreen .rf4-home-date{color:#786b59!important}
+#homeScreen .rf4-home-lede{color:#5d6d70!important;font-size:1.08rem}
+#homeScreen .rf4-home-actions .primary{box-shadow:0 12px 28px rgba(17,47,67,.18)}
+#homeScreen .rf4-home-actions .light{background:rgba(255,252,245,.8)!important;color:var(--rf5-ink)!important;border-color:rgba(21,56,75,.18)!important}
+#homeScreen .rf4-home-vitals{border-top-color:rgba(21,56,75,.13)!important}
+#homeScreen .rf4-home-vitals small{color:#8b795f!important}
+#homeScreen .rf4-home-vitals b{color:var(--rf5-ink)!important}
+#homeScreen .rf4-scholar-scene{position:absolute!important;inset:0!important;min-height:0!important;pointer-events:none}
+#homeScreen .rf4-scholar-stage{display:none!important}
+#homeScreen .rf4-growth-note{
+  pointer-events:auto;right:auto!important;left:clamp(28px,6vw,96px)!important;bottom:34px!important;
+  width:min(310px,35vw)!important;border-radius:6px!important;
+  background:rgba(252,247,236,.92)!important;border:1px solid rgba(185,149,86,.34)!important;
+  box-shadow:0 18px 46px rgba(25,38,42,.15)!important;
+}
+#homeScreen .rf4-growth-note:before{
+  content:"";display:block;width:48px;height:1px;background:var(--rf5-gold);margin-bottom:5px;
+}
+
+/* Journey is a paper spread, not three KPI boxes. */
+#homeScreen .rf4-today{
+  width:min(1240px,calc(100% - 44px))!important;margin-top:64px!important;
+  border:1px solid rgba(185,149,86,.28)!important;border-radius:30px!important;
+  background:linear-gradient(135deg,#fffdf8,#f6eddd)!important;box-shadow:var(--rf5-shadow);padding:34px 38px 40px!important;
+}
+#homeScreen .rf4-today-head{padding:0 0 26px!important}
+#homeScreen .rf4-today-head h2{font-size:clamp(2.5rem,4vw,4.2rem)!important}
+#homeScreen .rf4-journey-stats{background:transparent!important;border:0!important;gap:10px!important}
+#homeScreen .rf4-journey-chip{
+  min-height:74px!important;border:1px solid rgba(185,149,86,.26)!important;border-radius:14px!important;
+  background:rgba(255,255,255,.56)!important;
+}
+#homeScreen .rf4-main-journey{background:rgba(255,255,255,.68)!important;border-color:rgba(185,149,86,.20)!important}
+#homeScreen .rf4-reward-card{background:linear-gradient(145deg,#173a50,#102d42)!important;border:1px solid rgba(185,149,86,.36)}
+#homeScreen .rf4-learning-shelf,#homeScreen .rf4-quick-shelf{margin-top:72px!important}
+#homeScreen .subject-training-grid{grid-template-columns:1.45fr .775fr .775fr!important}
+#homeScreen .subject-training-card{background:#fffdf8!important;border-color:rgba(185,149,86,.22)!important}
+
+/* STUDY — large illustrated plates with intentionally varied size. */
+#studyScreen .v04-study-hero{
+  min-height:500px!important;
+  background:
+    linear-gradient(90deg,rgba(10,35,52,.90),rgba(10,35,52,.56) 54%,rgba(10,35,52,.06)),
+    url("./rf2_subject_english.webp") center/cover no-repeat!important;
+}
+#studyScreen .study-band{margin-top:66px!important}
+#studyScreen .study-grid{
+  grid-template-columns:1.25fr .9fr .9fr!important;
+  grid-auto-flow:dense!important;grid-auto-rows:245px!important;
+}
+#studyScreen .study-card{
+  border-radius:14px!important;border:1px solid rgba(185,149,86,.30)!important;
+  background:#173a50!important;
+}
+#studyScreen .study-card:first-child{grid-row:span 2!important}
+#studyScreen .study-card:nth-child(4){grid-column:2/span 2!important}
+#studyScreen .foundation-band .study-grid{
+  grid-template-columns:1.3fr .85fr .85fr!important;grid-auto-rows:270px!important;
+}
+#studyScreen .foundation-band .study-card:first-child{grid-row:span 2!important}
+#studyScreen .foundation-band .study-card:nth-child(4){grid-column:auto!important}
+#studyScreen .foundation-band .study-card:nth-child(5){grid-column:2/span 2!important}
+#studyScreen .study-card img.rf4-study-art{filter:saturate(.92) contrast(1.02)}
+#studyScreen .study-card:after{background:linear-gradient(180deg,rgba(10,28,40,.04) 8%,rgba(10,28,40,.88) 100%)!important}
+#studyScreen .study-card .subject-orb{display:none!important}
+
+/* SUBJECT — one illustrated folio. Tabs are a slim bookmark rail within the composition. */
+#subjectScreen{padding-top:24px!important}
+#subjectScreen .subject-hub-header{
+  min-height:570px!important;
+  grid-template-columns:minmax(330px,.72fr) minmax(560px,1.28fr)!important;
+  border-radius:16px!important;border-color:rgba(185,149,86,.31)!important;
+}
+#subjectScreen .subject-hub-header>div:first-child{
+  padding:58px 48px 28px!important;background:linear-gradient(180deg,#fffdf8,#f7eedf);
+}
+#subjectScreen .subject-summary{
+  grid-column:1!important;grid-row:2!important;padding:0 48px 48px!important;
+  background:linear-gradient(180deg,#f7eedf,#f3e8d6)!important;
+}
+#subjectScreen .rf4-subject-art{grid-column:2!important;grid-row:1/span 2!important;min-height:570px!important}
+#subjectScreen .rf4-subject-art img{height:100%!important;min-height:570px!important;object-fit:cover!important}
+#subjectScreen .subject-tabs{
+  max-width:1280px!important;margin:-1px auto 0!important;
+  border:1px solid rgba(185,149,86,.28)!important;border-top:0!important;
+  border-radius:0 0 16px 16px!important;padding:0 24px!important;
+  background:#15384b!important;display:flex!important;justify-content:flex-start!important;
+}
+#subjectScreen .subject-tabs button{
+  min-width:130px!important;border:0!important;border-radius:0!important;background:transparent!important;color:rgba(255,255,255,.72)!important;
+  padding:17px 22px!important;border-bottom:3px solid transparent!important;
+}
+#subjectScreen .subject-tabs button.active{color:#fff!important;border-bottom-color:var(--rf5-gold)!important}
+#subjectScreen .subject-tabs button:disabled{opacity:.34!important}
+#subjectScreen #subjectContent{
+  max-width:1280px!important;margin:30px auto 0!important;
+  border:1px solid rgba(185,149,86,.22);border-radius:16px;background:#fffdf8;
+  padding:clamp(20px,3vw,40px)!important;box-shadow:0 16px 46px rgba(30,45,50,.07);
+}
+
+/* RF5 Chemistry / Physics content */
+.rf5-science-spread,.rf5-practice-desk,.rf5-progress-spread,.rf5-session-end{
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(360px,.9fr);gap:34px;align-items:stretch;
+}
+.rf5-science-plate,.rf5-practice-desk>figure,.rf5-progress-spread>figure,.rf5-session-end>figure{
+  margin:0;min-height:520px;overflow:hidden;border-radius:12px;border:1px solid rgba(185,149,86,.28);background:#eee2cf;
+}
+.rf5-science-plate img,.rf5-practice-desk>figure img,.rf5-progress-spread>figure img,.rf5-session-end>figure img{
+  width:100%;height:100%;object-fit:cover;display:block;
+}
+.rf5-science-copy,.rf5-practice-panel,.rf5-progress-copy,.rf5-session-end>div{padding:18px 10px 18px 4px}
+.rf5-science-copy h2,.rf5-practice-panel h2,.rf5-progress-copy h2,.rf5-session-end h2,
+.rf5-note-paper h2,.rf5-preview-picker h2{
+  font:500 clamp(2.4rem,4vw,4.1rem)/.98 var(--lr-serif);color:var(--rf5-ink);margin:.16em 0 .28em;
+}
+.rf5-topic-index{display:grid;gap:10px;margin-top:26px}
+.rf5-topic-link{
+  text-align:left;display:grid;grid-template-columns:120px 1fr auto;gap:14px;align-items:center;
+  padding:16px 17px;border:1px solid var(--rf5-line);border-radius:10px;background:#fffdf9;color:var(--rf5-ink);
+}
+.rf5-topic-link span{font-size:.62rem;letter-spacing:.12em;color:#7f715b}
+.rf5-topic-link b{font:600 1rem/1.2 var(--lr-serif)}
+.rf5-topic-link small{color:#7a8584}
+.rf5-topic-link.preview{background:#f7ece8;border-color:rgba(200,143,145,.36)}
+.rf5-note-layout{display:grid;grid-template-columns:300px minmax(0,1fr);gap:30px}
+.rf5-note-side{position:sticky;top:24px;height:max-content;display:grid;gap:16px}
+.rf5-note-side img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:10px;border:1px solid rgba(185,149,86,.26)}
+.rf5-note-paper{padding:16px 8px 30px}
+.rf5-note-overview{font:500 1.18rem/1.7 var(--lr-serif);color:#435a60}
+.rf5-note-paper section{padding:22px 0;border-top:1px solid var(--rf5-line)}
+.rf5-note-paper h3{font:600 1.45rem var(--lr-serif);color:var(--rf5-ink)}
+.rf5-note-paper li{margin:.55rem 0;line-height:1.55}
+.rf5-vocab-ledger{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--rf5-line);border:1px solid var(--rf5-line)}
+.rf5-vocab-ledger>div{background:#fffdf9;padding:14px;display:grid;gap:4px}
+.rf5-vocab-ledger b{color:var(--rf5-ink)}
+.rf5-vocab-ledger span{color:#687677;font-size:.9rem;line-height:1.45}
+.rf5-worked,.rf5-repair{background:#f7efe3;border-left:3px solid var(--rf5-gold);padding:16px 18px;margin:10px 0}
+.rf5-practice-actions{display:flex;gap:10px;flex-wrap:wrap;margin:26px 0 20px}
+.rf5-topic-select{display:grid;gap:7px;font-weight:600;color:var(--rf5-ink);margin:15px 0}
+.rf5-topic-select select{max-width:100%;padding:12px;border:1px solid var(--rf5-line);border-radius:8px;background:white}
+.rf5-preview-box{margin-top:26px;padding:17px;border:1px solid rgba(200,143,145,.34);background:#f8ece8;border-radius:10px}
+.rf5-preview-box p{margin:.35rem 0 .8rem}
+.rf5-preview-picker{max-width:900px;margin:auto;padding:20px}
+.rf5-question-shell{overflow:hidden;border-radius:14px;border:1px solid rgba(185,149,86,.28);background:#fffdf8}
+.rf5-question-head{display:flex;justify-content:space-between;gap:20px;align-items:end;padding:24px 28px 18px;background:#15384b;color:#fff}
+.rf5-question-head h2{font:500 2rem var(--lr-serif);color:#fff;margin:.15rem 0 0}
+.rf5-question-head .eyebrow{color:#dec898}
+.rf5-question-progress{height:4px;background:#eadfce}.rf5-question-progress i{display:block;height:100%;background:var(--rf5-gold)}
+.rf5-question-body{display:grid;grid-template-columns:minmax(280px,.72fr) minmax(0,1.28fr)}
+.rf5-question-body>figure{margin:0;min-height:560px}
+.rf5-question-body>figure img{width:100%;height:100%;object-fit:cover}
+.rf5-question-paper{padding:40px;align-self:center}
+.rf5-question-paper>small{color:#8a7555;letter-spacing:.06em}
+.rf5-question-paper h3{font:600 clamp(1.7rem,3vw,2.65rem)/1.12 var(--lr-serif);color:var(--rf5-ink);margin:.3em 0}
+.rf5-response-area{margin:22px 0}
+.rf5-choice-grid{display:grid;gap:9px}
+.rf5-choice-grid label{display:block;cursor:pointer}
+.rf5-choice-grid input{position:absolute;opacity:0}
+.rf5-choice-grid span{display:block;padding:14px 16px;border:1px solid var(--rf5-line);border-radius:9px;background:#fff}
+.rf5-choice-grid input:checked+span{border-color:var(--rf5-gold);box-shadow:inset 0 0 0 1px var(--rf5-gold);background:#f8f0e1}
+.rf5-science-answer{width:100%;resize:vertical;padding:14px;border:1px solid var(--rf5-line);border-radius:9px;background:white;font:inherit}
+.rf5-match-grid,.rf5-sequence-grid,.rf5-sort-grid{display:grid;gap:10px}
+.rf5-match-grid label,.rf5-sequence-grid label,.rf5-sort-grid label{display:grid;gap:6px;padding:12px;border:1px solid var(--rf5-line);border-radius:8px;background:white}
+.rf5-match-grid select,.rf5-sequence-grid select,.rf5-sort-grid select{width:100%;padding:10px;border:1px solid var(--rf5-line);border-radius:7px}
+.rf5-feedback{margin-top:20px}
+.rf5-result{padding:18px;border-radius:10px;border:1px solid var(--rf5-line);background:#f7f0e5}
+.rf5-result.correct{border-color:rgba(119,139,114,.45);background:#edf2e9}
+.rf5-result.repair{border-color:rgba(200,143,145,.42);background:#f8ece8}
+.rf5-result h4{font:600 1.25rem var(--lr-serif);color:var(--rf5-ink);margin:0 0 8px}
+.rf5-rubric{padding:12px 15px;background:#fffdf9;border-left:3px solid var(--rf5-gold);margin:12px 0}
+.rf5-selfmark{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.rf5-mastery-ledger{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--rf5-line);border:1px solid var(--rf5-line);margin:26px 0}
+.rf5-mastery-ledger>div{background:#fffdf9;padding:18px;display:grid;gap:3px}
+.rf5-mastery-ledger b{font:600 1.65rem var(--lr-serif);color:var(--rf5-ink)}
+.rf5-mastery-ledger span{font-size:.75rem;color:#687777}
+.rf5-progress-topics{display:grid;gap:8px}
+.rf5-progress-topics article{display:grid;grid-template-columns:1fr auto;gap:3px 12px;padding:12px 0;border-bottom:1px solid var(--rf5-line)}
+.rf5-progress-topics b{color:var(--rf5-sage)}.rf5-progress-topics small{grid-column:1/-1;color:#7a8585}
+.route-pill.preview{background:#f0ded8!important;color:#7c4f53!important;border-color:#d8b6b6!important}
+
+/* GARDEN — the world remains the page. Supporting material reads like garden plaques. */
+#gardenScreen{background:#102f43!important;padding-bottom:72px!important}
+#gardenScreen .garden-world{min-height:min(840px,88vh)!important;border-radius:0!important}
+#gardenScreen .garden-world>img{min-height:min(840px,88vh)!important;object-fit:cover}
+#gardenScreen .garden-overlay{
+  left:clamp(24px,7vw,110px)!important;right:auto!important;top:auto!important;bottom:56px!important;
+  width:min(470px,calc(100% - 48px))!important;border-radius:8px!important;
+  border:1px solid rgba(216,190,137,.38)!important;background:rgba(14,42,58,.88)!important;
+  backdrop-filter:blur(10px);
+}
+#gardenScreen .garden-explore{width:min(1180px,calc(100% - 44px));margin:52px auto!important;color:#fff}
+#gardenScreen .garden-explore h2{color:#fff}
+#gardenScreen .garden-growth-timeline,#gardenScreen .reward-grid{gap:14px!important}
+#gardenScreen .garden-growth-timeline>*,#gardenScreen .reward-grid>*{background:#f9f3e8!important;border-color:rgba(185,149,86,.28)!important;color:var(--rf5-ink)!important}
+
+/* SCHOLAR — portrait is a complete illustrated room; tabs become navigation ribbon. */
+#scholarScreen{padding:0 0 90px!important;background:#f8f1e5!important}
+#scholarScreen>.page-title{width:min(1220px,calc(100% - 44px));margin:42px auto 18px!important}
+#scholarScreen>.scholar-tabs{
+  width:min(1220px,calc(100% - 44px));margin:0 auto 22px!important;
+  border:1px solid rgba(185,149,86,.28)!important;background:#15384b!important;border-radius:10px!important;padding:0 14px!important;
+}
+#scholarScreen>.scholar-tabs button{background:transparent!important;color:rgba(255,255,255,.72)!important;border:0!important;border-bottom:3px solid transparent!important;border-radius:0!important}
+#scholarScreen>.scholar-tabs button.active{color:#fff!important;border-bottom-color:var(--rf5-gold)!important}
+#scholarScreen .scholar-pane{width:min(1220px,calc(100% - 44px));margin:0 auto!important}
+#scholarScreen .rf4-scholar-portrait{
+  min-height:690px!important;position:relative;display:block!important;overflow:hidden;border-radius:16px!important;
+  background:
+    linear-gradient(90deg,rgba(255,255,255,0) 0 52%,rgba(252,247,236,.52) 62%,rgba(252,247,236,.96) 78%),
+    url("./v04_scholar_profile_hero.webp") center/cover no-repeat!important;
+  border:1px solid rgba(185,149,86,.30)!important;
+}
+#scholarScreen .rf4-scholar-portrait-art{display:none!important}
+#scholarScreen .rf4-scholar-identity{
+  position:absolute;right:clamp(30px,6vw,86px);top:50%;transform:translateY(-50%);
+  width:min(410px,40%);padding:28px;color:var(--rf5-ink);
+}
+#scholarScreen .rf4-scholar-identity h2{font:500 clamp(3.3rem,5vw,5.5rem)/.9 var(--lr-serif);color:var(--rf5-ink)}
+#scholarScreen .rf4-scholar-identity .light{background:var(--rf5-navy)!important;color:#fff!important}
+#scholarScreen .rf4-scholar-growth{
+  position:absolute;left:34px;bottom:28px;width:min(330px,35%);padding:16px;background:rgba(251,246,234,.92);border:1px solid rgba(185,149,86,.30);border-radius:8px;
+}
+#scholarScreen .scholar-stats-grid{grid-template-columns:1fr 1fr!important}
+#scholarScreen .scholar-layout{display:grid!important;grid-template-columns:minmax(380px,.82fr) minmax(0,1.18fr)!important;gap:26px}
+#scholarScreen .avatar-stage{
+  min-height:720px!important;border:1px solid rgba(185,149,86,.30)!important;border-radius:14px!important;
+  background:
+    linear-gradient(180deg,rgba(251,246,234,.03),rgba(251,246,234,.22)),
+    url("./v04_scholar_profile_hero.webp") center/cover no-repeat!important;overflow:hidden;
+}
+#scholarScreen #avatarCanvas{height:660px!important;background:transparent!important}
+#scholarScreen #avatarCanvas.rf5-headless-fallback #wardrobeScholarImage{opacity:0!important}
+#scholarScreen #wardrobeScholarImage{width:100%!important;height:100%!important;object-fit:contain!important;object-position:center bottom!important}
+#scholarScreen .avatar-note{
+  margin:0!important;padding:14px 18px!important;background:rgba(251,246,234,.94);border-top:1px solid rgba(185,149,86,.25);
+}
+#scholarScreen .wardrobe-panel{background:#fffdf8;padding:26px;border:1px solid rgba(185,149,86,.26);border-radius:14px}
+#scholarScreen .wardrobe-gallery{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:14px!important}
+#scholarScreen .wardrobe-preview-card{border:1px solid rgba(185,149,86,.23)!important;border-radius:10px!important;background:#f9f2e6!important;overflow:hidden}
+#scholarScreen .wardrobe-art-wrap{position:relative;min-height:260px!important;background:linear-gradient(180deg,#f5ecdf,#e9dfd2)!important}
+#scholarScreen .wardrobe-art-wrap img{width:100%!important;height:260px!important;object-fit:contain!important;object-position:center bottom!important;padding:12px!important}
+#scholarScreen .wardrobe-preview-card.garment-plate .wardrobe-art-wrap{background:linear-gradient(180deg,#203f52,#102f43)!important}
+#scholarScreen .wardrobe-preview-card.garment-plate .wardrobe-art-wrap img{filter:drop-shadow(0 12px 18px rgba(0,0,0,.25))}
+#scholarScreen .wardrobe-plate-label{
+  position:absolute;left:10px;bottom:10px;padding:5px 8px;background:rgba(251,246,234,.92);color:#6f604c;border-radius:999px;font-size:.62rem;letter-spacing:.08em;text-transform:uppercase;
+}
+#scholarScreen .collection-grid{grid-template-columns:1.2fr .8fr .8fr!important;grid-auto-rows:minmax(250px,auto)!important}
+#scholarScreen .collection-card:first-child{grid-row:span 2}
+#scholarScreen .collection-card{border-color:rgba(185,149,86,.26)!important;background:#fffdf8!important;border-radius:10px!important}
+#scholarScreen .medal-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:18px!important}
+#scholarScreen .medal-card{background:radial-gradient(circle at 50% 38%,#fffdf8,#eee2cf)!important;border:1px solid rgba(185,149,86,.30)!important;border-radius:50% 50% 12px 12px!important;min-height:330px!important}
+
+/* Responsive composition */
+@media (max-width:980px){
+  #homeScreen .rf4-home-hero{
+    min-height:760px!important;
+    background:
+      linear-gradient(180deg,rgba(251,246,234,.02) 0 46%,rgba(251,246,234,.92) 70%,rgba(251,246,234,.99) 100%),
+      url("./v04_home_hero.webp") 34% center/cover no-repeat!important;
+  }
+  #homeScreen .rf4-home-copy{left:28px!important;right:28px!important;top:auto!important;bottom:34px!important;transform:none!important;width:auto!important}
+  #homeScreen .rf4-growth-note{display:none!important}
+  #homeScreen .rf4-today-head,#homeScreen .rf4-today-body{grid-template-columns:1fr!important}
+  #homeScreen .subject-training-grid{grid-template-columns:1fr 1fr!important}
+  #homeScreen .subject-training-card:first-child{grid-row:auto!important}
+  #studyScreen .study-grid,#studyScreen .foundation-band .study-grid{grid-template-columns:1fr 1fr!important;grid-auto-rows:280px!important}
+  #studyScreen .study-card,#studyScreen .study-card:first-child,#studyScreen .study-card:nth-child(4),#studyScreen .foundation-band .study-card:first-child,#studyScreen .foundation-band .study-card:nth-child(5){grid-column:auto!important;grid-row:auto!important}
+  #subjectScreen .subject-hub-header{grid-template-columns:1fr!important;grid-template-rows:auto!important}
+  #subjectScreen .subject-hub-header>div:first-child,#subjectScreen .subject-summary,#subjectScreen .rf4-subject-art{grid-column:1!important;grid-row:auto!important}
+  #subjectScreen .rf4-subject-art,#subjectScreen .rf4-subject-art img{min-height:410px!important}
+  .rf5-science-spread,.rf5-practice-desk,.rf5-progress-spread,.rf5-session-end,.rf5-question-body,.rf5-note-layout{grid-template-columns:1fr!important}
+  .rf5-science-plate,.rf5-practice-desk>figure,.rf5-progress-spread>figure,.rf5-session-end>figure{min-height:360px}
+  .rf5-note-side{position:static}
+  #scholarScreen .rf4-scholar-portrait{min-height:760px!important;background-position:35% center!important}
+  #scholarScreen .rf4-scholar-identity{left:24px;right:24px;top:auto;bottom:20px;transform:none;width:auto;background:rgba(251,246,234,.9);border-radius:10px}
+  #scholarScreen .rf4-scholar-growth{display:none}
+  #scholarScreen .scholar-layout{grid-template-columns:1fr!important}
+}
+@media (max-width:620px){
+  #homeScreen .rf4-home-hero{min-height:700px!important;background-position:28% center!important}
+  #homeScreen .rf4-home-copy h1{font-size:3.35rem!important}
+  #homeScreen .rf4-home-actions{gap:8px}
+  #homeScreen .rf4-home-vitals{margin-top:18px!important}
+  #homeScreen .rf4-today{width:calc(100% - 24px)!important;padding:24px 18px!important;border-radius:18px!important}
+  #homeScreen .rf4-journey-stats{grid-template-columns:1fr!important}
+  #homeScreen .subject-training-grid,#homeScreen .quick-play-grid{grid-template-columns:1fr!important}
+  #studyScreen .study-grid,#studyScreen .foundation-band .study-grid{grid-template-columns:1fr!important}
+  #subjectScreen{padding-left:10px!important;padding-right:10px!important}
+  #subjectScreen .subject-hub-header>div:first-child,#subjectScreen .subject-summary{padding-left:24px!important;padding-right:24px!important}
+  #subjectScreen .subject-tabs{overflow-x:auto!important;padding:0 6px!important}
+  #subjectScreen .subject-tabs button{min-width:104px!important;padding:14px 12px!important}
+  #subjectScreen #subjectContent{padding:16px!important}
+  .rf5-vocab-ledger{grid-template-columns:1fr}
+  .rf5-topic-link{grid-template-columns:1fr!important}
+  .rf5-question-paper{padding:24px 20px}
+  .rf5-question-body>figure{min-height:260px}
+  .rf5-mastery-ledger{grid-template-columns:1fr 1fr}
+  #scholarScreen>.page-title,#scholarScreen>.scholar-tabs,#scholarScreen .scholar-pane{width:calc(100% - 24px)!important}
+  #scholarScreen>.scholar-tabs{overflow-x:auto}
+  #scholarScreen .wardrobe-gallery{grid-template-columns:1fr!important}
+  #scholarScreen .medal-grid,#scholarScreen .collection-grid{grid-template-columns:1fr!important}
+}

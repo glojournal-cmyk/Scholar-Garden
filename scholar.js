@@ -46,26 +46,31 @@ function renderAvatarCanvas(){
  const img=document.getElementById('wardrobeScholarImage'),canvas=document.getElementById('avatarCanvas');
  if(!img||!canvas)return;
  const selected=window.ScholarAssets?.selectedOutfit?.()||window.ScholarAssets?.manifest?.outfits?.[0];
- if(selected){
-   img.src=selected.asset;
-   img.alt=`Scholar wearing ${selected.name}`;
-   canvas.classList.add('has-scholar-art');
- }
+ const headless=new Set(['garden-athletics','scholar-athletics','midnight-track','noir-academy','onyx-prefect','midnight-atelier','rose-academy']);
+ const completeFallback=window.ScholarAssets?.homeAsset?.()||'scholar_master_uniform.png';
+ const canUseSelected=selected&&!headless.has(selected.id);
+ img.src=canUseSelected?selected.asset:completeFallback;
+ img.alt=canUseSelected?`Scholar wearing ${selected.name}`:`Complete Scholar portrait · ${selected?.name||'outfit'} shown as a garment plate in the wardrobe`;
+ canvas.dataset.selectedOutfit=selected?.id||'';
+ canvas.classList.toggle('rf5-headless-fallback',!canUseSelected);
+ canvas.classList.add('has-scholar-art','rf5-complete-scholar');
  window.ScholarAvatarLayers?.compose?.(canvas);
 }
 function renderWardrobe(){
  const s=normalizeWardrobeState(),root=document.getElementById('wardrobeControls');if(!root)return;
  const g=window.LuxGrowth.snapshot(),items=window.ScholarAssets?.manifest?.outfits||[];
  const equipped=window.ScholarAssets?.normalizeOutfitId?.(s.wardrobe.outfit)||'school-uniform';
+ const headless=new Set(['garden-athletics','scholar-athletics','midnight-track','noir-academy','onyx-prefect','midnight-atelier','rose-academy']);
  renderAvatarCanvas();
  root.innerHTML=`<div class="wardrobe-gallery">${items.map(item=>{
-   const unlocked=window.ScholarAssets.outfitUnlocked(item,g),selected=item.id===equipped;
+   const unlocked=window.ScholarAssets.outfitUnlocked(item,g),selected=item.id===equipped,isPlate=headless.has(item.id);
    const requirement=window.ScholarAssets.unlockRequirement(item);
-   return `<article class="wardrobe-preview-card ${unlocked?'unlocked':'locked'} ${selected?'selected':''}">
+   return `<article class="wardrobe-preview-card ${unlocked?'unlocked':'locked'} ${selected?'selected':''} ${isPlate?'garment-plate':''}">
      <div class="wardrobe-art-wrap">
        <img src="${esc(item.asset)}" alt="${esc(item.name)}" loading="lazy" decoding="async">
        ${unlocked?'':`<span class="wardrobe-lock">Locked</span>`}
        ${selected?'<span class="wardrobe-selected">Equipped</span>':''}
+       ${isPlate?'<span class="wardrobe-plate-label">Garment plate</span>':''}
      </div>
      <div class="wardrobe-card-copy">
        <h3>${esc(item.name)}</h3>
@@ -103,6 +108,8 @@ function renderOverview(){
  set('scholarStatGarden',`Stage ${g.gardenStage}`);
  set('scholarStatLatin',g.subjectTotals?.latin||0);
  set('scholarStatFrench',g.subjectTotals?.french||0);
+ set('scholarStatChemistry',g.subjectTotals?.chemistry||0);
+ set('scholarStatPhysics',g.subjectTotals?.physics||0);
  const recent=document.getElementById('scholarOverviewRecent');
  if(recent){
    const tags=[];
