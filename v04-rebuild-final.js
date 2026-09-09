@@ -153,8 +153,81 @@ function installGardenCollection(){
  q('[data-lr-open-collection]',section).onclick=()=>location.hash='#scholar/collection';
  qa('[data-lr-garden-item]',section).forEach(b=>b.onclick=()=>location.hash='#scholar/collection');
 }
+
+const RF3_SUBJECT_VISUALS={
+ french:{
+  learn:'rf3_french_lesson.webp',
+  practice:'rf3_french_practice.webp',
+  play:'rf3_french_vocab.webp',
+  progress:'rf3_french_mastery.webp'
+ },
+ biology:{
+  learn:'rf3_biology_lesson.webp',
+  practice:'rf3_biology_practice.webp',
+  play:'rf3_biology_microscopy.webp',
+  progress:'rf3_biology_mastery.webp'
+ }
+};
+function installRF3Home(){
+ const home=q('#homeScreen'); if(!home)return;
+ let hero=q('.rf3-home-hero',home);
+ if(!hero){
+  hero=document.createElement('section'); hero.className='rf3-home-hero';
+  hero.innerHTML=`<div class="rf3-home-copy">
+    <p class="eyebrow">LUX ET LABOR · THE SCHOLAR'S GARDEN</p>
+    <h1 data-rf3-home-greeting>Welcome, Scholar</h1>
+    <p class="rf3-home-date" data-rf3-home-date></p>
+    <p class="rf3-home-lede">One thoughtful session at a time. Continue your learning and let the garden grow with your real study progress.</p>
+    <div class="rf3-home-actions">
+      <button type="button" class="primary" data-global-route="study">Continue studying</button>
+      <button type="button" class="secondary light" data-global-route="garden">Visit the Garden</button>
+    </div>
+    <div class="rf3-home-live">
+      <span><small>SCHOLAR LEVEL</small><b>Lv <i data-growth="level">1</i></b></span>
+      <span><small>SCHOLAR XP</small><b><i data-growth="xp">0</i> XP</b></span>
+    </div>
+  </div>`;
+  const overview=q('.v04-home-overview',home);
+  overview?.before(hero);
+ }
+ const greet=q('#homeGreeting')?.textContent?.trim()||'Welcome';
+ q('[data-rf3-home-greeting]',hero).textContent=/Scholar/i.test(greet)?greet:`${greet}, Scholar`;
+ q('[data-rf3-home-date]',hero).textContent=q('#homeDate')?.textContent||'';
+ try{
+   const s=window.LuxGrowth?.snapshot?.();
+   if(s){
+     const lv=q('[data-growth="level"]',hero); const xp=q('[data-growth="xp"]',hero);
+     if(lv)lv.textContent=s.level??1;
+     if(xp)xp.textContent=s.xp??0;
+   }
+ }catch{}
+}
+function installRF3SubjectHero(){
+ const screen=q('#subjectScreen');if(!screen)return;
+ const art=q('.rf4-subject-art',screen);if(!art)return;
+ const subject=screen.dataset.v04Subject||q('#subjectTitle')?.textContent?.trim().toLowerCase()||'';
+ const tab=screen.dataset.v04Tab||'learn';
+ const file=RF3_SUBJECT_VISUALS[subject]?.[tab]||SUBJECT_ART[subject];
+ const img=q('img',art),cap=q('figcaption b',art);
+ if(file&&img){
+   img.src=`./${file}`;
+   img.alt=`${subject ? subject[0].toUpperCase()+subject.slice(1) : 'Subject'} study illustration`;
+   if(cap)cap.textContent=tab==='progress'?'Progress and mastery':tab==='practice'?'Practice with purpose':tab==='play'?'Explore and apply':'Learn through clear ideas';
+   art.hidden=false;
+ }else art.hidden=true;
+}
+function installRF3SubjectGallery(){
+ const study=q('#studyScreen');if(!study)return;
+ q('.v04-study-hero-copy p:not(.eyebrow)',study)?.classList.add('rf3-study-intro');
+}
+function cleanPrototypeCopy(){
+ qa('.character-art-label').forEach(el=>el.remove());
+ const note=q('.avatar-note'); if(note) note.textContent='Choose a complete Scholar appearance. Styles become available through study.';
+ const page=q('#scholarScreen .page-title p:last-child'); if(page) page.textContent='Your character, wardrobe, collection and achievements — shaped by your study journey.';
+}
+
 function refresh(){
- installWelcome();syncWelcome();makeJourneyInteractive();fixGameArt();fixStudyArt();decorateCollection();decorateAchievements();decorateQuickPlay();syncGardenArt();installGardenCollection();
+ makeJourneyInteractive();fixGameArt();fixStudyArt();decorateCollection();decorateAchievements();decorateQuickPlay();syncGardenArt();installGardenCollection();installRF3SubjectHero();installRF3SubjectGallery();cleanPrototypeCopy();
 }
 window.addEventListener('DOMContentLoaded',()=>{
  updateBrand();installDialog();bindCollection();refresh();
@@ -164,4 +237,6 @@ window.addEventListener('hashchange',()=>setTimeout(refresh,80));
 document.addEventListener('alpha5:refresh',()=>setTimeout(refresh,0));
 document.addEventListener('lux:growth',()=>setTimeout(refresh,0));
 document.addEventListener('scholar:tab-open',()=>setTimeout(refresh,0));
+const subjectScreen=q('#subjectScreen');
+if(subjectScreen)new MutationObserver(()=>installRF3SubjectHero()).observe(subjectScreen,{attributes:true,attributeFilter:['data-v04-subject','data-v04-tab','data-v04-track']});
 })();

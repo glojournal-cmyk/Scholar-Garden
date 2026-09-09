@@ -42,7 +42,7 @@ function go(dest){
 }
 async function goSubject(subject,track='current',tab){
  let slug=subject;
- if(track==='foundation'&&subject==='biology')slug='biology-foundation';
+ if(track==='foundation'&&['biology','chemistry','physics'].includes(subject))slug=`${subject}-foundation`;
  const defaultTab=tab||(track==='foundation'?'practice':'learn');
  const hash=`#subject/${slug}/${defaultTab}`;
  if(location.hash!==hash)history.pushState(null,'',hash);
